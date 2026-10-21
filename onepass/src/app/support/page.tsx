@@ -85,7 +85,7 @@ export default function SupportPage() {
                 <Mail size={18} className="text-[--color-forest] shrink-0 mt-0.5" />
                 <div>
                   <p className="font-[650] text-[--color-foreground]">Email Desk</p>
-                  <p className="text-[--color-muted] mt-0.5">support@inlo.in</p>
+                  <p className="text-[--color-muted] mt-0.5">support@inlo.tech</p>
                   <span className="text-[10px] text-[--color-muted]">For billing &amp; account queries</span>
                 </div>
               </div>

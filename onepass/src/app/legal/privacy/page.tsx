@@ -144,7 +144,7 @@ export default function PrivacyPolicyPage() {
             <p>Designation: Data Protection Officer (DPO)</p>
             <p>Inlo Technologies Private Limited</p>
             <p>Indiranagar, Bengaluru, Karnataka 560038, India</p>
-            <p>Email: privacy@inlo.in · Response SLA: 48 business hours</p>
+            <p>Email: privacy@inlo.tech · Response SLA: 48 business hours</p>
           </div>
         </section>
       </div>

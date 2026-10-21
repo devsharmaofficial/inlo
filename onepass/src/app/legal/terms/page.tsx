@@ -130,7 +130,7 @@ export default function TermsOfUsePage() {
             <p>Grievance Officer: Legal &amp; Compliance Team</p>
             <p>Inlo Technologies Private Limited</p>
             <p>Indiranagar 100ft Road, Bengaluru, Karnataka 560038, India</p>
-            <p>Email: legal@inlo.in / grievance@inlo.in</p>
+            <p>Email: legal@inlo.tech / grievance@inlo.tech</p>
           </div>
         </section>
       </div>
