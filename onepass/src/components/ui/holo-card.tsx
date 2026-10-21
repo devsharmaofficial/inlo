@@ -3,70 +3,52 @@
 import * as React from "react";
 import Image from "next/image";
 import QRCode from "qrcode";
-import { QrCode as QrIcon, RotateCw, Sparkles, CheckCircle2 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
-/*  HoloCard — Pearl titanium holographic sports & wellness pass.     */
-/*  Tilts with the cursor or phone gyro, spins with 3D inertia,        */
-/*  flips on tap to reveal the scannable cryptographic QR code.        */
-/*  Supports both sports Pass mode (default) and classic Bank mode.    */
+/*  HoloCard — Minimal Pearl Titanium Inlo Access Pass.               */
+/*  Ultra-clean typography, generous whitespace, pristine alignment.   */
+/*  Front: Member identity & credits on iridescent pearl titanium.    */
+/*  Back: Perfectly centered scannable check-in QR code.              */
 /* ------------------------------------------------------------------ */
 
 export type HoloCardHandle = {
   flip: () => void;
   reveal: (show?: boolean) => void;
-  /** iOS asks for permission before motion can be read; call this from a tap */
   enableMotion: () => Promise<boolean>;
 };
 
 export type HoloCardProps = {
   holder?: string;
-  /** Pass number / member identifier */
   number?: string;
-  /** Available credits or validity text */
   expires?: string;
-  /** Pass verification security code */
   cvv?: string;
-  /** Tier title: e.g. "Titanium Pass", "All-Access Pass" */
   tier?: string;
-  /** Custom logo for top left */
   logo?: React.ReactNode;
-  /** Custom network mark for bottom right */
   network?: React.ReactNode;
-  /** Max tilt in degrees. Default 14. */
   maxTilt?: number;
-  /** 0–1.5, strength of the hologram. Default 1. */
   foil?: number;
-  /** Follow phone gyro where allowed. Default true. */
   motion?: boolean;
   onFlip?: (side: "front" | "back") => void;
   onReveal?: (shown: boolean) => void;
   className?: string;
-
-  /** "pass" (default sports access pass) or "bank" (traditional payment card) */
   cardType?: "pass" | "bank";
-  holderLabel?: string;
-  expiresLabel?: string;
-  cvvLabel?: string;
-  backNote?: string;
   qrValue?: string;
-  activities?: string[];
   city?: string;
 };
 
 const INK = "#14251D";
-const FONT = "var(--font-sans), Geist, -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', Roboto, sans-serif";
-const MONO = "var(--font-mono), 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace";
+const FONT = "var(--font-sans), Geist, -apple-system, BlinkMacSystemFont, Inter, sans-serif";
+const MONO = "var(--font-mono), 'Geist Mono', ui-monospace, Menlo, monospace";
 
 const GRAIN =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9 .02' numOctaves='2' seed='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
 
 const CSS = `
-.hc-face{position:absolute;inset:0;border-radius:20px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;color:${INK};
-  background:linear-gradient(135deg,#ffffff 0%,#f0f3f1 35%,#fafbf9 60%,#e4ebe6 100%);
-  box-shadow:inset 0 0 0 .5px rgba(20,37,29,.1),inset 0 1px 0 rgba(255,255,255,.95)}
+.hc-face{position:absolute;inset:0;border-radius:22px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;color:${INK};
+  background:linear-gradient(135deg,#ffffff 0%,#f1f5f2 35%,#fcfdfc 62%,#e5ece7 100%);
+  box-shadow:inset 0 0 0 .5px rgba(20,37,29,.12),inset 0 1px 0 rgba(255,255,255,.95)}
 .hc-layer{position:absolute;pointer-events:none}
-.hc-grain{inset:0;opacity:.28;mix-blend-mode:soft-light;background-image:${GRAIN};background-size:200px 200px}
+.hc-grain{inset:0;opacity:.25;mix-blend-mode:soft-light;background-image:${GRAIN};background-size:200px 200px}
 .hc-film{inset:-30%;mix-blend-mode:multiply;opacity:calc(var(--ho,.6) * var(--foil,1));
   background:linear-gradient(115deg,#ffd9ec 0%,#ffe6cf 12%,#fff6c9 22%,#d4f7e4 34%,#c9ecff 46%,#d9d4ff 58%,#f6d0ff 70%,#ffd9ec 82%,#ffe6cf 100%);
   background-size:300% 300%;background-position:var(--hx,50%) var(--hy,50%);
@@ -76,20 +58,14 @@ const CSS = `
   background:conic-gradient(from var(--ca,0deg) at var(--mx,50%) var(--my,50%),#ff9ad5,#ffc58f,#fff08f,#9ff0c6,#8fd6ff,#b8a6ff,#ff9ad5);
   -webkit-mask-image:radial-gradient(60% 80% at var(--mx,50%) var(--my,50%),#000,transparent 75%);
   mask-image:radial-gradient(60% 80% at var(--mx,50%) var(--my,50%),#000,transparent 75%)}
-.hc-lines{inset:0;mix-blend-mode:soft-light;opacity:calc(var(--ho,.6) * .45 * var(--foil,1));
+.hc-lines{inset:0;mix-blend-mode:soft-light;opacity:calc(var(--ho,.6) * .4 * var(--foil,1));
   background:repeating-linear-gradient(115deg,rgba(255,255,255,.9) 0 1px,transparent 1px 3px)}
-.hc-streak{inset:-40%;mix-blend-mode:soft-light;opacity:.85;transform:translateX(var(--st,0%));
+.hc-streak{inset:-40%;mix-blend-mode:soft-light;opacity:.8;transform:translateX(var(--st,0%));
   background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.95) 49%,rgba(255,255,255,.95) 51%,transparent 58%)}
-.hc-glare{inset:0;mix-blend-mode:screen;background:radial-gradient(45% 65% at var(--mx,50%) var(--my,50%),rgba(255,255,255,.6),rgba(255,255,255,0) 65%)}
-.hc-edge{inset:0;border-radius:20px;padding:1px;
+.hc-glare{inset:0;mix-blend-mode:screen;background:radial-gradient(45% 65% at var(--mx,50%) var(--my,50%),rgba(255,255,255,.55),rgba(255,255,255,0) 65%)}
+.hc-edge{inset:0;border-radius:22px;padding:1px;
   background:linear-gradient(var(--ea,135deg),#fff,rgba(20,37,29,.08) 30%,rgba(20,37,29,.05) 70%,rgba(255,255,255,.9));
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
-.hc-chip{width:42px;height:32px;border-radius:7px;position:relative;overflow:hidden;
-  background:linear-gradient(135deg,#e9d6a2,#b89850 45%,#f4e3b0 60%,#9c7c3a);box-shadow:inset 0 0 0 .5px rgba(0,0,0,.35)}
-.hc-chip:before,.hc-chip:after{content:"";position:absolute;border:1px solid rgba(80,60,20,.45)}
-.hc-chip:before{left:30%;right:30%;top:-1px;bottom:-1px;border-top:0;border-bottom:0}
-.hc-chip:after{top:35%;bottom:35%;left:-1px;right:-1px;border-left:0;border-right:0}
-.hc-label{display:block;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(20,37,29,.55);margin-bottom:2px}
 `;
 
 const Layers = () => (
@@ -108,7 +84,6 @@ export const HoloCard = React.forwardRef<HoloCardHandle, HoloCardProps>(function
     holder = "Aryan Sharma",
     number = "INLO-2026-8491-0428",
     expires = "50 CREDITS",
-    cvv = "842",
     tier = "Titanium Pass",
     logo,
     network,
@@ -118,9 +93,6 @@ export const HoloCard = React.forwardRef<HoloCardHandle, HoloCardProps>(function
     onFlip,
     onReveal,
     className = "",
-    cardType = "pass",
-    holderLabel,
-    expiresLabel,
     qrValue,
     city = "Bengaluru",
   },
@@ -131,38 +103,27 @@ export const HoloCard = React.forwardRef<HoloCardHandle, HoloCardProps>(function
   const shadowRef = React.useRef<HTMLDivElement>(null);
   const qrCanvasRef = React.useRef<HTMLCanvasElement>(null);
   const [side, setSide] = React.useState<"front" | "back">("front");
-  const [, setQrGenerated] = React.useState(false);
 
-  const isPass = cardType === "pass";
+  // Derive last 4 digits for pristine single-line display
+  const last4 = number.replace(/\D/g, "").slice(-4) || "0428";
+  const passCode = `INLO · 2026 · ${last4}`;
 
-  // Clean pass identifier for display: e.g. "INLO · 2026 · 8491 · 0428"
-  const rawDigits = number.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
-  const formattedPassId =
-    rawDigits.length >= 12
-      ? `${rawDigits.slice(0, 4)} · ${rawDigits.slice(4, 8)} · ${rawDigits.slice(8, 12)}${
-          rawDigits.length > 12 ? ` · ${rawDigits.slice(12, 16)}` : ""
-        }`
-      : number.toUpperCase();
-
-  // QR Token string
+  // QR Token encoded into canvas
   const tokenToEncode =
     qrValue ||
-    `inlo://pass/${number.replace(/\s+/g, "-")}/${holder.replace(/\s+/g, "-").toLowerCase()}?tier=${encodeURIComponent(tier)}`;
+    `inlo://pass/${last4}/${holder.replace(/\s+/g, "-").toLowerCase()}?tier=${encodeURIComponent(tier)}`;
 
-  // Generate QR Code onto canvas
   React.useEffect(() => {
     if (!qrCanvasRef.current) return;
     QRCode.toCanvas(qrCanvasRef.current, tokenToEncode, {
-      width: 140,
+      width: 130,
       margin: 1,
       color: {
         dark: "#14251D",
         light: "#FFFFFF",
       },
       errorCorrectionLevel: "H",
-    })
-      .then(() => setQrGenerated(true))
-      .catch(() => setQrGenerated(false));
+    }).catch(() => {});
   }, [tokenToEncode, side]);
 
   const s = React.useRef({
@@ -323,7 +284,6 @@ export const HoloCard = React.forwardRef<HoloCardHandle, HoloCardProps>(function
   };
 
   const onDown = (e: React.PointerEvent) => {
-    if ((e.target as HTMLElement).closest("[data-hc-tap]")) return;
     const st = s.current;
     st.drag = true;
     st.moved = 0;
@@ -339,46 +299,36 @@ export const HoloCard = React.forwardRef<HoloCardHandle, HoloCardProps>(function
     if (!st.drag) return;
     st.drag = false;
     st.target = Math.round((st.ry + st.vry * 8) / 180) * 180;
-    if (st.moved < 4) flip();
+    if (st.moved < 5) flip();
   };
 
-  const defaultLogo = isPass ? (
+  const defaultLogo = (
     <div className="flex items-center gap-2 select-none">
-      <div className="relative w-7 h-7 shrink-0 flex items-center justify-center">
+      <div className="relative w-6 h-6 shrink-0 flex items-center justify-center">
         <Image
           src="/inlo-logo.png"
           alt="Inlo"
-          width={28}
-          height={28}
+          width={24}
+          height={24}
           className="object-contain rounded-md"
           priority
         />
       </div>
-      <span className="text-[18px] font-[850] tracking-[-0.04em] text-[#14251D]">
+      <span className="text-[17px] font-[850] tracking-[-0.03em] text-[#14251D]">
         INLO
       </span>
     </div>
-  ) : (
-    <span className="flex items-center gap-2 text-[17px] font-semibold tracking-[-0.04em]">
-      <span className="grid h-[22px] w-[22px] place-items-center rounded-[7px]" style={{ background: INK }}>
-        <span className="h-2 w-2 rotate-45 rounded-[2px] bg-white" />
-      </span>
-      Logo
-    </span>
   );
-
-  const labelHolder = holderLabel ?? (isPass ? "Pass Holder" : "Card Holder");
-  const labelExpires = expiresLabel ?? (isPass ? "Available Access" : "Expires");
 
   return (
     <div
-      className={`relative w-full max-w-[380px] ${className}`}
+      className={`relative w-full max-w-[370px] select-none ${className}`}
       style={{ fontFamily: FONT, WebkitFontSmoothing: "antialiased" }}
     >
       <style>{CSS}</style>
       <div
         ref={stageRef}
-        className="relative w-full select-none"
+        className="relative w-full cursor-pointer"
         style={{ aspectRatio: "1.586", perspective: 1100, touchAction: "none" }}
         onPointerMove={onMove}
         onPointerDown={onDown}
@@ -393,112 +343,67 @@ export const HoloCard = React.forwardRef<HoloCardHandle, HoloCardProps>(function
           st.tly = 0.35;
         }}
       >
+        {/* Soft realistic card shadow */}
         <div
           ref={shadowRef}
-          className="pointer-events-none absolute -bottom-4 left-[10%] right-[10%] h-9 rounded-[50%] blur-[22px]"
-          style={{ background: "rgba(20,37,29,.25)" }}
+          className="pointer-events-none absolute -bottom-5 left-[8%] right-[8%] h-8 rounded-[50%] blur-[24px]"
+          style={{ background: "rgba(20,37,29,.22)" }}
         />
+
         <div
           ref={cardRef}
-          role="group"
-          aria-roledescription="pass"
-          aria-label={`${tier} for ${holder}. Drag to spin, tap to flip.`}
-          className="absolute inset-0 cursor-grab active:cursor-grabbing"
+          role="button"
+          tabIndex={0}
+          aria-label={`${tier} for ${holder}. Click or tap to flip for QR check-in.`}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              flip();
+            }
+          }}
+          className="absolute inset-0 outline-none focus-visible:ring-2 focus-visible:ring-[#14251D] focus-visible:ring-offset-4 rounded-[22px]"
           style={{ transformStyle: "preserve-3d", willChange: "transform", ["--foil" as string]: String(foil) }}
         >
           {/* ============================================================ */}
-          {/* FRONT FACE — AUTHENTIC TITANIUM SPORTS ACCESS PASS          */}
+          {/* FRONT FACE — MINIMALIST PEARL TITANIUM ATHLETE PASS          */}
           {/* ============================================================ */}
           <div className="hc-face" aria-hidden={side !== "front"}>
             <Layers />
-            <div className="absolute inset-0 flex flex-col justify-between p-5 sm:p-6">
-              {/* Header Row */}
+            <div className="absolute inset-0 flex flex-col justify-between p-6 sm:p-7">
+              {/* Header: Logo on left, Minimal Tier on right */}
               <div className="flex items-center justify-between">
                 {logo ?? defaultLogo}
-                <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#14251D]/[0.07] border border-[#14251D]/15 text-[11px] font-[750] uppercase tracking-[.1em] text-[#14251D]">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-600 animate-pulse" />
-                    {tier}
-                  </span>
-                </div>
+                <span className="text-[10.5px] font-[750] uppercase tracking-[0.16em] text-[#14251D]/75">
+                  {tier}
+                </span>
               </div>
 
-              {/* Pass Mid-Section (Sports Identity, NO debit chip, NO 16 credit dots) */}
-              {isPass ? (
-                <div className="my-auto space-y-2.5">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] font-mono tracking-widest text-[#14251D]/60 uppercase">
-                        Member Pass ID
-                      </span>
-                      <p
-                        className="font-mono text-[16px] sm:text-[17px] font-[800] tracking-wider text-[#14251D]"
-                        style={{ fontFamily: MONO, textShadow: "0 1px 0 rgba(255,255,255,.8)" }}
-                      >
-                        {formattedPassId}
-                      </p>
-                    </div>
+              {/* Center: Hero Credit Balance & Clean Single-line ID */}
+              <div className="my-auto text-center space-y-1">
+                <p className="text-3xl sm:text-4xl font-[850] tracking-tight text-[#14251D] tabular-nums">
+                  {expires}
+                </p>
+                <p
+                  className="text-[11.5px] font-mono tracking-[0.22em] text-[#14251D]/60 uppercase"
+                  style={{ fontFamily: MONO }}
+                >
+                  {passCode}
+                </p>
+              </div>
 
-                    <div className="text-right">
-                      <span className="text-[10px] font-mono tracking-widest text-[#14251D]/60 uppercase">
-                        City Network
-                      </span>
-                      <p className="text-[12px] font-[750] text-[#14251D] flex items-center justify-end gap-1">
-                        <Sparkles size={11} className="text-[#14251D]/70" />
-                        {city} · All Clubs
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Sports Privilege Pills */}
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    {["Badminton", "Gyms", "Pools", "Yoga"].map((act) => (
-                      <span
-                        key={act}
-                        className="px-2 py-0.5 rounded-md bg-[#14251D]/[0.05] border border-[#14251D]/10 text-[9.5px] font-[650] text-[#14251D]/80"
-                      >
-                        {act}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                /* Classic Bank Fallback if cardType === 'bank' */
-                <div className="flex items-center justify-between">
-                  <span className="hc-chip" />
-                  <p className="font-mono text-lg font-medium">{number}</p>
-                </div>
-              )}
-
-              {/* Bottom Footer Row */}
-              <div className="flex items-end justify-between gap-3 pt-1 border-t border-[#14251D]/10">
-                <div className="min-w-0 flex-1">
-                  <span className="hc-label">{labelHolder}</span>
-                  <b className="block truncate text-[14px] sm:text-[15px] font-[800] uppercase tracking-[-0.01em] text-[#14251D]">
+              {/* Footer: Member Name on left, City on right */}
+              <div className="flex items-end justify-between gap-4">
+                <div className="min-w-0">
+                  <p className="truncate text-[14px] sm:text-[15px] font-[800] uppercase tracking-[-0.01em] text-[#14251D]">
                     {holder}
-                  </b>
+                  </p>
                 </div>
 
-                <div className="shrink-0 text-center">
-                  <span className="hc-label">{labelExpires}</span>
-                  <b className="text-[13px] sm:text-[14px] font-[800] tracking-tight tabular-nums text-emerald-800">
-                    {expires}
-                  </b>
-                </div>
-
-                <div className="shrink-0">
+                <div className="shrink-0 text-right">
                   {network ?? (
-                    <button
-                      type="button"
-                      data-hc-tap
-                      onClick={flip}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#14251D] text-white hover:bg-[#1c382c] transition-colors shadow-xs cursor-pointer text-[11px] font-[700]"
-                      aria-label="Flip pass to show QR code"
-                    >
-                      <QrIcon size={13} className="text-[--color-accent]" />
-                      <span>Scan QR</span>
-                      <RotateCw size={11} className="opacity-75" />
-                    </button>
+                    <span className="text-[10.5px] font-[700] uppercase tracking-[0.14em] text-[#14251D]/65">
+                      {city}
+                    </span>
                   )}
                 </div>
               </div>
@@ -507,7 +412,7 @@ export const HoloCard = React.forwardRef<HoloCardHandle, HoloCardProps>(function
           </div>
 
           {/* ============================================================ */}
-          {/* BACK FACE — INSTANT CRYPTOGRAPHIC QR CODE ENTRY PASS         */}
+          {/* BACK FACE — PURE CENTERED SCANNABLE QR PASS                   */}
           {/* ============================================================ */}
           <div
             className="hc-face"
@@ -515,32 +420,25 @@ export const HoloCard = React.forwardRef<HoloCardHandle, HoloCardProps>(function
             aria-hidden={side !== "back"}
           >
             <Layers />
-            {/* Top Security Banner */}
-            <div
-              className="absolute inset-x-0 top-0 h-[34px] flex items-center justify-between px-5 text-[9.5px] font-mono tracking-widest text-white/70 uppercase select-none"
-              style={{ background: "linear-gradient(180deg,#1e362a,#102018)" }}
-            >
-              <span className="flex items-center gap-1.5 text-white">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
-                INLO CRYPTO-SECURE PASS
-              </span>
-              <span className="text-white/60">DESK &amp; TURNSTILE CHECK-IN</span>
-            </div>
+            <div className="absolute inset-0 flex flex-col items-center justify-between p-5 sm:p-6 text-center">
+              {/* Top: Clean brand label */}
+              <div className="text-[10px] font-[800] uppercase tracking-[0.2em] text-[#14251D]/70">
+                INLO PASS · DIGITAL ACCESS
+              </div>
 
-            <div className="absolute inset-0 pt-[42px] px-5 pb-3 flex items-center justify-between gap-4">
-              {/* Scannable QR Code Canvas */}
-              <div className="relative shrink-0 p-2 bg-white rounded-xl shadow-[0_4px_16px_rgba(20,37,29,0.14)] border border-black/10 flex items-center justify-center">
+              {/* Center: Crisp QR Code in White Capsule */}
+              <div className="relative p-2.5 bg-white rounded-2xl shadow-[0_4px_20px_rgba(20,37,29,0.1)] border border-black/[0.08] flex items-center justify-center">
                 <canvas
                   ref={qrCanvasRef}
-                  width={112}
-                  height={112}
+                  width={116}
+                  height={116}
                   className="block rounded-lg"
-                  style={{ width: 104, height: 104 }}
+                  style={{ width: 108, height: 108 }}
                   aria-label={`Inlo check-in QR pass for ${holder}`}
                 />
-                {/* Center Inlo Watermark Emblem */}
+                {/* Center Inlo Logo Watermark */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
-                  <div className="w-5 h-5 rounded-full bg-white p-0.5 shadow-sm border border-black/5 flex items-center justify-center">
+                  <div className="w-5 h-5 rounded-full bg-white p-0.5 shadow-xs border border-black/5 flex items-center justify-center">
                     <Image
                       src="/inlo-logo.png"
                       alt="Inlo"
@@ -552,35 +450,14 @@ export const HoloCard = React.forwardRef<HoloCardHandle, HoloCardProps>(function
                 </div>
               </div>
 
-              {/* Pass Verification Meta */}
-              <div className="flex-1 min-w-0 space-y-1.5">
-                <div>
-                  <span className="text-[9.5px] font-mono uppercase tracking-wider text-[#14251D]/60 block">
-                    Security Token
-                  </span>
-                  <p className="font-mono text-xs font-[750] text-[#14251D] truncate">
-                    #{number.slice(-8).toUpperCase() || cvv}
-                  </p>
-                </div>
-
-                <p className="text-[10px] leading-tight text-[#14251D]/75 font-[500]">
-                  Present this QR at any reception desk or turnstile terminal in Bengaluru for 2-second check-in.
+              {/* Bottom: Minimal scan instruction & token */}
+              <div className="space-y-0.5">
+                <p className="text-[11px] font-[750] text-[#14251D] tracking-wide">
+                  SCAN FOR RECEPTION ENTRY
                 </p>
-
-                <div className="flex items-center gap-1 text-[9.5px] font-[650] text-emerald-800">
-                  <CheckCircle2 size={11} className="text-emerald-700 shrink-0" />
-                  <span>Verified Single-Use Token</span>
-                </div>
-
-                <button
-                  type="button"
-                  data-hc-tap
-                  onClick={flip}
-                  className="inline-flex items-center gap-1 text-[10.5px] font-[750] text-[#14251D] hover:underline cursor-pointer pt-0.5"
-                >
-                  <RotateCw size={11} />
-                  <span>Flip back to card front</span>
-                </button>
+                <p className="text-[9.5px] font-mono tracking-widest text-[#14251D]/60 uppercase">
+                  #{last4} · VERIFIED PASS
+                </p>
               </div>
             </div>
 
