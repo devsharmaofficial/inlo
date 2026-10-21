@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Sparkles, Zap, RotateCw, Eye, EyeOff, Smartphone } from "lucide-react";
+import { Sparkles, Zap, RotateCw, Smartphone, QrCode as QrIcon } from "lucide-react";
 import { HoloCard, type HoloCardHandle } from "@/components/ui/holo-card";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants";
@@ -111,18 +111,11 @@ export function AccountPassHero({ user, balance, balanceInr }: AccountPassHeroPr
             <button
               type="button"
               onClick={() => cardRef.current?.flip()}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-[600] transition-colors cursor-pointer border border-white/10"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-[650] transition-colors cursor-pointer border border-white/15"
             >
-              <RotateCw size={13} />
-              Flip Pass
-            </button>
-            <button
-              type="button"
-              onClick={() => cardRef.current?.reveal()}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-[600] transition-colors cursor-pointer border border-white/10"
-            >
-              {shown ? <EyeOff size={13} /> : <Eye size={13} />}
-              {shown ? "Hide Pass ID" : "Reveal Pass ID"}
+              <QrIcon size={13} className="text-[--color-accent]" />
+              <span>{shown ? "View Pass Front" : "View QR Entry Pass"}</span>
+              <RotateCw size={11} className="opacity-75" />
             </button>
             {needsMotion && (
               <button
@@ -133,7 +126,7 @@ export function AccountPassHero({ user, balance, balanceInr }: AccountPassHeroPr
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-[600] transition-colors cursor-pointer border border-white/10"
               >
                 <Smartphone size={13} />
-                Enable 3D Motion
+                <span>3D Gyro</span>
               </button>
             )}
           </div>

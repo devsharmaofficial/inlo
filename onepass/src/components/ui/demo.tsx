@@ -73,7 +73,7 @@ export default function HoloCardDemo(props: Partial<typeof settings>) {
         className="m-0 mt-2 max-w-[380px] text-center text-[13px] leading-[18px] tracking-[-0.01em]"
         style={{ color: "rgba(60,60,67,.7)" }}
       >
-        Move the cursor over the card or tilt your phone. Drag to spin, tap to flip, tap the number to reveal it.
+        Move the cursor over the pass or tilt your phone. Drag to spin, tap to flip for the instant check-in QR code.
       </p>
       <div className="flex flex-wrap justify-center gap-2">
         <button
@@ -82,15 +82,7 @@ export default function HoloCardDemo(props: Partial<typeof settings>) {
           className={pill}
           style={{ background: "#1C382C", color: "#fff" }}
         >
-          Flip Pass
-        </button>
-        <button
-          type="button"
-          onClick={() => card.current?.reveal()}
-          className={pill}
-          style={{ background: "rgba(118,118,128,.12)", color: "#1C382C" }}
-        >
-          {shown ? "Hide Pass ID" : "Reveal Pass ID"}
+          {shown ? "Flip to Pass Front" : "Flip for QR Code"}
         </button>
         {needsMotion && (
           <button

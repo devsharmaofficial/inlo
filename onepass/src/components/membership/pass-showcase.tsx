@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Sparkles, RotateCw, Eye, EyeOff, ShieldCheck, Zap, Smartphone } from "lucide-react";
+import { Sparkles, RotateCw, ShieldCheck, Zap, Smartphone, QrCode as QrIcon } from "lucide-react";
 import { HoloCard, type HoloCardHandle } from "@/components/ui/holo-card";
 import { Badge } from "@/components/ui/badge";
 
@@ -77,18 +77,11 @@ export function PassShowcase() {
             <button
               type="button"
               onClick={() => cardRef.current?.flip()}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-[600] transition-colors cursor-pointer border border-white/15"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-[650] transition-colors cursor-pointer border border-white/15"
             >
-              <RotateCw size={13} />
-              Flip Pass
-            </button>
-            <button
-              type="button"
-              onClick={() => cardRef.current?.reveal()}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-[600] transition-colors cursor-pointer border border-white/15"
-            >
-              {shown ? <EyeOff size={13} /> : <Eye size={13} />}
-              {shown ? "Hide Pass ID" : "Reveal Pass ID"}
+              <QrIcon size={13} className="text-[--color-accent]" />
+              <span>{shown ? "View Pass Front" : "View QR Entry Pass"}</span>
+              <RotateCw size={11} className="opacity-75" />
             </button>
             {needsMotion && (
               <button
