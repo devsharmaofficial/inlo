@@ -1,0 +1,248 @@
+@import "tailwindcss";
+
+/* ============================================================
+   OnePass Design System — CSS Custom Properties
+   Source of truth: design.md
+   All colour, spacing, radius and typography tokens live here.
+   ============================================================ */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Colour tokens */
+  --color-background: #F7F7F2;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #EFF0E8;
+  --color-foreground: #191B18;
+  --color-muted: #686D64;
+  --color-border: #E2E5DC;
+  --color-accent: #C8F169;
+  --color-accent-foreground: #182014;
+  --color-forest: #244638;
+  --color-forest-foreground: #FFFFFF;
+  --color-success: #22734E;
+  --color-warning: #9A5B10;
+  --color-danger: #B33B32;
+  --color-info: #2B5F8A;
+  --color-focus-ring: #487A30;
+
+  /* Radius tokens */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-pill: 9999px;
+
+  /* Typography — Manrope via Google Fonts (self-hosted via next/font in layout) */
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "Cascadia Code", monospace;
+
+  /* Spacing base: 4px increments */
+  --spacing: 4px;
+
+  /* Shadow tokens — restrained, elevation only where needed */
+  --shadow-sm: 0 1px 3px 0 rgb(25 27 24 / 0.06), 0 1px 2px -1px rgb(25 27 24 / 0.04);
+  --shadow-md: 0 4px 12px -2px rgb(25 27 24 / 0.08), 0 2px 6px -2px rgb(25 27 24 / 0.04);
+  --shadow-lg: 0 12px 32px -6px rgb(25 27 24 / 0.10), 0 4px 12px -4px rgb(25 27 24 / 0.06);
+
+  /* Transition defaults */
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 140ms;
+  --duration-base: 220ms;
+  --duration-slow: 320ms;
+}
+
+:root {
+  --color-background: #F7F7F2;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #EFF0E8;
+  --color-foreground: #191B18;
+  --color-muted: #686D64;
+  --color-border: #E2E5DC;
+  --color-accent: #C8F169;
+  --color-accent-foreground: #182014;
+  --color-forest: #244638;
+  --color-forest-foreground: #FFFFFF;
+  --color-success: #22734E;
+  --color-warning: #9A5B10;
+  --color-danger: #B33B32;
+  --color-info: #2B5F8A;
+  --color-focus-ring: #487A30;
+}
+
+/* ============================================================
+   Base styles
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  background-color: #F7F7F2;
+  color: #191B18;
+}
+
+body {
+  background-color: var(--color-background, #F7F7F2);
+  color: var(--color-foreground, #191B18);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  min-height: 100dvh;
+}
+
+/* ============================================================
+   Bulletproof Token Utility Bindings (Solves arbitrary token syntax)
+   ============================================================ */
+
+.bg-\[--color-background\] { background-color: #F7F7F2 !important; }
+.bg-\[--color-surface\] { background-color: #FFFFFF !important; }
+.bg-\[--color-surface-muted\] { background-color: #EFF0E8 !important; }
+.bg-\[--color-foreground\] { background-color: #191B18 !important; }
+.bg-\[--color-muted\] { background-color: #686D64 !important; }
+.bg-\[--color-forest\] { background-color: #244638 !important; }
+.bg-\[--color-accent\] { background-color: #C8F169 !important; }
+.bg-\[--color-foreground\]\/20 { background-color: rgba(25, 27, 24, 0.2) !important; }
+.bg-\[--color-foreground\]\/90 { background-color: rgba(25, 27, 24, 0.9) !important; }
+.bg-\[--color-forest\]\/10 { background-color: rgba(36, 70, 56, 0.1) !important; }
+.bg-\[--color-danger\]\/10 { background-color: rgba(179, 59, 50, 0.1) !important; }
+
+.text-\[--color-foreground\] { color: #191B18 !important; }
+.text-\[--color-muted\] { color: #686D64 !important; }
+.text-\[--color-forest\] { color: #244638 !important; }
+.text-\[--color-forest-foreground\] { color: #FFFFFF !important; }
+.text-\[--color-accent\] { color: #C8F169 !important; }
+.text-\[--color-accent-foreground\] { color: #182014 !important; }
+.text-\[--color-background\] { color: #F7F7F2 !important; }
+.text-\[--color-danger\] { color: #B33B32 !important; }
+
+.border-\[--color-border\] { border-color: #E2E5DC !important; }
+.border-\[--color-forest\] { border-color: #244638 !important; }
+.border-\[--color-foreground\] { border-color: #191B18 !important; }
+.border-\[--color-accent\] { border-color: #C8F169 !important; }
+.border-\[--color-border\]\/20 { border-color: rgba(226, 229, 220, 0.2) !important; }
+.border-\[--color-foreground\]\/20 { border-color: rgba(25, 27, 24, 0.2) !important; }
+.border-\[--color-forest\]\/40 { border-color: rgba(36, 70, 56, 0.4) !important; }
+
+/* Tabular figures for prices, credits, booking refs */
+.tabular-nums,
+[data-slot="price"],
+[data-slot="credit"],
+[data-slot="booking-ref"] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   Focus ring — accessible, consistent
+   ============================================================ */
+
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring, #487A30);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ============================================================
+   Type scale — desktop values; fluid clamp at page level
+   ============================================================ */
+
+.text-display {
+  font-size: clamp(3rem, 6vw, 5.25rem);
+  line-height: 1.01;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.text-h1 {
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.text-h2 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: 1.12;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.text-h3 {
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  line-height: 1.2;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.text-body-lg {
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  font-weight: 450;
+}
+
+.text-body {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+.text-label {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  font-weight: 580;
+  letter-spacing: 0.01em;
+}
+
+.text-data {
+  font-size: 0.9375rem;
+  line-height: 1.3;
+  font-weight: 580;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   Reduced motion support
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   Scrollbar — minimal, tasteful
+   ============================================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border, #E2E5DC);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted, #686D64);
+}
+
+/* ============================================================
+   Selection
+   ============================================================ */
+
+::selection {
+  background-color: var(--color-accent, #C8F169);
+  color: var(--color-accent-foreground, #182014);
+}

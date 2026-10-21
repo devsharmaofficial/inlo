@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    name: Type-check, Lint, Test, and Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: onepass/package-lock.json
+
+      - name: Install dependencies
+        working-directory: onepass
+        run: npm ci
+
+      - name: TypeScript type-check
+        working-directory: onepass
+        run: npm run type-check
+
+      - name: ESLint check
+        working-directory: onepass
+        run: npm run lint
+
+      - name: Unit and integration tests
+        working-directory: onepass
+        run: npm run test
+
+      - name: Production Next.js build
+        working-directory: onepass
+        run: npm run build
+        env:
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
