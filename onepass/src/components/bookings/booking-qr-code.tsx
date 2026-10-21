@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import Image from "next/image"
 import QRCode from "qrcode"
 import { ShieldCheck, Download } from "lucide-react"
 
@@ -94,10 +95,14 @@ export function BookingQRCode({
           className="absolute inset-0 flex items-center justify-center pointer-events-none"
           aria-hidden="true"
         >
-          <div className="bg-white rounded-full p-1 shadow-sm">
-            <div className="w-8 h-8 rounded-full bg-[--color-forest] flex items-center justify-center">
-              <span className="text-white font-black text-[9px] tracking-tighter">inlo</span>
-            </div>
+          <div className="bg-white rounded-full p-1 shadow-md">
+            <Image
+              src="/inlo-logo.png"
+              alt="Inlo"
+              width={28}
+              height={28}
+              className="rounded-full object-cover"
+            />
           </div>
         </div>
       </div>

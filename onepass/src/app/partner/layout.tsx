@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import { LayoutDashboard, MapPin, CalendarDays, FileText, QrCode } from "lucide-react"
 import Link from "next/link"
 import { ROUTES } from "@/lib/constants"
@@ -31,12 +32,23 @@ export default function PartnerLayout({
         className="hidden md:flex flex-col w-56 border-r border-[--color-border] bg-[--color-surface] flex-shrink-0"
         aria-label="Partner navigation"
       >
-        <div className="p-4 border-b border-[--color-border]">
-          <p className="text-label font-[650] text-[--color-foreground]">Partner portal</p>
-          <p className="text-xs text-[--color-muted] mt-0.5">
-            {/* Phase 3: partner org name from session */}
-            Your organisation
-          </p>
+        <div className="p-4 border-b border-[--color-border] flex items-center gap-3">
+          <div className="w-8 h-8 rounded-[--radius-sm] bg-[--color-surface-muted] border border-[--color-border] p-0.5 flex items-center justify-center shrink-0 overflow-hidden">
+            <Image
+              src="/inlo-logo.png"
+              alt="Inlo"
+              width={28}
+              height={28}
+              className="object-contain rounded-sm"
+            />
+          </div>
+          <div>
+            <p className="text-label font-[650] text-[--color-foreground] leading-tight">Partner Portal</p>
+            <p className="text-xs text-[--color-muted] mt-0.5">
+              {/* Phase 3: partner org name from session */}
+              Your organisation
+            </p>
+          </div>
         </div>
 
         <nav className="flex-1 p-2 space-y-0.5">

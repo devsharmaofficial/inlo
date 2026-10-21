@@ -44,10 +44,23 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
   ),
+  icons: {
+    icon: "/inlo-logo.png",
+    shortcut: "/inlo-logo.png",
+    apple: "/inlo-logo.png",
+  },
   openGraph: {
     type: "website",
     locale: "en_IN",
     siteName: "Inlo",
+    images: [
+      {
+        url: "/inlo-logo.png",
+        width: 1220,
+        height: 1184,
+        alt: "Inlo",
+      },
+    ],
   },
   robots: {
     // No indexing until the product is validated and ready for public launch
