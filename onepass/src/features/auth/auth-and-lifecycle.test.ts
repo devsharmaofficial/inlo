@@ -1,5 +1,13 @@
 import { describe, it, expect } from "vitest"
-import { signInAction, signUpAction, quickDemoLoginAction } from "@/app/actions/auth-actions"
+import {
+  signInAction,
+  signUpAction,
+  quickDemoLoginAction,
+  sendEmailOtpAction,
+  verifyEmailOtpAction,
+  sendPhoneOtpAction,
+  verifyPhoneOtpAction,
+} from "@/app/actions/auth-actions"
 import { createBookingAction, cancelBookingAction } from "@/app/actions/booking-actions"
 import { grantCredits } from "@/features/credits/credit-ledger-service"
 import { getEffectiveUserId } from "@/features/auth/auth-service"
@@ -22,6 +30,31 @@ describe("Auth and Member Booking Actions", () => {
     const res = await signUpAction("Unit Test Runner", uniqueEmail, "SecurePass123!")
     expect(res.success).toBe(true)
     expect(res.redirectUrl).toBe("/membership")
+  })
+
+  it("dispatches and verifies a 6-digit email OTP", async () => {
+    const testEmail = `otp_member_${Date.now()}@inlo.tech`
+    const sendRes = await sendEmailOtpAction(testEmail)
+    expect(sendRes.success).toBe(true)
+
+    // Verify using simulated or live OTP code
+    const code = sendRes.simulationCode || "123456"
+    if (sendRes.isSimulated && sendRes.simulationCode) {
+      const verifyRes = await verifyEmailOtpAction(testEmail, code)
+      expect(verifyRes.success).toBe(true)
+      expect(verifyRes.redirectUrl).toBe("/explore")
+    }
+  })
+
+  it("dispatches and verifies a 6-digit phone SMS OTP", async () => {
+    const testPhone = "9876543210"
+    const sendRes = await sendPhoneOtpAction(testPhone)
+    expect(sendRes.success).toBe(true)
+
+    const code = sendRes.simulationCode || "123456"
+    const verifyRes = await verifyPhoneOtpAction(testPhone, code)
+    expect(verifyRes.success).toBe(true)
+    expect(verifyRes.redirectUrl).toBe("/explore")
   })
 
   it("executes 1-click quick demo login for athlete, partner, and admin", async () => {
