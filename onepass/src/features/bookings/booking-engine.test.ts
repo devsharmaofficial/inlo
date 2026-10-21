@@ -183,6 +183,21 @@ describe("Booking Engine & Credit Ledger (Phase 4 acceptance)", () => {
     expect(secondAttempt.message).toContain("already used")
   })
 
+  it("handles case-insensitive and whitespace-padded QR tokens gracefully", async () => {
+    const booking = await createBooking({
+      userId: TEST_USER,
+      slotId: "slot-hub-1",
+      idempotencyKey: `padded-qr-test-${Date.now()}`,
+    })
+
+    // QR scanner or typed token with uppercase & whitespace padding
+    const rawScannedInput = `  ${booking.checkinToken.toUpperCase()}  `
+    const result = await validateCheckinPass(rawScannedInput, "staff-01")
+    expect(result.success).toBe(true)
+    expect(result.booking?.id).toBe(booking.id)
+    expect(result.booking?.checkinStatus).toBe("checked_in")
+  })
+
   it("filters member bookings by status (upcoming vs cancelled)", async () => {
     const booking1 = await createBooking({
       userId: TEST_USER,

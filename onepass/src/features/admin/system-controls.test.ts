@@ -30,7 +30,7 @@ describe("Phase 8 System Controls & Operational Metrics", () => {
 
   it("activates emergency kill-switch and blocks new bookings", async () => {
     const TEST_USER = "user-test-pause"
-    await grantCredits(TEST_USER, 50, "admin", "test-setup", `setup-${Date.now()}`)
+    await grantCredits(TEST_USER, 50, "admin", "test-setup", `setup-pause-${Date.now()}-${Math.random()}`)
 
     setBookingsPaused(true, "Monsoon storm warning in Indiranagar", "adm-lead")
     const controls = getSystemControls()
@@ -44,20 +44,20 @@ describe("Phase 8 System Controls & Operational Metrics", () => {
       createBooking({
         userId: TEST_USER,
         slotId: "slot-hub-1",
-        idempotencyKey: `pause-test-${Date.now()}`,
+        idempotencyKey: `pause-test-${Date.now()}-${Math.random()}`,
       })
     ).rejects.toThrow(BookingsPausedError)
   })
 
   it("allows cancellations and refunds even when new bookings are paused", async () => {
     const TEST_USER = "user-test-cancel-during-pause"
-    await grantCredits(TEST_USER, 50, "admin", "test-setup", `setup-${Date.now()}`)
+    await grantCredits(TEST_USER, 50, "admin", "test-setup", `setup-cancel-${Date.now()}-${Math.random()}`)
 
     // Create booking while active
     const booking = await createBooking({
       userId: TEST_USER,
       slotId: "slot-hub-1",
-      idempotencyKey: `book-pre-pause-${Date.now()}`,
+      idempotencyKey: `book-pre-pause-${Date.now()}-${Math.random()}`,
     })
     expect(booking.status).toBe("confirmed")
 

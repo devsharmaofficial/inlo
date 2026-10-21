@@ -15,6 +15,7 @@ import { getBookingById } from "@/features/bookings/booking-engine"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { CancelBookingButton } from "@/components/bookings/cancel-booking-button"
+import { BookingQRCode } from "@/components/bookings/booking-qr-code"
 import { ROUTES } from "@/lib/constants"
 
 interface BookingDetailPageProps {
@@ -96,7 +97,7 @@ export default async function BookingDetailPage({ params }: BookingDetailPagePro
           </div>
         </div>
 
-        {/* Digital Check-in Pass Card (Restrained design.md aesthetic) */}
+        {/* Digital Check-in QR Pass Card */}
         {isConfirmed && (
           <Card className="border-[--color-border] bg-[--color-surface] shadow-md overflow-hidden">
             <div className="bg-[--color-forest] px-6 py-4 text-[--color-forest-foreground] flex items-center justify-between">
@@ -104,26 +105,47 @@ export default async function BookingDetailPage({ params }: BookingDetailPagePro
                 <QrCode size={18} />
                 <span className="text-sm font-[650] tracking-wide">DIGITAL CHECK-IN PASS</span>
               </div>
-              <span className="text-xs opacity-80">One-time pass</span>
+              <span className="text-xs opacity-80">One-time · Scan at desk</span>
             </div>
 
-            <CardContent className="p-6 sm:p-8 space-y-6 text-center">
-              <div>
-                <p className="text-xs text-[--color-muted] mb-1">
-                  Show this pass code to front desk staff upon venue arrival:
-                </p>
-                <div className="my-3 inline-block rounded-[--radius-md] border-2 border-dashed border-[--color-forest]/40 bg-[--color-surface-muted] px-6 py-3">
-                  <span className="font-mono text-xl sm:text-2xl font-[700] tracking-wider text-[--color-foreground]">
-                    {booking.checkinToken.toUpperCase()}
-                  </span>
+            <CardContent className="p-6 sm:p-8">
+              <div className="flex flex-col items-center gap-6">
+                {/* Scannable QR Code */}
+                <BookingQRCode
+                  token={booking.checkinToken}
+                  bookingId={booking.id}
+                  activityName={booking.activityNameSnapshot}
+                  venueName={booking.venueNameSnapshot}
+                  slotStartsAt={booking.slotStartsAtSnapshot}
+                />
+
+                {/* Divider */}
+                <div className="w-full flex items-center gap-3">
+                  <div className="flex-1 border-t border-dashed border-[--color-border]" />
+                  <span className="text-[10px] text-[--color-muted] font-[600] uppercase tracking-wide">or type manually</span>
+                  <div className="flex-1 border-t border-dashed border-[--color-border]" />
                 </div>
-                <p className="text-[11px] text-[--color-muted]">
-                  Single-use token. Verified against venue roster at redemption.
+
+                {/* Fallback text token */}
+                <div className="text-center w-full">
+                  <p className="text-xs text-[--color-muted] mb-2">
+                    If camera scanning is unavailable, read this code aloud:
+                  </p>
+                  <div className="inline-block rounded-[--radius-md] border-2 border-dashed border-[--color-forest]/40 bg-[--color-surface-muted] px-6 py-3 w-full">
+                    <span className="font-mono text-base sm:text-lg font-[700] tracking-wider text-[--color-foreground] break-all">
+                      {booking.checkinToken}
+                    </span>
+                  </div>
+                </div>
+
+                <p className="text-[11px] text-[--color-muted] text-center max-w-xs">
+                  Single-use token. This QR code and code are invalidated immediately upon successful check-in at the venue desk.
                 </p>
               </div>
             </CardContent>
           </Card>
         )}
+
 
         {/* Session Details */}
         <div className="rounded-[--radius-lg] border border-[--color-border] bg-[--color-surface] p-6 space-y-4">

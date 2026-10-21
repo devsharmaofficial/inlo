@@ -419,8 +419,9 @@ export async function validateCheckinPass(
   checkinToken: string,
   staffActorId: string
 ): Promise<{ success: boolean; message: string; booking?: Booking }> {
+  const normalized = checkinToken.trim().toLowerCase()
   const booking = Array.from(bookingsStore.values()).find(
-    (b) => b.checkinToken === checkinToken
+    (b) => b.checkinToken.toLowerCase() === normalized
   )
 
   if (!booking) {
