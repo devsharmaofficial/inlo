@@ -235,6 +235,15 @@ export async function refundCredits(
 }
 
 /**
+ * Returns all immutable ledger entries for a specific user, sorted newest first.
+ */
+export async function getUserLedgerEntries(userId: string): Promise<CreditLedgerEntry[]> {
+  return ledgerStore
+    .filter((entry) => entry.userId === userId)
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+}
+
+/**
  * Test helper to reset or inspect ledger state in test environments.
  */
 export function getRawLedgerStore(): CreditLedgerEntry[] {

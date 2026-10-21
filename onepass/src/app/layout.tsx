@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   description:
     "One membership, many activities. Discover and book gyms, yoga, swimming, badminton and more across participating venues in your city.",
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
+    process.env.NEXT_PUBLIC_APP_URL ?? "https://www.inlo.tech"
   ),
   icons: {
     icon: [
@@ -78,6 +78,30 @@ export const metadata: Metadata = {
   },
 }
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.inlo.tech/#organization",
+      name: "Inlo",
+      url: "https://www.inlo.tech",
+      logo: "https://www.inlo.tech/inlo-logo.png",
+      description: "One membership, many activities. Book sports courts, gyms, pools, and studios across Bengaluru.",
+      sameAs: ["https://www.instagram.com/inlo.tech"],
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.inlo.tech/#website",
+      url: "https://www.inlo.tech",
+      name: "Inlo",
+      publisher: {
+        "@id": "https://www.inlo.tech/#organization",
+      },
+    },
+  ],
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -89,6 +113,12 @@ export default function RootLayout({
       className={`${manrope.variable} ${geistMono.variable}`}
       data-scroll-behavior="smooth"
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-dvh flex flex-col antialiased">
         {/* Member-facing header — auth state to be resolved server-side in Phase 3+ */}
         <SiteHeader />

@@ -1,12 +1,12 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { CalendarDays, MapPin, Users, Clock, ArrowRight } from "lucide-react"
+import { CalendarDays, MapPin, Users, Clock, ArrowRight, QrCode, TrendingUp } from "lucide-react"
 import { PILOT_VENUES } from "@/features/catalogue/pilot-seed"
 import { getPartnerVenueSlots } from "@/features/partner/inventory-service"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
-export const metadata: Metadata = { title: "Partner Dashboard | Inlo" }
+export const metadata: Metadata = { title: "Partner Operations Dashboard | Inlo" }
 
 export default async function PartnerDashboardPage() {
   const currentPartnerId = "part-01" // In production: resolved from server session
@@ -20,72 +20,102 @@ export default async function PartnerDashboardPage() {
   const totalCapacity = slots.reduce((acc, s) => acc + s.capacity, 0)
   const totalReserved = slots.reduce((acc, s) => acc + s.reservedCount, 0)
   const occupancyRate = totalCapacity > 0 ? Math.round((totalReserved / totalCapacity) * 100) : 0
+  const estimatedPayout = totalReserved * 16 * 70 // approx per visit payout
 
   return (
     <div className="p-6 md:p-8 space-y-8 max-w-5xl">
-      {/* Header */}
-      <div>
-        <div className="flex items-center gap-2 mb-1.5">
-          <Badge variant="forest">Partner Operator</Badge>
-          <span className="text-xs text-[--color-muted]">The Hub Sports LLP</span>
+      {/* ── HEADER ─────────────────────────────────────────────────── */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[--color-border]">
+        <div>
+          <div className="flex items-center gap-2 mb-1.5">
+            <Badge variant="forest">Partner Operator</Badge>
+            <span className="text-xs text-[--color-muted] font-[600]">The Hub Sports LLP</span>
+          </div>
+          <h1 className="text-h1 font-[800] text-[--color-foreground]">Operations Dashboard</h1>
+          <p className="text-body text-[--color-muted] text-xs sm:text-sm">
+            Live slot occupancy, arrival desk check-ins, and verified settlement reconciliation.
+          </p>
         </div>
-        <h1 className="text-h2 text-[--color-foreground]">Operations Dashboard</h1>
-        <p className="text-body text-[--color-muted]">
-          Real-time slot capacity, upcoming member bookings, and venue status.
-        </p>
+
+        {/* Quick Launch QR Desk */}
+        <Button asChild size="lg" variant="primary" className="font-[750] gap-2 shadow-sm shrink-0">
+          <Link href="/partner/checkin">
+            <QrCode size={18} />
+            <span>Launch Check-in Desk</span>
+          </Link>
+        </Button>
       </div>
 
-      {/* KPI Cards */}
+      {/* ── KPI METRICS CARDS (Section 4 Component 11) ─────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="rounded-[--radius-md] border border-[--color-border] bg-[--color-surface] p-5 shadow-sm">
-          <div className="flex items-center justify-between text-xs text-[--color-muted] mb-2 font-[600]">
+        <div className="rounded-[--radius-lg] border border-[--color-border] bg-[--color-surface] p-5 shadow-sm">
+          <div className="flex items-center justify-between text-xs text-[--color-muted] mb-2 font-[650]">
             <span>Assigned Venues</span>
             <MapPin size={16} className="text-[--color-forest]" />
           </div>
-          <p className="text-h2 text-[--color-foreground]">{partnerVenues.length}</p>
-          <p className="text-xs text-[--color-muted] mt-1">Domlur micro-market</p>
+          <p className="text-h2 font-[800] text-[--color-foreground]">{partnerVenues.length}</p>
+          <p className="text-[11px] text-[--color-muted] mt-1">Domlur micro-market</p>
         </div>
 
-        <div className="rounded-[--radius-md] border border-[--color-border] bg-[--color-surface] p-5 shadow-sm">
-          <div className="flex items-center justify-between text-xs text-[--color-muted] mb-2 font-[600]">
-            <span>Active Slots</span>
+        <div className="rounded-[--radius-lg] border border-[--color-border] bg-[--color-surface] p-5 shadow-sm">
+          <div className="flex items-center justify-between text-xs text-[--color-muted] mb-2 font-[650]">
+            <span>Active Slots Today</span>
             <CalendarDays size={16} className="text-[--color-forest]" />
           </div>
-          <p className="text-h2 text-[--color-foreground]">{slots.length}</p>
-          <p className="text-xs text-[--color-muted] mt-1">Today & upcoming</p>
+          <p className="text-h2 font-[800] text-[--color-foreground]">{slots.length}</p>
+          <p className="text-[11px] text-[--color-muted] mt-1">Real-time availability</p>
         </div>
 
-        <div className="rounded-[--radius-md] border border-[--color-border] bg-[--color-surface] p-5 shadow-sm">
-          <div className="flex items-center justify-between text-xs text-[--color-muted] mb-2 font-[600]">
+        <div className="rounded-[--radius-lg] border border-[--color-border] bg-[--color-surface] p-5 shadow-sm">
+          <div className="flex items-center justify-between text-xs text-[--color-muted] mb-2 font-[650]">
             <span>Confirmed Bookings</span>
             <Users size={16} className="text-[--color-forest]" />
           </div>
-          <p className="text-h2 text-[--color-foreground]">{totalReserved}</p>
-          <p className="text-xs text-[--color-muted] mt-1">Across all slots</p>
+          <p className="text-h2 font-[800] text-[--color-foreground]">{totalReserved}</p>
+          <p className="text-[11px] text-[--color-muted] mt-1">Across court schedules</p>
         </div>
 
-        <div className="rounded-[--radius-md] border border-[--color-border] bg-[--color-surface] p-5 shadow-sm">
-          <div className="flex items-center justify-between text-xs text-[--color-muted] mb-2 font-[600]">
+        <div className="rounded-[--radius-lg] border border-[--color-border] bg-[--color-surface] p-5 shadow-sm">
+          <div className="flex items-center justify-between text-xs text-[--color-muted] mb-2 font-[650]">
             <span>Capacity Utilisation</span>
             <Clock size={16} className="text-[--color-forest]" />
           </div>
-          <p className="text-h2 text-[--color-foreground]">{occupancyRate}%</p>
-          <p className="text-xs text-[--color-muted] mt-1">
+          <p className="text-h2 font-[800] text-[--color-foreground]">{occupancyRate}%</p>
+          <p className="text-[11px] text-[--color-muted] mt-1">
             {totalReserved} of {totalCapacity} slots filled
           </p>
         </div>
       </div>
 
-      {/* Bookable Schedule List */}
+      {/* ── SETTLEMENT BANNER ───────────────────────────────────────── */}
+      <div className="rounded-[--radius-xl] border-2 border-[--color-forest]/20 bg-[--color-forest]/5 p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 text-xs font-[700] text-[--color-forest] uppercase tracking-wider">
+            <TrendingUp size={14} />
+            <span>Pilot Bi-Weekly Payout Tracker</span>
+          </div>
+          <p className="text-base font-[750] text-[--color-foreground]">
+            Est. Accrued Payout: ₹{estimatedPayout.toLocaleString("en-IN")}
+          </p>
+          <p className="text-xs text-[--color-muted]">
+            Settlement period: 2026-10 · Direct bank transfer with 0% platform take-rate in pilot.
+          </p>
+        </div>
+        <Button asChild variant="secondary" size="sm" className="font-[650] shrink-0">
+          <Link href="/partner/statements">View statements &amp; invoices</Link>
+        </Button>
+      </div>
+
+      {/* ── BOOKABLE SCHEDULE LIST ─────────────────────────────────── */}
       <div className="rounded-[--radius-lg] border border-[--color-border] bg-[--color-surface] overflow-hidden shadow-sm">
         <div className="p-5 border-b border-[--color-border] flex items-center justify-between">
           <div>
-            <h2 className="text-h3 text-[--color-foreground]">Today&apos;s Bookable Slots</h2>
+            <h2 className="text-h3 font-[750] text-[--color-foreground]">Today&apos;s Bookable Slots</h2>
             <p className="text-xs text-[--color-muted]">
-              {primaryVenue?.name} · Verified availability
+              {primaryVenue?.name} · Verified availability &amp; capacity limits
             </p>
           </div>
-          <Button asChild variant="secondary" size="sm">
+          <Button asChild variant="secondary" size="sm" className="font-[650]">
             <Link href="/partner/venues" className="gap-1">
               Manage inventory
               <ArrowRight size={13} aria-hidden="true" />
@@ -106,7 +136,7 @@ export default async function PartnerDashboardPage() {
               >
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-[650] text-sm text-[--color-foreground]">
+                    <span className="font-[750] text-sm text-[--color-foreground]">
                       {start.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true })} –{" "}
                       {end.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true })}
                     </span>
@@ -114,14 +144,14 @@ export default async function PartnerDashboardPage() {
                       {isFull ? "Full" : "Bookable"}
                     </Badge>
                   </div>
-                  <p className="text-[--color-muted]">
+                  <p className="text-[11px] text-[--color-muted]">
                     Cut-off: {slot.bookingCutoffMinutes} mins before session · {slot.creditCost} credits
                   </p>
                 </div>
 
                 <div className="flex items-center gap-4">
                   <div className="text-right">
-                    <p className="font-[650] text-[--color-foreground]">
+                    <p className="font-[700] text-[--color-foreground]">
                       {slot.reservedCount} / {slot.capacity} booked
                     </p>
                     <p className="text-[11px] text-[--color-muted]">

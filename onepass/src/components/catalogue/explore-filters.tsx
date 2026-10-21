@@ -157,6 +157,14 @@ export function ExploreFilters({
 
         {activities.map((act) => {
           const isSelected = currentActivity === act.slug
+          const actIcons: Record<string, string> = {
+            badminton: "🏸",
+            swimming: "🏊",
+            gym: "🏋️",
+            yoga: "🧘",
+          }
+          const icon = actIcons[act.slug] || "⚡"
+
           return (
             <button
               key={act.id}
@@ -164,14 +172,15 @@ export function ExploreFilters({
               onClick={() => updateFilters({ activity: isSelected ? "all" : act.slug })}
               aria-pressed={isSelected}
               className={cn(
-                "px-3.5 py-1.5 rounded-[--radius-pill] text-xs font-[600] transition-all duration-[140ms]",
+                "inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-[--radius-pill] text-xs font-[650] transition-all duration-[140ms]",
                 "border focus-visible:outline-2 focus-visible:outline-[--color-focus-ring]",
                 isSelected
-                  ? "bg-[--color-accent] text-[--color-accent-foreground] border-[--color-accent]"
+                  ? "bg-[--color-forest] text-white border-[--color-forest] shadow-xs"
                   : "bg-[--color-surface] text-[--color-muted] border-[--color-border] hover:bg-[--color-surface-muted] hover:text-[--color-foreground]"
               )}
             >
-              {act.name}
+              <span>{icon}</span>
+              <span>{act.name}</span>
             </button>
           )
         })}

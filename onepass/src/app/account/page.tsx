@@ -1,143 +1,249 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import {
-  CreditCard,
   Shield,
   CalendarDays,
   HelpCircle,
   ExternalLink,
   ArrowRight,
+  Zap,
+  TrendingDown,
+  TrendingUp,
+  RefreshCcw,
+  Sparkles,
+  History,
 } from "lucide-react"
-import { getUserCreditBalance } from "@/features/credits/credit-ledger-service"
+import {
+  getUserCreditBalance,
+  getUserLedgerEntries,
+} from "@/features/credits/credit-ledger-service"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ROUTES } from "@/lib/constants"
+import { formatINR } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "My account · Inlo",
-  description: "Manage your Inlo profile, credit balance, membership packs, and privacy settings.",
+  title: "Credit Wallet & Account · Inlo",
+  description: "View your real-time Inlo credit balance, activity passes, and immutable ledger transactions.",
 }
 
 export default async function AccountPage() {
   const DEMO_USER_ID = "user-member-1"
-  const balance = await getUserCreditBalance(DEMO_USER_ID)
+  const [balance, entries] = await Promise.all([
+    getUserCreditBalance(DEMO_USER_ID),
+    getUserLedgerEntries(DEMO_USER_ID),
+  ])
+
+  const balanceInr = balance * 70
 
   return (
-    <div className="mx-auto max-w-[1000px] px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-[--color-border]">
-        <div>
-          <div className="flex items-center gap-2 mb-1.5">
-            <h1 className="text-h1 text-[--color-foreground]">Account</h1>
-            <Badge variant="outline" className="text-xs">
-              Pilot Member
-            </Badge>
-          </div>
-          <p className="text-body text-[--color-muted]">
-            Logged in as <code className="text-data text-xs">{DEMO_USER_ID}</code> · Bengaluru, KA
-          </p>
+    <div className="mx-auto max-w-[1080px] px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-10">
+      {/* ── HERO CREDIT WALLET CARD (Section 4 Component 5) ──────── */}
+      <div className="relative overflow-hidden rounded-[--radius-xl] border-2 border-[--color-forest]/30 bg-gradient-to-br from-[#1C382C] via-[--color-forest] to-[#12241D] text-white p-6 sm:p-10 shadow-xl">
+        {/* Subtle decorative background circles */}
+        <div
+          className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-[--color-accent]/15 blur-[60px] pointer-events-none"
+          aria-hidden="true"
+        />
+        <div
+          className="absolute right-12 bottom-6 opacity-10 pointer-events-none font-mono font-black text-9xl tracking-tighter"
+          aria-hidden="true"
+        >
+          INLO
         </div>
 
-        {/* Credit Card preview */}
-        <div className="flex items-center gap-3 p-3.5 rounded-[--radius-md] border border-[--color-border] bg-[--color-surface] shadow-sm">
-          <div>
-            <p className="text-[11px] font-[600] uppercase text-[--color-muted]">
-              Available Credits
-            </p>
-            <p className="text-h2 font-[750] text-[--color-foreground] tabular-nums">
-              {balance}
+        <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[--radius-pill] bg-white/10 text-white text-xs font-[700] backdrop-blur-md border border-white/15">
+                <Sparkles size={12} className="text-[--color-accent]" />
+                Inlo Active Pass · Tier 1
+              </span>
+              <span className="text-xs text-white/60 font-mono">
+                Member ID: {DEMO_USER_ID}
+              </span>
+            </div>
+
+            <div>
+              <p className="text-xs uppercase tracking-wider text-white/70 font-[650] mb-1">
+                Available Booking Credits
+              </p>
+              <div className="flex items-baseline gap-3">
+                <span className="text-display text-5xl sm:text-6xl font-[800] text-white tracking-tight tabular-nums">
+                  {balance}
+                </span>
+                <span className="text-lg font-[650] text-[--color-accent]">
+                  credits
+                </span>
+              </div>
+            </div>
+
+            <p className="text-xs sm:text-sm text-white/80 font-[500]">
+              Estimated value: <strong className="text-white font-[700]">{formatINR(balanceInr)}</strong> · Locked at ₹70 / credit
             </p>
           </div>
-          <Button asChild variant="primary" size="sm">
-            <Link href={ROUTES.membership}>Add credits</Link>
-          </Button>
+
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <Button asChild size="lg" variant="primary" className="font-[700] gap-1.5 shadow-md">
+              <Link href={ROUTES.membership}>
+                <Zap size={16} className="fill-current" />
+                Buy more credits
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="secondary" className="bg-white/10 text-white border-white/25 hover:bg-white/20 font-[600]">
+              <Link href={ROUTES.bookings}>
+                View passes
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* ── TRANSACTION LEDGER HISTORY (Section 4 Component 5) ────── */}
+      <div className="rounded-[--radius-lg] border border-[--color-border] bg-[--color-surface] p-6 sm:p-8 shadow-sm">
+        <div className="flex items-center justify-between mb-6 pb-4 border-b border-[--color-border]">
+          <div className="flex items-center gap-2">
+            <div className="p-2 rounded-[--radius-md] bg-[--color-surface-muted] text-[--color-forest]">
+              <History size={18} />
+            </div>
+            <div>
+              <h2 className="text-h3 font-[750] text-[--color-foreground]">Credit Ledger &amp; Transactions</h2>
+              <p className="text-xs text-[--color-muted]">Immutable log of grants, booking debits, and policy refunds</p>
+            </div>
+          </div>
+          <Badge variant="outline" className="font-mono text-xs hidden sm:inline-flex">
+            Reconciled 100%
+          </Badge>
+        </div>
+
+        {entries.length > 0 ? (
+          <div className="divide-y divide-[--color-border]">
+            {entries.map((entry) => {
+              const isPositive = entry.delta > 0
+              const formattedDate = new Date(entry.createdAt).toLocaleDateString("en-IN", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+
+              return (
+                <div key={entry.id} className="py-3.5 flex items-center justify-between gap-4">
+                  <div className="flex items-start gap-3">
+                    <div
+                      className={`p-2 rounded-[--radius-md] shrink-0 mt-0.5 ${
+                        entry.entryType === "grant"
+                          ? "bg-emerald-500/10 text-emerald-700"
+                          : entry.entryType === "refund"
+                          ? "bg-blue-500/10 text-blue-700"
+                          : "bg-red-500/10 text-red-700"
+                      }`}
+                    >
+                      {entry.entryType === "grant" ? (
+                        <TrendingUp size={16} />
+                      ) : entry.entryType === "refund" ? (
+                        <RefreshCcw size={16} />
+                      ) : (
+                        <TrendingDown size={16} />
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-sm font-[650] text-[--color-foreground]">
+                        {entry.reason || (isPositive ? "Credits Added" : "Session Booking")}
+                      </p>
+                      <p className="text-[11px] text-[--color-muted] font-mono mt-0.5">
+                        {formattedDate} · Ref: {entry.id}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="text-right shrink-0">
+                    <span
+                      className={`font-mono text-sm font-[750] tabular-nums ${
+                        isPositive ? "text-emerald-600" : "text-[--color-foreground]"
+                      }`}
+                    >
+                      {isPositive ? `+${entry.delta}` : entry.delta} cr
+                    </span>
+                    <span className="block text-[11px] text-[--color-muted]">
+                      {entry.entryType.toUpperCase()}
+                    </span>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        ) : (
+          <p className="text-xs text-[--color-muted] text-center py-6">
+            No transactions yet. Credits will appear here when you purchase a pack.
+          </p>
+        )}
+      </div>
+
+      {/* ── ACCOUNT QUICK ACTIONS & CONTROLS ──────────────────────── */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Bookings & Passes */}
-        <div className="rounded-[--radius-lg] border border-[--color-border] bg-[--color-surface] p-6 shadow-sm flex flex-col justify-between">
+        <div className="rounded-[--radius-lg] border border-[--color-border] bg-[--color-surface] p-6 shadow-sm flex flex-col justify-between hover:border-[--color-forest]/40 transition-colors">
           <div>
             <div className="p-2 rounded-[--radius-md] bg-[--color-surface-muted] text-[--color-forest] w-fit mb-3">
               <CalendarDays size={20} />
             </div>
-            <h2 className="text-h3 font-[650] text-[--color-foreground] mb-1">
-              My Activity Bookings
-            </h2>
+            <h3 className="text-h3 font-[650] text-[--color-foreground] mb-1">
+              Active Bookings
+            </h3>
             <p className="text-xs text-[--color-muted] leading-relaxed">
               View upcoming court reservations, access single-use digital check-in passes, and view attendance history.
             </p>
           </div>
           <div className="mt-5 pt-4 border-t border-[--color-border]">
             <Button asChild variant="secondary" size="sm" className="w-full">
-              <Link href={ROUTES.bookings} className="flex items-center justify-center gap-1">
-                View my bookings <ArrowRight size={14} />
+              <Link href={ROUTES.bookings} className="flex items-center justify-center gap-1 font-[600]">
+                View bookings <ArrowRight size={14} />
               </Link>
             </Button>
           </div>
         </div>
 
-        {/* Membership & Packs */}
-        <div className="rounded-[--radius-lg] border border-[--color-border] bg-[--color-surface] p-6 shadow-sm flex flex-col justify-between">
-          <div>
-            <div className="p-2 rounded-[--radius-md] bg-[--color-surface-muted] text-[--color-forest] w-fit mb-3">
-              <CreditCard size={20} />
-            </div>
-            <h2 className="text-h3 font-[650] text-[--color-foreground] mb-1">
-              Membership &amp; Credit Packs
-            </h2>
-            <p className="text-xs text-[--color-muted] leading-relaxed">
-              Explore prepaid 20, 50, or 100 credit packs with upfront pricing in INR and instant atomic ledger fulfillment.
-            </p>
-          </div>
-          <div className="mt-5 pt-4 border-t border-[--color-border]">
-            <Button asChild variant="secondary" size="sm" className="w-full">
-              <Link href={ROUTES.membership} className="flex items-center justify-center gap-1">
-                Explore credit packs <ArrowRight size={14} />
-              </Link>
-            </Button>
-          </div>
-        </div>
-
-        {/* DPDP Act Privacy Controls */}
-        <div className="rounded-[--radius-lg] border border-[--color-border] bg-[--color-surface] p-6 shadow-sm flex flex-col justify-between">
+        {/* Privacy & DPDP */}
+        <div className="rounded-[--radius-lg] border border-[--color-border] bg-[--color-surface] p-6 shadow-sm flex flex-col justify-between hover:border-[--color-forest]/40 transition-colors">
           <div>
             <div className="p-2 rounded-[--radius-md] bg-[--color-surface-muted] text-[--color-forest] w-fit mb-3">
               <Shield size={20} />
             </div>
-            <h2 className="text-h3 font-[650] text-[--color-foreground] mb-1">
-              Privacy &amp; Data Rights
-            </h2>
+            <h3 className="text-h3 font-[650] text-[--color-foreground] mb-1">
+              DPDP Privacy Rights
+            </h3>
             <p className="text-xs text-[--color-muted] leading-relaxed">
-              Review our compliance with India&apos;s Digital Personal Data Protection Act, 2023. Request data summaries, corrections, or full account deletion.
+              Full compliance with India&apos;s Digital Personal Data Protection Act, 2023. Request data summaries or account removal.
             </p>
           </div>
           <div className="mt-5 pt-4 border-t border-[--color-border]">
             <Button asChild variant="secondary" size="sm" className="w-full">
-              <Link href="/legal/privacy" className="flex items-center justify-center gap-1">
-                Privacy policy &amp; rights <ExternalLink size={13} />
+              <Link href="/legal/privacy" className="flex items-center justify-center gap-1 font-[600]">
+                Privacy policy <ExternalLink size={13} />
               </Link>
             </Button>
           </div>
         </div>
 
-        {/* Concierge & Support */}
-        <div className="rounded-[--radius-lg] border border-[--color-border] bg-[--color-surface] p-6 shadow-sm flex flex-col justify-between">
+        {/* Concierge Support */}
+        <div className="rounded-[--radius-lg] border border-[--color-border] bg-[--color-surface] p-6 shadow-sm flex flex-col justify-between hover:border-[--color-forest]/40 transition-colors">
           <div>
             <div className="p-2 rounded-[--radius-md] bg-[--color-surface-muted] text-[--color-forest] w-fit mb-3">
               <HelpCircle size={20} />
             </div>
-            <h2 className="text-h3 font-[650] text-[--color-foreground] mb-1">
-              Help &amp; Concierge Support
-            </h2>
+            <h3 className="text-h3 font-[650] text-[--color-foreground] mb-1">
+              Bengaluru Concierge
+            </h3>
             <p className="text-xs text-[--color-muted] leading-relaxed">
-              Need assistance with an arrival check-in, refund cutoff question, or venue feedback? Our Bengaluru pilot desk is on standby.
+              Need assistance with an arrival check-in, refund cutoff question, or venue feedback? Our pilot desk is on standby.
             </p>
           </div>
           <div className="mt-5 pt-4 border-t border-[--color-border]">
             <Button asChild variant="secondary" size="sm" className="w-full">
-              <Link href="/support" className="flex items-center justify-center gap-1">
-                Contact support desk <ArrowRight size={14} />
+              <Link href="/support" className="flex items-center justify-center gap-1 font-[600]">
+                Contact concierge <ArrowRight size={14} />
               </Link>
             </Button>
           </div>
