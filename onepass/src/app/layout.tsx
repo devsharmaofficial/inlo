@@ -45,9 +45,16 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
   ),
   icons: {
-    icon: "/inlo-logo.png",
+    icon: [
+      { url: "/inlo-logo.png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon.png", sizes: "32x32", type: "image/png" },
+    ],
     shortcut: "/inlo-logo.png",
-    apple: "/inlo-logo.png",
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      { url: "/inlo-logo.png" },
+    ],
   },
   openGraph: {
     type: "website",

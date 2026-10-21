@@ -21,15 +21,15 @@ export function Logo({
   href = ROUTES.home,
 }: LogoProps) {
   const iconDimensions = {
-    sm: 24,
-    md: 32,
-    lg: 40,
+    sm: 32,
+    md: 46,
+    lg: 56,
   }[size]
 
   const textStyles = {
-    sm: "text-base",
-    md: "text-lg",
-    lg: "text-xl",
+    sm: "text-lg",
+    md: "text-2xl",
+    lg: "text-3xl",
   }[size]
 
   return (
