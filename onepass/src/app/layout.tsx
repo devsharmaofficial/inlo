@@ -6,6 +6,8 @@ import { SiteFooter } from "@/components/layout/site-footer"
 import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav"
 import { OperationalBanner } from "@/components/layout/operational-banner"
 import { Toaster } from "@/components/ui/toaster"
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css"
 
 /**
@@ -113,6 +115,10 @@ export default function RootLayout({
 
         {/* Toast notifications */}
         <Toaster />
+
+        {/* Vercel Analytics and Speed Insights */}
+        <Analytics />
+        <SpeedInsights />
 
         {/* Skip link for keyboard users */}
         <a
