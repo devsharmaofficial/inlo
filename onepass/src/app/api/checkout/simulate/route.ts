@@ -4,11 +4,12 @@ import {
   createPaymentOrder,
   processPaymentWebhook,
 } from "@/features/payments/payment-service"
+import { getEffectiveUserId } from "@/features/auth/auth-service"
 
 export async function POST(req: NextRequest) {
   try {
     const { productSlug, idempotencyKey } = await req.json()
-    const DEMO_USER_ID = "user-member-1"
+    const effectiveUserId = await getEffectiveUserId()
 
     if (!productSlug || !idempotencyKey) {
       return NextResponse.json(
@@ -17,9 +18,9 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // 1. Create authoritative server order
+    // 1. Create authoritative server order for the authenticated user
     const order = await createPaymentOrder({
-      userId: DEMO_USER_ID,
+      userId: effectiveUserId,
       productSlug,
       idempotencyKey,
     })

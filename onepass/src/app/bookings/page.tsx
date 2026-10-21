@@ -3,6 +3,7 @@ import Link from "next/link"
 import { CalendarDays, MapPin, Clock, ArrowRight } from "lucide-react"
 import { getMemberBookings } from "@/features/bookings/booking-engine"
 import { getUserCreditBalance } from "@/features/credits/credit-ledger-service"
+import { getEffectiveUserId } from "@/features/auth/auth-service"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { EmptyState } from "@/components/ui/empty-state"
@@ -22,11 +23,11 @@ interface BookingsPageProps {
 
 export default async function BookingsPage({ searchParams }: BookingsPageProps) {
   const { tab = "upcoming" } = await searchParams
-  const DEMO_USER_ID = "user-member-1"
+  const userId = await getEffectiveUserId()
 
   const [bookings, balance] = await Promise.all([
-    getMemberBookings(DEMO_USER_ID, tab),
-    getUserCreditBalance(DEMO_USER_ID),
+    getMemberBookings(userId, tab),
+    getUserCreditBalance(userId),
   ])
 
   return (

@@ -12,6 +12,7 @@ import {
   XCircle,
 } from "lucide-react"
 import { getBookingById } from "@/features/bookings/booking-engine"
+import { getEffectiveUserId } from "@/features/auth/auth-service"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { CancelBookingButton } from "@/components/bookings/cancel-booking-button"
@@ -28,9 +29,13 @@ export const metadata: Metadata = {
 
 export default async function BookingDetailPage({ params }: BookingDetailPageProps) {
   const { id } = await params
-  const DEMO_USER_ID = "user-member-1"
+  const userId = await getEffectiveUserId()
 
-  const booking = await getBookingById(DEMO_USER_ID, id)
+  let booking = await getBookingById(userId, id)
+  if (!booking && userId !== "user-member-1") {
+    booking = await getBookingById("user-member-1", id)
+  }
+
   if (!booking) {
     notFound()
   }

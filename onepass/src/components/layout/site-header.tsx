@@ -25,29 +25,119 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { ROUTES } from "@/lib/constants"
 import { cn } from "@/lib/utils"
+import { createClient } from "@/lib/supabase/client"
+import { signOutAction } from "@/app/actions/auth-actions"
+import { getMemberCreditBalanceAction } from "@/app/actions/booking-actions"
 
 interface SiteHeaderProps {
-  /** Whether a member session is active. Defaults to true in pilot demo mode */
+  /** Initial prop fallback for authentication state */
   isAuthenticated?: boolean
-  /** Display name for the authenticated user */
+  /** Initial prop fallback for display name */
   displayName?: string
-  /** Current credit balance */
+  /** Initial prop fallback for credit balance */
   creditBalance?: number
 }
 
 export function SiteHeader({
-  isAuthenticated = true,
-  displayName = "Pilot Member",
-  creditBalance = 50,
+  isAuthenticated: initialAuth = false,
+  displayName: initialName = "",
+  creditBalance: initialBalance = 0,
 }: SiteHeaderProps) {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const [prevPathname, setPrevPathname] = React.useState(pathname)
 
-  // Synchronously sync menu state on path change without cascading effects
+  // Synchronously sync menu state on path change
   if (prevPathname !== pathname) {
     setPrevPathname(pathname)
     setMobileMenuOpen(false)
+  }
+
+  const [authState, setAuthState] = React.useState({
+    isAuthenticated: initialAuth,
+    displayName: initialName,
+    creditBalance: initialBalance,
+  })
+
+  // Synchronize active Supabase user session and live credit balance
+  React.useEffect(() => {
+    let isMounted = true
+    const supabase = createClient()
+    if (!supabase) return
+
+    const syncSession = async () => {
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser()
+
+        if (!isMounted) return
+
+        if (user) {
+          const name =
+            (user.user_metadata?.full_name as string) ||
+            (user.user_metadata?.name as string) ||
+            user.email?.split("@")[0] ||
+            "Member"
+
+          const balance = await getMemberCreditBalanceAction()
+          if (!isMounted) return
+
+          setAuthState({
+            isAuthenticated: true,
+            displayName: name,
+            creditBalance: balance,
+          })
+        } else {
+          setAuthState({
+            isAuthenticated: false,
+            displayName: "",
+            creditBalance: 0,
+          })
+        }
+      } catch {
+        // Fallback silently if network or offline
+      }
+    }
+
+    syncSession()
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (!isMounted) return
+      if (session?.user) {
+        const name =
+          (session.user.user_metadata?.full_name as string) ||
+          (session.user.user_metadata?.name as string) ||
+          session.user.email?.split("@")[0] ||
+          "Member"
+
+        const balance = await getMemberCreditBalanceAction()
+        if (!isMounted) return
+
+        setAuthState({
+          isAuthenticated: true,
+          displayName: name,
+          creditBalance: balance,
+        })
+      } else {
+        setAuthState({
+          isAuthenticated: false,
+          displayName: "",
+          creditBalance: 0,
+        })
+      }
+    })
+
+    return () => {
+      isMounted = false
+      subscription.unsubscribe()
+    }
+  }, [pathname])
+
+  const handleSignOut = async () => {
+    await signOutAction()
   }
 
   const navLinks = [
@@ -56,6 +146,8 @@ export function SiteHeader({
     { href: ROUTES.membership, label: "Plans & Packs" },
     { href: ROUTES.partner.root, label: "For Venues" },
   ]
+
+  const { isAuthenticated, displayName, creditBalance } = authState
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-[--color-border] bg-[--color-background]/95 backdrop-blur-[12px] transition-all">
@@ -91,7 +183,7 @@ export function SiteHeader({
         <div className="flex items-center gap-3">
           {isAuthenticated ? (
             <div className="flex items-center gap-2.5">
-              {/* Credit Wallet Pill (Section 4 Component 1 & 5) */}
+              {/* Credit Wallet Pill */}
               <Link
                 href={ROUTES.membership}
                 id="header-credit-wallet-pill"
@@ -123,10 +215,10 @@ export function SiteHeader({
                     type="button"
                     id="user-profile-menu-trigger"
                     aria-label="Open profile and wallet menu"
-                    className="h-9 w-9 rounded-full bg-[--color-surface-muted] border border-[--color-border] flex items-center justify-center text-sm font-[700] text-[--color-foreground] hover:bg-[--color-border] hover:border-[--color-forest]/40 transition-colors focus-visible:outline-2 focus-visible:outline-[--color-focus-ring]"
+                    className="h-9 w-9 rounded-full bg-[--color-surface-muted] border border-[--color-border] flex items-center justify-center text-sm font-[700] text-[--color-foreground] hover:bg-[--color-border] hover:border-[--color-forest]/40 transition-colors focus-visible:outline-2 focus-visible:outline-[--color-focus-ring] cursor-pointer"
                   >
                     <span aria-hidden="true">
-                      {displayName.charAt(0).toUpperCase()}
+                      {displayName.charAt(0).toUpperCase() || "M"}
                     </span>
                   </button>
                 </DropdownMenuTrigger>
@@ -136,14 +228,14 @@ export function SiteHeader({
                       {displayName}
                     </p>
                     <p className="text-[11px] font-normal text-[--color-muted] mt-0.5">
-                      {creditBalance} credits available (₹{creditBalance * 70})
+                      {creditBalance} credits available (≈ ₹{creditBalance * 70})
                     </p>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link href={ROUTES.account} className="flex items-center gap-2 cursor-pointer">
                       <User size={15} />
-                      <span>My Account</span>
+                      <span>Wallet & Account</span>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
@@ -166,11 +258,12 @@ export function SiteHeader({
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link href={ROUTES.signIn} className="flex items-center gap-2 text-red-600 focus:text-red-700 cursor-pointer">
-                      <LogOut size={15} />
-                      <span>Sign out</span>
-                    </Link>
+                  <DropdownMenuItem
+                    onClick={handleSignOut}
+                    className="flex items-center gap-2 text-red-600 focus:text-red-700 cursor-pointer"
+                  >
+                    <LogOut size={15} />
+                    <span>Sign out</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -205,7 +298,7 @@ export function SiteHeader({
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-[--color-border] bg-[--color-surface] px-4 py-5 space-y-3 shadow-lg animate-in slide-in-from-top-2">
-          {isAuthenticated && (
+          {isAuthenticated ? (
             <div className="flex items-center justify-between p-3 rounded-[--radius-md] bg-[--color-surface-muted] border border-[--color-border] mb-2">
               <div>
                 <p className="text-xs font-[600] text-[--color-muted] uppercase">Wallet Balance</p>
@@ -215,6 +308,15 @@ export function SiteHeader({
               </div>
               <Button asChild size="sm" variant="primary">
                 <Link href={ROUTES.membership}>Add credits</Link>
+              </Button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-2 mb-2">
+              <Button asChild variant="secondary" size="sm">
+                <Link href={ROUTES.signIn}>Sign in</Link>
+              </Button>
+              <Button asChild variant="primary" size="sm">
+                <Link href={ROUTES.signUp}>Join Inlo</Link>
               </Button>
             </div>
           )}
@@ -243,6 +345,14 @@ export function SiteHeader({
                 >
                   My Account & Settings
                 </Link>
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  className="w-full text-left px-3 py-2.5 rounded-[--radius-sm] text-sm font-[600] text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2"
+                >
+                  <LogOut size={15} />
+                  <span>Sign out</span>
+                </button>
               </>
             )}
           </nav>

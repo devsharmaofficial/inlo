@@ -14,6 +14,9 @@ describe("getEnv", () => {
 
   it("defaults to sensible local development values", () => {
     delete process.env.NEXT_PUBLIC_APP_URL
+    delete process.env.NEXT_PUBLIC_FEATURE_PAYMENTS_ENABLED
+    delete process.env.NEXT_PUBLIC_FEATURE_BOOKINGS_ENABLED
+    delete process.env.NEXT_PUBLIC_FEATURE_PARTNER_SELF_SERVE
     const env = getEnv()
     expect(env.appUrl).toBe("http://localhost:3000")
     expect(env.features.paymentsEnabled).toBe(false)

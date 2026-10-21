@@ -6,21 +6,29 @@ import {
   cancelBooking,
 } from "@/features/bookings/booking-engine"
 import { getUserCreditBalance } from "@/features/credits/credit-ledger-service"
+import { getEffectiveUserId } from "@/features/auth/auth-service"
 
-// In Phase 4 demo / concierge pilot: default member session
-const DEMO_USER_ID = "user-member-1"
+function safeRevalidate(path: string) {
+  try {
+    revalidatePath(path)
+  } catch {
+    // Expected when invoked in test environments outside Next.js request context
+  }
+}
 
 export async function createBookingAction(slotId: string, idempotencyKey: string) {
   try {
+    const userId = await getEffectiveUserId()
     const booking = await createBooking({
-      userId: DEMO_USER_ID,
+      userId,
       slotId,
       idempotencyKey,
     })
 
-    revalidatePath("/bookings")
-    revalidatePath(`/bookings/${booking.id}`)
-    revalidatePath("/explore")
+    safeRevalidate("/bookings")
+    safeRevalidate(`/bookings/${booking.id}`)
+    safeRevalidate("/explore")
+    safeRevalidate("/account")
 
     return { success: true, bookingId: booking.id }
   } catch (err: unknown) {
@@ -31,15 +39,17 @@ export async function createBookingAction(slotId: string, idempotencyKey: string
 
 export async function cancelBookingAction(bookingId: string, reason?: string) {
   try {
+    const userId = await getEffectiveUserId()
     const booking = await cancelBooking({
-      userId: DEMO_USER_ID,
+      userId,
       bookingId,
       reason: reason || "Cancelled by member via web portal",
-      actorId: DEMO_USER_ID,
+      actorId: userId,
     })
 
-    revalidatePath("/bookings")
-    revalidatePath(`/bookings/${booking.id}`)
+    safeRevalidate("/bookings")
+    safeRevalidate(`/bookings/${booking.id}`)
+    safeRevalidate("/account")
 
     return { success: true, bookingId: booking.id }
   } catch (err: unknown) {
@@ -49,5 +59,6 @@ export async function cancelBookingAction(bookingId: string, reason?: string) {
 }
 
 export async function getMemberCreditBalanceAction() {
-  return getUserCreditBalance(DEMO_USER_ID)
+  const userId = await getEffectiveUserId()
+  return getUserCreditBalance(userId)
 }
