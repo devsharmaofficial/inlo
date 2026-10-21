@@ -266,10 +266,10 @@ ON CONFLICT (slug) DO NOTHING;
 
 -- Partner 1
 INSERT INTO partners (id, name, business_name, contact_email, contact_phone, status) VALUES
-('p0000000-0000-0000-0000-000000000001', 'The Hub Sports LLP', 'The Hub Sports LLP', 'partners@thehubsports.in', '+91 80 4120 4400', 'active')
+('10000000-0000-0000-0000-000000000001', 'The Hub Sports LLP', 'The Hub Sports LLP', 'partners@thehubsports.in', '+91 80 4120 4400', 'active')
 ON CONFLICT (id) DO NOTHING;
 
 -- Venue 1
 INSERT INTO venues (id, partner_id, slug, name, description, address_line1, locality, city, postal_code, status, featured, amenities) VALUES
-('v0000000-0000-0000-0000-000000000001', 'p0000000-0000-0000-0000-000000000001', 'the-hub-sports-arena-domlur', 'The Hub Sports Arena', 'Premier 6-court indoor badminton facility with international standard synthetic mats, LED glare-free lighting, and showers.', '42, 1st Cross, Domlur Layout', 'Domlur', 'Bengaluru', '560071', 'approved', true, ARRAY['Synthetic courts', 'Showers', 'Locker rooms', 'Parking', 'Equipment rental'])
+('20000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000001', 'the-hub-sports-arena-domlur', 'The Hub Sports Arena', 'Premier 6-court indoor badminton facility with international standard synthetic mats, LED glare-free lighting, and showers.', '42, 1st Cross, Domlur Layout', 'Domlur', 'Bengaluru', '560071', 'approved', true, ARRAY['Synthetic courts', 'Showers', 'Locker rooms', 'Parking', 'Equipment rental'])
 ON CONFLICT (slug) DO NOTHING;
