@@ -8,7 +8,7 @@ import { ROUTES } from "@/lib/constants"
 
 export const metadata: Metadata = {
   title: "Sign in",
-  description: "Sign in to your OnePass account.",
+  description: "Sign in to your Inlo account.",
 }
 
 /**
@@ -64,7 +64,7 @@ export default function SignInPage() {
           </form>
 
           <p className="mt-5 text-center text-body text-[--color-muted]">
-            New to OnePass?{" "}
+            New to Inlo?{" "}
             <Link
               href={ROUTES.signUp}
               className="text-[--color-forest] font-[580] hover:underline focus-visible:outline-2 focus-visible:outline-[--color-focus-ring] focus-visible:rounded-sm"

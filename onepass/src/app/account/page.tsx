@@ -14,8 +14,8 @@ import { Button } from "@/components/ui/button"
 import { ROUTES } from "@/lib/constants"
 
 export const metadata: Metadata = {
-  title: "My account · OnePass",
-  description: "Manage your OnePass profile, credit balance, membership packs, and privacy settings.",
+  title: "My account · Inlo",
+  description: "Manage your Inlo profile, credit balance, membership packs, and privacy settings.",
 }
 
 export default async function AccountPage() {

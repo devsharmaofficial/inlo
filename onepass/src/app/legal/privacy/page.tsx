@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "OnePass Privacy Notice aligned with India's Digital Personal Data Protection (DPDP) Act, 2023.",
+  description: "Inlo Privacy Notice aligned with India's Digital Personal Data Protection (DPDP) Act, 2023.",
 }
 
 export default function PrivacyPolicyPage() {
@@ -47,7 +47,7 @@ export default function PrivacyPolicyPage() {
               <span>PCI-DSS Payments</span>
             </div>
             <p className="text-[--color-muted]">
-              Payment card numbers, UPI PINs, and banking credentials never touch OnePass servers.
+              Payment card numbers, UPI PINs, and banking credentials never touch Inlo servers.
             </p>
           </div>
 
@@ -68,7 +68,7 @@ export default function PrivacyPolicyPage() {
         <section>
           <h2 className="text-h3 text-[--color-foreground] font-[700] mb-3">1. Scope and Applicability</h2>
           <p className="text-[--color-muted]">
-            This Privacy Notice is issued in compliance with the Digital Personal Data Protection Act, 2023 (DPDP Act) and the Information Technology (Reasonable Security Practices and Procedures and Sensitive Personal Data or Information) Rules, 2011. It applies to all personal data processed by OnePass Technologies Private Limited (&quot;Data Fiduciary&quot;) when you use our mobile and web applications.
+            This Privacy Notice is issued in compliance with the Digital Personal Data Protection Act, 2023 (DPDP Act) and the Information Technology (Reasonable Security Practices and Procedures and Sensitive Personal Data or Information) Rules, 2011. It applies to all personal data processed by Inlo Technologies Private Limited (&quot;Data Fiduciary&quot;) when you use our mobile and web applications.
           </p>
         </section>
 
@@ -142,9 +142,9 @@ export default function PrivacyPolicyPage() {
           </p>
           <div className="mt-2 text-xs text-[--color-muted] font-mono space-y-0.5">
             <p>Designation: Data Protection Officer (DPO)</p>
-            <p>OnePass Technologies Private Limited</p>
+            <p>Inlo Technologies Private Limited</p>
             <p>Indiranagar, Bengaluru, Karnataka 560038, India</p>
-            <p>Email: privacy@onepass.in · Response SLA: 48 business hours</p>
+            <p>Email: privacy@inlo.in · Response SLA: 48 business hours</p>
           </div>
         </section>
       </div>

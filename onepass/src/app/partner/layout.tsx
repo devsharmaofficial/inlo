@@ -5,7 +5,7 @@ import { ROUTES } from "@/lib/constants"
 
 export const metadata: Metadata = {
   title: "Partner portal",
-  description: "Manage your venues, schedules and bookings on OnePass.",
+  description: "Manage your venues, schedules and bookings on Inlo.",
 }
 
 const partnerNav = [

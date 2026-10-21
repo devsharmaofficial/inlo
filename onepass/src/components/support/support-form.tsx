@@ -77,7 +77,7 @@ export function SupportForm() {
                 : "border-[--color-border] bg-[--color-surface] text-[--color-muted] hover:text-[--color-foreground]"
             }`}
           >
-            OnePass Member
+            Inlo Member
           </button>
           <button
             type="button"

@@ -7,7 +7,7 @@ import { ROUTES } from "@/lib/constants"
 
 export const metadata: Metadata = {
   title: "Cancellation & Refund Policy",
-  description: "Clear, transparent cancellation rules and instant credit refund terms for OnePass sessions.",
+  description: "Clear, transparent cancellation rules and instant credit refund terms for Inlo sessions.",
 }
 
 export default function CancellationsPage() {
@@ -45,7 +45,7 @@ export default function CancellationsPage() {
             </div>
             <p className="text-h3 font-[800] text-[#244638] mb-1">100% Credit Refund</p>
             <p className="text-xs text-[#191B18] leading-relaxed">
-              Full credits returned to your OnePass account balance immediately upon cancellation. No cancellation fees, questions, or penalties.
+              Full credits returned to your Inlo account balance immediately upon cancellation. No cancellation fees, questions, or penalties.
             </p>
           </div>
 
@@ -68,7 +68,7 @@ export default function CancellationsPage() {
         <section>
           <h2 className="text-h3 text-[--color-foreground] font-[700] mb-3">1. How to Cancel a Session</h2>
           <ol className="list-decimal list-inside space-y-2 text-[--color-muted]">
-            <li>Open the <strong>My Bookings</strong> section in your OnePass app or web dashboard.</li>
+            <li>Open the <strong>My Bookings</strong> section in your Inlo app or web dashboard.</li>
             <li>Select the upcoming booking you wish to cancel.</li>
             <li>Click <strong>&quot;Cancel booking&quot;</strong> and confirm the action.</li>
             <li>Your credits will be restored to your account ledger immediately.</li>

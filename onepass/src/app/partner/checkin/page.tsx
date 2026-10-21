@@ -5,7 +5,7 @@ import { MapPin, ShieldCheck } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Front desk check-in",
-  description: "Verify and admit OnePass members via single-use digital pass tokens.",
+  description: "Verify and admit Inlo members via single-use digital pass tokens.",
 }
 
 export default function PartnerCheckinPage() {

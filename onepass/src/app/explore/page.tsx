@@ -16,7 +16,7 @@ import { ROUTES } from "@/lib/constants"
 export const metadata: Metadata = {
   title: "Explore activities & venues",
   description:
-    "Discover verified gyms, swimming pools, badminton courts, and yoga studios in Bengaluru with OnePass.",
+    "Discover verified gyms, swimming pools, badminton courts, and yoga studios in Bengaluru with Inlo.",
 }
 
 interface ExplorePageProps {

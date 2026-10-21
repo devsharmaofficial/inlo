@@ -12,7 +12,7 @@ import {
 
 export const metadata: Metadata = {
   title: "Help & Support",
-  description: "Contact the OnePass Bengaluru pilot support desk or browse frequently asked questions.",
+  description: "Contact the Inlo Bengaluru pilot support desk or browse frequently asked questions.",
 }
 
 const FAQS = [
@@ -85,7 +85,7 @@ export default function SupportPage() {
                 <Mail size={18} className="text-[--color-forest] shrink-0 mt-0.5" />
                 <div>
                   <p className="font-[650] text-[--color-foreground]">Email Desk</p>
-                  <p className="text-[--color-muted] mt-0.5">support@onepass.in</p>
+                  <p className="text-[--color-muted] mt-0.5">support@inlo.in</p>
                   <span className="text-[10px] text-[--color-muted]">For billing &amp; account queries</span>
                 </div>
               </div>
@@ -132,7 +132,7 @@ export default function SupportPage() {
       <div className="border-t border-[--color-border] pt-12">
         <div className="text-center mb-8">
           <h2 className="text-h2 text-[--color-foreground] mb-2">Frequently Asked Questions</h2>
-          <p className="text-sm text-[--color-muted]">Quick answers to common questions about OnePass</p>
+          <p className="text-sm text-[--color-muted]">Quick answers to common questions about Inlo</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

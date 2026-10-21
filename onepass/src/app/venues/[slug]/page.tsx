@@ -220,7 +220,7 @@ export default async function VenuePage({ params }: VenuePageProps) {
               <CardContent className="p-6 space-y-6">
                 <div>
                   <span className="text-xs font-[600] text-[--color-muted] uppercase tracking-wider">
-                    Included with OnePass
+                    Included with Inlo
                   </span>
                   <div className="mt-1 flex items-baseline gap-1.5">
                     <span className="text-h1 text-[--color-foreground]">

@@ -163,7 +163,7 @@ export function CheckinForm() {
                     <p className="font-[700] text-sm uppercase tracking-wide">Admission Denied</p>
                     <p className="text-xs text-[--color-foreground] mt-1">{result.message}</p>
                     <p className="text-[11px] text-[--color-muted] mt-2">
-                      Please ask the member to refresh their OnePass digital pass or contact support. Do not admit members without a valid pass.
+                      Please ask the member to refresh their Inlo digital pass or contact support. Do not admit members without a valid pass.
                     </p>
                   </div>
                 </div>

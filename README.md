@@ -1,9 +1,9 @@
-# OnePass (India Pilot)
+# Inlo (India Pilot)
 
 > **Multi-Activity Membership & Booking Marketplace**  
 > Curated fitness, sports, recreation, and wellness venues across Bengaluru (Indiranagar · Domlur · Koramangala).
 
-[![CI](https://github.com/devsharmaofficial/onepass/actions/workflows/ci.yml/badge.svg)](https://github.com/devsharmaofficial/onepass/actions)
+[![CI](https://github.com/devsharmaofficial/inlo/actions/workflows/ci.yml/badge.svg)](https://github.com/devsharmaofficial/inlo/actions)
 [![Next.js](https://img.shields.io/badge/Next.js-16.4.2-black?logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-v4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
@@ -13,7 +13,7 @@
 
 ## 1. Overview
 
-OnePass is an asset-light, multi-activity marketplace for Tier-1 Indian cities. Members purchase prepaid credit packs and redeem credits across participating high-quality gyms, swimming pools, badminton courts, and yoga shalas without long-term single-venue lock-ins.
+Inlo is an asset-light, multi-activity marketplace for Tier-1 Indian cities. Members purchase prepaid credit packs and redeem credits across participating high-quality gyms, swimming pools, badminton courts, and yoga shalas without long-term single-venue lock-ins.
 
 ### Core Principles
 1. **Density over sprawl:** One dense micro-market (Bengaluru East: Indiranagar, Domlur, Koramangala) before citywide expansion.
@@ -112,4 +112,4 @@ npm run build
 ---
 
 ## 6. License
-Private & Confidential — OnePass Technologies Private Limited.
+Private & Confidential — Inlo Technologies Private Limited.

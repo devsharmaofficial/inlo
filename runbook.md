@@ -1,4 +1,4 @@
-# OnePass — Pilot Launch & Operational Runbook
+# Inlo — Pilot Launch & Operational Runbook
 
 > **Document Type:** Canonical Operational Runbook  
 > **Market:** Bengaluru Pilot Cluster 1 (Indiranagar · Domlur · Koramangala)  

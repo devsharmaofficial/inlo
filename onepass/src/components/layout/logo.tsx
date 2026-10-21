@@ -4,8 +4,7 @@ import { cn } from "@/lib/utils"
 import { APP_NAME, ROUTES } from "@/lib/constants"
 
 /**
- * OnePass wordmark — text-based, not an image.
- * Brand status: working codename; not legally cleared.
+ * Inlo wordmark — text-based, not an image.
  */
 export function Logo({ className }: { className?: string }) {
   return (

@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 /**
- * OnePass Button component.
+ * Inlo Button component.
  * Follows design.md §7.1 — 5 variants, 4 sizes, complete states.
  * Primary action per screen is visually strongest; do not put two
  * competing primary buttons side by side.

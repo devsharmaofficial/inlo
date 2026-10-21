@@ -7,7 +7,7 @@ import type { SettlementStatement } from "@/features/partner/settlement-service"
 export function ExportStatementButton({ statement }: { statement: SettlementStatement }) {
   const handleExport = () => {
     const csvRows = [
-      ["OnePass Partner Settlement Statement"],
+      ["Inlo Partner Settlement Statement"],
       ["Generated", statement.generatedAt],
       ["Billing Period", statement.billingPeriod],
       ["Partner ID", statement.partnerId],
@@ -31,7 +31,7 @@ export function ExportStatementButton({ statement }: { statement: SettlementStat
     link.setAttribute("href", encodedUri)
     link.setAttribute(
       "download",
-      `onepass-settlement-${statement.venueId}-${statement.billingPeriod}.csv`
+      `inlo-settlement-${statement.venueId}-${statement.billingPeriod}.csv`
     )
     document.body.appendChild(link)
     link.click()

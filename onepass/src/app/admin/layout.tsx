@@ -5,7 +5,7 @@ import { ROUTES } from "@/lib/constants"
 
 export const metadata: Metadata = {
   title: "Admin — Operations",
-  description: "OnePass operations and administration portal.",
+  description: "Inlo operations and administration portal.",
 }
 
 /**

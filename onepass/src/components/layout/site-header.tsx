@@ -73,7 +73,7 @@ export function SiteHeader({ isAuthenticated = false }: SiteHeaderProps) {
                 Sign in
               </Link>
               <Button asChild size="sm" variant="primary">
-                <Link href={ROUTES.signUp}>Join OnePass</Link>
+                <Link href={ROUTES.signUp}>Join Inlo</Link>
               </Button>
             </>
           )}

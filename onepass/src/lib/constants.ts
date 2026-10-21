@@ -5,7 +5,7 @@
  * server-side configuration/database once the business model is approved.
  */
 
-export const APP_NAME = "OnePass" as const
+export const APP_NAME = "Inlo" as const
 export const APP_TAGLINE = "A city with more ways to move." as const
 
 /** Maximum content width matching design.md layout grid */

@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { TrendingUp, ShieldCheck, Users, ArrowLeft } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "List your venue · Partner with OnePass",
+  title: "List your venue · Partner with Inlo",
   description: "Monetize off-peak court and studio capacity across Bengaluru with guaranteed per-credit payouts.",
 }
 
@@ -27,7 +27,7 @@ export default function PartnerApplyPage() {
               Pilot Onboarding
             </Badge>
             <h1 className="text-h1 text-[--color-foreground] mb-3">
-              List your venue on OnePass
+              List your venue on Inlo
             </h1>
             <p className="text-body text-[--color-muted] leading-relaxed">
               Monetize empty court hours and open gym/studio slots in Indiranagar, Domlur, and Koramangala. Reach high-intent local athletes without discounting your walk-in rates.

@@ -92,7 +92,7 @@ export function SiteFooter() {
         {/* Bottom bar */}
         <div className="mt-10 pt-6 border-t border-[--color-border] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <p className="text-xs text-[--color-muted]">
-            © {currentYear} OnePass. Working codename — not a cleared trademark.
+            © {currentYear} Inlo Technologies Private Limited.
           </p>
           <p className="text-xs text-[--color-muted]">
             India · INR · IST

@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 
 export const metadata: Metadata = {
   title: "Terms of Use",
-  description: "OnePass platform terms of service, membership rules, and user obligations.",
+  description: "Inlo platform terms of service, membership rules, and user obligations.",
 }
 
 export default function TermsOfUsePage() {
@@ -34,7 +34,7 @@ export default function TermsOfUsePage() {
           <span>At a glance · Plain language summary</span>
         </div>
         <ul className="text-xs text-[#191B18] space-y-2 list-disc list-inside leading-relaxed">
-          <li>OnePass is a booking platform connecting you with independent fitness, sport, and wellness venues in Bengaluru.</li>
+          <li>Inlo is a booking platform connecting you with independent fitness, sport, and wellness venues in Bengaluru.</li>
           <li>Credits purchased are prepaid entitlements used to reserve venue slots. Credits are non-cashable and non-transferable.</li>
           <li>You can cancel any booking up to 2 hours before start time for a full credit refund.</li>
           <li>Each digital pass is single-use and valid only for the booked slot.</li>
@@ -47,10 +47,10 @@ export default function TermsOfUsePage() {
         <section>
           <h2 className="text-h3 text-[--color-foreground] font-[700] mb-3">1. Nature of the Platform</h2>
           <p className="text-[--color-muted]">
-            OnePass Technologies Private Limited (&quot;OnePass&quot;, &quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) operates an online marketplace and technological intermediary platform under Section 79 of the Information Technology Act, 2000. OnePass connects verified fitness, sports, recreation, and wellness venue operators (&quot;Partner Venues&quot;) with individual members (&quot;Members&quot; or &quot;you&quot;).
+            Inlo Technologies Private Limited (&quot;Inlo&quot;, &quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) operates an online marketplace and technological intermediary platform under Section 79 of the Information Technology Act, 2000. Inlo connects verified fitness, sports, recreation, and wellness venue operators (&quot;Partner Venues&quot;) with individual members (&quot;Members&quot; or &quot;you&quot;).
           </p>
           <p className="text-[--color-muted] mt-2">
-            OnePass does not own, manage, or operate physical sports courts, studios, gyms, or swimming pools, unless expressly stated otherwise in writing. All activities are conducted at facilities managed by independent Partner Venues.
+            Inlo does not own, manage, or operate physical sports courts, studios, gyms, or swimming pools, unless expressly stated otherwise in writing. All activities are conducted at facilities managed by independent Partner Venues.
           </p>
         </section>
 
@@ -58,10 +58,10 @@ export default function TermsOfUsePage() {
           <h2 className="text-h3 text-[--color-foreground] font-[700] mb-3">2. Membership, Packs &amp; Credits</h2>
           <div className="space-y-2 text-[--color-muted]">
             <p>
-              <strong>2.1 Credit Currency:</strong> OnePass credits are prepaid digital tokens of access designed strictly for redemption against activity slots listed on the platform. Credits do not represent cash, sovereign currency, deposit liabilities, or stored value wallets.
+              <strong>2.1 Credit Currency:</strong> Inlo credits are prepaid digital tokens of access designed strictly for redemption against activity slots listed on the platform. Credits do not represent cash, sovereign currency, deposit liabilities, or stored value wallets.
             </p>
             <p>
-              <strong>2.2 Non-Transferability:</strong> Credits are tied strictly to your registered OnePass account and cannot be transferred, gifted, exchanged, or resold to third parties.
+              <strong>2.2 Non-Transferability:</strong> Credits are tied strictly to your registered Inlo account and cannot be transferred, gifted, exchanged, or resold to third parties.
             </p>
             <p>
               <strong>2.3 Validity:</strong> Credit packs are valid for 30 calendar days from the date of capture and credit fulfillment. Unused credits expire automatically upon pack expiration unless renewed pursuant to platform terms.
@@ -128,9 +128,9 @@ export default function TermsOfUsePage() {
           </p>
           <div className="mt-2 text-xs text-[--color-muted] font-mono space-y-0.5">
             <p>Grievance Officer: Legal &amp; Compliance Team</p>
-            <p>OnePass Technologies Private Limited</p>
+            <p>Inlo Technologies Private Limited</p>
             <p>Indiranagar 100ft Road, Bengaluru, Karnataka 560038, India</p>
-            <p>Email: legal@onepass.in / grievance@onepass.in</p>
+            <p>Email: legal@inlo.in / grievance@inlo.in</p>
           </div>
         </section>
       </div>

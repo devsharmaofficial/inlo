@@ -7,7 +7,7 @@ import { getApprovedVenues } from "@/features/catalogue/catalogue-repository"
 import { VenueCard } from "@/components/catalogue/venue-card"
 
 export const metadata: Metadata = {
-  title: "OnePass — A city with more ways to move",
+  title: "Inlo — A city with more ways to move",
   description:
     "Discover and book gyms, yoga, swimming, badminton and more across participating venues with one membership.",
 }
@@ -99,7 +99,7 @@ export default async function HomePage() {
 
           <ol
             className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10"
-            aria-label="How OnePass works"
+            aria-label="How Inlo works"
           >
             {[
               {

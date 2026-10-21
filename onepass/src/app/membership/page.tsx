@@ -11,7 +11,7 @@ import { formatINR } from "@/lib/utils"
 export const metadata: Metadata = {
   title: "Membership plans & credit packs",
   description:
-    "Choose a flexible OnePass credit pack to book verified badminton courts, gyms, pools, and studios.",
+    "Choose a flexible Inlo credit pack to book verified badminton courts, gyms, pools, and studios.",
 }
 
 export default async function MembershipPage() {
@@ -134,7 +134,7 @@ export default async function MembershipPage() {
       <div className="rounded-[--radius-lg] border border-[--color-border] bg-[--color-surface-muted] p-6 sm:p-8 max-w-2xl mx-auto space-y-3">
         <div className="flex items-center gap-2 text-sm font-[650] text-[--color-foreground]">
           <ShieldCheck size={16} className="text-[--color-forest]" />
-          <span>OnePass Consumer & Entitlement Standards</span>
+          <span>Inlo Consumer & Entitlement Standards</span>
         </div>
         <p className="text-xs text-[--color-muted] leading-relaxed">
           Credits represent internal booking entitlements. When you book a slot, credits are debited

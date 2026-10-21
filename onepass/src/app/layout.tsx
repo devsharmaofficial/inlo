@@ -36,8 +36,8 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "OnePass — A city with more ways to move",
-    template: "%s | OnePass",
+    default: "Inlo — A city with more ways to move",
+    template: "%s | Inlo",
   },
   description:
     "One membership, many activities. Discover and book gyms, yoga, swimming, badminton and more across participating venues in your city.",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    siteName: "OnePass",
+    siteName: "Inlo",
   },
   robots: {
     // No indexing until the product is validated and ready for public launch

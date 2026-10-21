@@ -6,7 +6,7 @@ import { getPartnerVenueSlots } from "@/features/partner/inventory-service"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
-export const metadata: Metadata = { title: "Partner Dashboard | OnePass" }
+export const metadata: Metadata = { title: "Partner Dashboard | Inlo" }
 
 export default async function PartnerDashboardPage() {
   const currentPartnerId = "part-01" // In production: resolved from server session
