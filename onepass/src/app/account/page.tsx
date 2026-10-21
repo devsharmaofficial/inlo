@@ -6,11 +6,9 @@ import {
   HelpCircle,
   ExternalLink,
   ArrowRight,
-  Zap,
   TrendingDown,
   TrendingUp,
   RefreshCcw,
-  Sparkles,
   History,
   LogOut,
 } from "lucide-react"
@@ -23,7 +21,7 @@ import { signOutAction } from "@/app/actions/auth-actions"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ROUTES } from "@/lib/constants"
-import { formatINR } from "@/lib/utils"
+import { AccountPassHero } from "@/components/account/account-pass-hero"
 
 export const metadata: Metadata = {
   title: "Credit Wallet & Account · Inlo",
@@ -67,66 +65,8 @@ export default async function AccountPage() {
         </div>
       )}
 
-      {/* ── HERO CREDIT WALLET CARD (Section 4 Component 5) ──────── */}
-      <div className="relative overflow-hidden rounded-[--radius-xl] border-2 border-[--color-forest]/30 bg-gradient-to-br from-[#1C382C] via-[--color-forest] to-[#12241D] text-white p-6 sm:p-10 shadow-xl">
-        {/* Subtle decorative background circles */}
-        <div
-          className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-[--color-accent]/15 blur-[60px] pointer-events-none"
-          aria-hidden="true"
-        />
-        <div
-          className="absolute right-12 bottom-6 opacity-10 pointer-events-none font-mono font-black text-9xl tracking-tighter"
-          aria-hidden="true"
-        >
-          INLO
-        </div>
-
-        <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[--radius-pill] bg-white/10 text-white text-xs font-[700] backdrop-blur-md border border-white/15">
-                <Sparkles size={12} className="text-[--color-accent]" />
-                Inlo Active Pass · Tier 1
-              </span>
-              <span className="text-xs text-white/60 font-mono">
-                {user ? `Member ID: inlo-${user.id.slice(0, 8)}` : "Demo Mode: user-member-1"}
-              </span>
-            </div>
-
-            <div>
-              <p className="text-xs uppercase tracking-wider text-white/70 font-[650] mb-1">
-                Available Booking Credits
-              </p>
-              <div className="flex items-baseline gap-3">
-                <span className="text-display text-5xl sm:text-6xl font-[800] text-white tracking-tight tabular-nums">
-                  {balance}
-                </span>
-                <span className="text-lg font-[650] text-[--color-accent]">
-                  credits
-                </span>
-              </div>
-            </div>
-
-            <p className="text-xs sm:text-sm text-white/80 font-[500]">
-              Estimated value: <strong className="text-white font-[700]">{formatINR(balanceInr)}</strong> · Locked at ₹70 / credit
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <Button asChild size="lg" variant="primary" className="font-[700] gap-1.5 shadow-md">
-              <Link href={ROUTES.membership}>
-                <Zap size={16} className="fill-current" />
-                Buy more credits
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="secondary" className="bg-white/10 text-white border-white/25 hover:bg-white/20 font-[600]">
-              <Link href={ROUTES.bookings}>
-                View passes
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </div>
+      {/* ── HERO HOLOGRAPHIC PASS & CREDIT WALLET ────────────────── */}
+      <AccountPassHero user={user} balance={balance} balanceInr={balanceInr} />
 
       {/* ── TRANSACTION LEDGER HISTORY (Section 4 Component 5) ────── */}
       <div className="rounded-[--radius-lg] border border-[--color-border] bg-[--color-surface] p-6 sm:p-8 shadow-sm">

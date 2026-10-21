@@ -48,14 +48,14 @@ export const metadata: Metadata = {
   ),
   icons: {
     icon: [
-      { url: "/inlo-logo.png" },
+      { url: "/inlo-brand-mark.png" },
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
       { url: "/icon.png", sizes: "32x32", type: "image/png" },
     ],
-    shortcut: "/inlo-logo.png",
+    shortcut: "/inlo-brand-mark.png",
     apple: [
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-      { url: "/inlo-logo.png" },
+      { url: "/inlo-brand-mark.png" },
     ],
   },
   openGraph: {
@@ -64,9 +64,9 @@ export const metadata: Metadata = {
     siteName: "Inlo",
     images: [
       {
-        url: "/inlo-logo.png",
-        width: 1220,
-        height: 1184,
+        url: "/inlo-brand-logo.png",
+        width: 936,
+        height: 460,
         alt: "Inlo",
       },
     ],
@@ -86,7 +86,7 @@ const jsonLd = {
       "@id": "https://www.inlo.tech/#organization",
       name: "Inlo",
       url: "https://www.inlo.tech",
-      logo: "https://www.inlo.tech/inlo-logo.png",
+      logo: "https://www.inlo.tech/inlo-brand-logo.png",
       description: "One membership, many activities. Book sports courts, gyms, pools, and studios across Bengaluru.",
       sameAs: ["https://www.instagram.com/inlo.tech"],
     },

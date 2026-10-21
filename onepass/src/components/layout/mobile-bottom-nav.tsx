@@ -45,10 +45,11 @@ export function MobileBottomNav() {
       className={cn(
         "fixed bottom-0 left-0 right-0 z-40",
         "md:hidden", // Desktop uses the header nav
-        "border-t border-[--color-border] bg-[--color-background]/95 backdrop-blur-[8px]",
+        "border-t border-[--color-border] bg-[#F7F7F2]/95 backdrop-blur-[12px]",
         // Safe area for devices with home indicator
         "pb-[env(safe-area-inset-bottom)]",
       )}
+      style={{ backgroundColor: "rgba(247, 247, 242, 0.96)" }}
     >
       <div className="grid grid-cols-4 h-16">
         {memberNavItems.map(({ href, label, icon: Icon }) => {

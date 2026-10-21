@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import Image from "next/image"
 import { MapPin, BookOpen, CreditCard, Users, FileSearch, ScrollText, TrendingUp, Sliders } from "lucide-react"
+import { Logo } from "@/components/layout/logo"
 import { ROUTES } from "@/lib/constants"
 
 export const metadata: Metadata = {
@@ -46,20 +46,11 @@ export default function AdminLayout({
         className="hidden md:flex flex-col w-56 border-r border-[--color-border] bg-[--color-forest] flex-shrink-0"
         aria-label="Admin navigation"
       >
-        <div className="p-4 border-b border-white/10 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-[--radius-sm] bg-white/10 p-0.5 flex items-center justify-center shrink-0 overflow-hidden">
-            <Image
-              src="/inlo-logo.png"
-              alt="Inlo"
-              width={28}
-              height={28}
-              className="object-contain rounded-sm"
-            />
-          </div>
-          <div>
-            <p className="text-label font-[650] text-[--color-forest-foreground] leading-tight">Inlo Operations</p>
-            <p className="text-[11px] text-white/50">Internal console</p>
-          </div>
+        <div className="p-4 border-b border-white/10 flex items-center justify-between">
+          <Logo variant="light" size="sm" href={ROUTES.admin.root} />
+          <span className="px-2 py-0.5 rounded text-[10px] font-[750] tracking-wider uppercase bg-white/15 text-white">
+            Ops
+          </span>
         </div>
 
         <nav className="flex-1 p-2 space-y-0.5">

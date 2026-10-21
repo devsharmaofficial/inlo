@@ -111,6 +111,14 @@ body {
 .bg-\[--color-foreground\]\/90 { background-color: rgba(25, 27, 24, 0.9) !important; }
 .bg-\[--color-forest\]\/10 { background-color: rgba(36, 70, 56, 0.1) !important; }
 .bg-\[--color-danger\]\/10 { background-color: rgba(179, 59, 50, 0.1) !important; }
+.bg-\[--color-background\]\/95 { background-color: rgba(247, 247, 242, 0.96) !important; }
+.bg-\[--color-surface\]\/95 { background-color: rgba(255, 255, 255, 0.96) !important; }
+.bg-header {
+  background-color: rgba(247, 247, 242, 0.96) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
 
 .text-\[--color-foreground\] { color: #191B18 !important; }
 .text-\[--color-muted\] { color: #686D64 !important; }

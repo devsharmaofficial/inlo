@@ -90,18 +90,18 @@ export function BookingQRCode({
           className="block"
           style={{ width: 200, height: 200 }}
         />
-        {/* Inlo logo watermark in QR center */}
+        {/* Inlo brand mark watermark in QR center */}
         <div
           className="absolute inset-0 flex items-center justify-center pointer-events-none"
           aria-hidden="true"
         >
-          <div className="bg-white rounded-full p-1 shadow-md">
+          <div className="bg-white rounded-full p-1.5 shadow-md border border-black/5 flex items-center justify-center">
             <Image
-              src="/inlo-logo.png"
+              src="/inlo-brand-mark.png"
               alt="Inlo"
-              width={28}
-              height={28}
-              className="rounded-full object-cover"
+              width={24}
+              height={24}
+              className="object-contain"
             />
           </div>
         </div>

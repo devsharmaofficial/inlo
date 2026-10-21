@@ -4,67 +4,68 @@ import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { APP_NAME, ROUTES } from "@/lib/constants"
 
-interface LogoProps {
+export interface LogoProps {
   className?: string
   size?: "sm" | "md" | "lg"
-  showWordmark?: boolean
+  variant?: "dark" | "light"
+  markOnly?: boolean
   href?: string
 }
 
 /**
  * Inlo brand logo — featuring the official brand mark icon and typography.
+ * Uses the authentic high-resolution vector-quality Inlo wordmark with natural 2.04:1 aspect ratio.
  */
 export function Logo({
   className,
   size = "md",
-  showWordmark = true,
+  variant = "dark",
+  markOnly = false,
   href = ROUTES.home,
 }: LogoProps) {
-  const iconDimensions = {
-    sm: 32,
-    md: 46,
-    lg: 56,
-  }[size]
+  // Proportions strictly matching official Inlo brand assets (936x460 px = 2.035 : 1 ratio)
+  const dimensions = markOnly
+    ? {
+        sm: { width: 26, height: 26 },
+        md: { width: 34, height: 34 },
+        lg: { width: 44, height: 44 },
+      }[size]
+    : {
+        sm: { width: 53, height: 26 },
+        md: { width: 65, height: 32 },
+        lg: { width: 86, height: 42 },
+      }[size]
 
-  const textStyles = {
-    sm: "text-lg",
-    md: "text-2xl",
-    lg: "text-3xl",
-  }[size]
+  const logoSrc = markOnly
+    ? variant === "light"
+      ? "/inlo-brand-mark-light.png"
+      : "/inlo-brand-mark.png"
+    : variant === "light"
+    ? "/inlo-brand-logo-light.png"
+    : "/inlo-brand-logo.png"
 
   return (
     <Link
       href={href}
       className={cn(
-        "inline-flex items-center gap-2.5 no-underline group select-none",
+        "inline-flex items-center shrink-0 no-underline group select-none transition-transform duration-[140ms]",
         "focus-visible:outline-2 focus-visible:outline-[--color-focus-ring] focus-visible:rounded-[--radius-sm]",
         className
       )}
       aria-label={`${APP_NAME} — home`}
     >
-      {/* Official Inlo Brand Icon */}
-      <div className="relative shrink-0 flex items-center justify-center rounded-[--radius-sm] overflow-hidden">
+      <div className="relative shrink-0 flex items-center justify-center">
         <Image
-          src="/inlo-logo.png"
-          alt="Inlo Logo"
-          width={iconDimensions}
-          height={iconDimensions}
-          className="object-contain rounded-md transition-transform duration-[140ms] group-hover:scale-105"
+          src={logoSrc}
+          alt={APP_NAME}
+          width={dimensions.width}
+          height={dimensions.height}
+          className="object-contain transition-transform duration-[140ms] group-hover:scale-[1.04]"
           priority
         />
       </div>
-
-      {showWordmark && (
-        <span
-          className={cn(
-            "text-[--color-foreground] font-[800] tracking-[-0.04em] leading-none transition-colors",
-            textStyles
-          )}
-        >
-          {APP_NAME}
-        </span>
-      )}
     </Link>
   )
 }
+
 

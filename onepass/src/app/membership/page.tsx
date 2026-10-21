@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { formatINR } from "@/lib/utils"
+import { PassShowcase } from "@/components/membership/pass-showcase"
 
 export const metadata: Metadata = {
   title: "Membership Plans & Activity Credit Packs · Inlo",
@@ -139,6 +140,9 @@ export default async function MembershipPage() {
           )
         })}
       </div>
+
+      {/* ── THE ALL-ACCESS PASS EXPERIENCE ────────────────────────── */}
+      <PassShowcase />
 
       {/* ── PLAN COMPARISON TABLE (Section 4 Component 8) ─────────── */}
       <div className="rounded-[--radius-xl] border border-[--color-border] bg-[--color-surface] p-6 sm:p-8 shadow-sm space-y-6">

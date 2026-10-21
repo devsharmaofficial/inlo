@@ -150,7 +150,10 @@ export function SiteHeader({
   const { isAuthenticated, displayName, creditBalance } = authState
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-[--color-border] bg-[--color-background]/95 backdrop-blur-[12px] transition-all">
+    <header
+      className="sticky top-0 z-40 w-full border-b border-[--color-border] bg-[#F7F7F2]/95 backdrop-blur-[16px] shadow-[0_1px_3px_0_rgba(25,27,24,0.04)] transition-all"
+      style={{ backgroundColor: "rgba(247, 247, 242, 0.96)" }}
+    >
       <div
         className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-8"
         role="banner"
@@ -167,10 +170,10 @@ export function SiteHeader({
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "px-3.5 py-2 rounded-[--radius-sm] text-sm font-[600] transition-colors duration-[140ms]",
+                  "px-3.5 py-2 rounded-[--radius-sm] text-sm transition-colors duration-[140ms]",
                   isActive
-                    ? "text-[--color-forest] bg-[--color-surface-muted]"
-                    : "text-[--color-muted] hover:text-[--color-foreground] hover:bg-[--color-surface-muted]"
+                    ? "text-[--color-forest] bg-[--color-forest]/10 font-[700]"
+                    : "text-[#2B3028] hover:text-[--color-foreground] hover:bg-[--color-surface-muted] font-[600]"
                 )}
               >
                 {link.label}
@@ -203,7 +206,7 @@ export function SiteHeader({
               {/* Bookings shortcut */}
               <Link
                 href={ROUTES.bookings}
-                className="hidden sm:block px-3 py-2 rounded-[--radius-sm] text-sm font-[600] text-[--color-muted] hover:text-[--color-foreground] hover:bg-[--color-surface-muted] transition-colors"
+                className="hidden sm:block px-3 py-2 rounded-[--radius-sm] text-sm font-[650] text-[#2B3028] hover:text-[--color-foreground] hover:bg-[--color-surface-muted] transition-colors"
               >
                 Bookings
               </Link>
@@ -272,7 +275,7 @@ export function SiteHeader({
             <div className="flex items-center gap-2">
               <Link
                 href={ROUTES.signIn}
-                className="hidden sm:block px-3 py-2 rounded-[--radius-sm] text-sm font-[600] text-[--color-muted] hover:text-[--color-foreground] hover:bg-[--color-surface-muted] transition-colors"
+                className="hidden sm:block px-3.5 py-2 rounded-[--radius-sm] text-sm font-[650] text-[#2B3028] hover:text-[--color-foreground] hover:bg-[--color-surface-muted] transition-colors"
               >
                 Sign in
               </Link>
@@ -286,7 +289,7 @@ export function SiteHeader({
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-[--radius-sm] text-[--color-muted] hover:text-[--color-foreground] hover:bg-[--color-surface-muted] transition-colors"
+            className="md:hidden p-2 rounded-[--radius-sm] text-[#2B3028] hover:text-[--color-foreground] hover:bg-[--color-surface-muted] transition-colors cursor-pointer"
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
           >
