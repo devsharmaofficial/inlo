@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { MapPin, Sparkles, Star } from "lucide-react"
+import { MapPin, Sparkles } from "lucide-react"
 import type { VenueCardData } from "@/types/catalogue"
 import { Badge } from "@/components/ui/badge"
 import { DynamicPricingBadge } from "@/components/ui/dynamic-pricing-badge"
@@ -86,7 +86,7 @@ export function VenueCard({ venue, className }: VenueCardProps) {
 
       {/* Venue Details */}
       <div className="flex flex-1 flex-col p-5">
-        {/* Locality & Rating */}
+        {/* Locality & Status */}
         <div className="flex items-center justify-between text-xs text-[--color-muted] mb-1.5">
           <div className="flex items-center gap-1">
             <MapPin size={13} strokeWidth={2} className="text-[--color-forest]" aria-hidden="true" />
@@ -94,11 +94,9 @@ export function VenueCard({ venue, className }: VenueCardProps) {
               {venue.locality}, {venue.city}
             </span>
           </div>
-          <div className="flex items-center gap-1 font-[600] text-amber-600 bg-amber-500/10 px-2 py-0.5 rounded-full text-[11px]">
-            <Star size={11} className="fill-amber-500 text-amber-500" />
-            <span>4.9</span>
-            <span className="text-[--color-muted] font-normal">(50+)</span>
-          </div>
+          <span className="text-[11px] font-[600] text-[--color-forest] bg-[--color-forest]/10 px-2 py-0.5 rounded-full">
+            Verified Partner
+          </span>
         </div>
 
         {/* Venue Title with Clickable Overlay Link */}
