@@ -1,13 +1,13 @@
-# OnePass — Persistent Project Memory
+# Inlo — Persistent Project Memory
 
 > This file is the short durable context for the coding agent. Update it after meaningful decisions or phase completion. Keep it factual. Do not copy transient chat history here.
 
 ## 1. Project identity
 
-- **Working codename:** OnePass. Name is not cleared; it must not be considered an approved trademark or final public brand.
+- **Working codename:** Inlo. Name is not cleared; it must not be considered an approved trademark or final public brand.
 - **Product:** Multi-activity membership and booking marketplace for curated third-party venues in India.
-- **Core idea:** One membership/entitlement system can unlock bookings across participating activities. Venue/slot credit cost may differ, but price and policies must be disclosed clearly before booking.
-- **Operating model:** Asset-light marketplace. OnePass does not own or operate the venues.
+- **Core idea:** One membership/entitlement system can unlock bookings across participating activities. Inlo is the current working brand; OnePass was an earlier internal label and neither name should be assumed legally cleared. Venue/slot credit cost may differ, but price and policies must be disclosed clearly before booking.
+- **Operating model:** Asset-light marketplace. Inlo does not own or operate the venues.
 - **Current stage:** Research / pre-build planning. Validate supply, paid demand, unit economics and legal/payment structure before substantial engineering or real-money launch.
 - **Target launch:** One Tier-1 city, starting with a tightly bounded neighbourhood cluster. City is not yet selected in this document.
 - **Initial categories:** Candidate categories include gyms, yoga, swimming, badminton and turf/box-cricket. Select only 2–3 to launch after supply and user interviews. Do not assume the full category set launches together. Salons/spas/massage/dance can remain later candidates.
@@ -47,11 +47,12 @@ These are recommended starting decisions, not proof that providers have been pro
 - Database row locking or guarded atomic updates prevent double-booking; caches are never authoritative.
 - Every confirmed booking saves a snapshot of time, venue, credits and policy version.
 
-### Credits
-- Integer units only.
-- Immutable append-only ledger for grants, debits, refunds, expiry, reversal and admin adjustments.
-- Balance projection is reconciled against ledger.
-- No client-generated balance, price or entitlement.
+### Credits and usage metering
+- Integer units only; immutable append-only ledger for grants, debits, refunds, expiry, reversal and admin adjustments.
+- Balance projection is reconciled against ledger. No client-generated balance, price, rate, duration or entitlement.
+- Fixed-price sessions are the default. A hybrid model (fixed-price bookings + metered open-ended usage where justified) is a pilot hypothesis, not a settled product decision.
+- Metered usage requires member-visible rate, rounding/minimum, estimate and hard maximum debit before entry. Missing exit cannot trigger uncapped charging.
+- Entry/exit events are server-timestamped, scoped, idempotent and auditable; policy/rate-card version and calculation inputs are retained.
 - Do not assume “credits” automatically avoid financial regulation. Their commercial/legal treatment is an open release-gating issue.
 
 ### Payments
@@ -85,9 +86,18 @@ Read `design.md` before every visual task.
 - Public competitor pages reveal product features more easily than their internal architecture; do not claim knowledge of proprietary competitor tech stacks.
 - Research figures/city options/prices from earlier drafts are hypotheses unless reconfirmed with current primary sources and field evidence.
 
-## 7. Current phase and completion status
+## 7. Repository audit notes (archive received 2026-10-22)
 
-- **Active phase:** Phase 8 — Learn, stabilise, then expand (Completed).
+- The supplied archive contains an existing Next.js App Router application under `onepass/`, using Next.js 16, React 19, TypeScript, Tailwind CSS 4, Supabase SSR/client libraries, Radix primitives, Lucide and ZXing.
+- Routes already present include member exploration/venue detail, membership/checkout, bookings/pass detail, partner dashboard/check-in/statements, admin controls/ledger/payments, legal pages, and API routes for check-in validation, simulated checkout and payment webhooks. Domain modules and unit tests also exist. Treat this as an incremental product hardening/redesign, not a greenfield rebuild.
+- Existing design tokens in `src/app/globals.css` use warm paper, ink, chartreuse and forest. Keep or refine this deliberate direction; do not replace it with a generic blue/purple SaaS palette without evidence.
+- The archive includes `onepass/.env.local`. Do not copy its values into documentation or commit them. Before sharing this archive further, determine privately whether any value is real; rotate any non-placeholder credential and remove local env files from future archives. `.gitignore` is not a substitute for archive hygiene.
+- This file review does not prove that the deployed website has specific visual defects. Verify any UI critique against the live site and actual components/screenshots; avoid unsupported blanket statements.
+- Existing `api/checkout/simulate` code includes a fallback webhook secret for simulation. Ensure this path is strictly development/test-only and cannot be enabled in production; production must fail closed when secrets are missing.
+
+## 8. Current phase and completion status
+
+- **Active phase:** CTO review and controlled redesign/validation; the repository describes Phases 1–7 as implemented, but these claims still require verification by running the current tests/build and inspecting production configuration. Do not equate a listed implementation with production readiness.
 - **Implemented:**
   - **Phase 1 (Foundation & Design System):** Next.js App Router + TypeScript, Design tokens (`globals.css`), UI primitives (Button, Badge, Card, Dialog, Input, Skeleton, Toast, EmptyState), responsive layout shell (desktop & mobile navigation), type-safe env validation, strict testing and CI workflow (`ci.yml`), ADR-001.
   - **Phase 2 (Real Catalogue & Discovery):** SQL migration `001_catalogue.sql`, verified pilot catalogue (Bengaluru: Domlur, Indiranagar, Koramangala across Badminton, Swimming, Gym, Yoga), search and multi-facet filtering on `/explore`, responsive `VenueCard` components, rich venue detail page `/venues/[slug]`, privacy-respecting analytics helper.
@@ -98,7 +108,7 @@ Read `design.md` before every visual task.
   - **Phase 7 (Security, Quality & Operational Administration):** Comprehensive operations portal (`/admin/venues`, `/admin/bookings`, `/admin/ledger`, `/admin/payments`, `/admin/partners`, `/admin/audit`), member account overview (`/account`), 74 automated tests across 13 suites, 0 ESLint warnings, 0 TypeScript errors, 30 Next.js routes cleanly compiled and statically/dynamically generated.
   - **Phase 8 (Pilot Operations, Emergency Kill-Switch & Runbook):** Implemented Platform Emergency Booking Kill-Switch and Circuit Breaker (`system-controls.ts`, `/admin/controls`), Pilot Cohort & Unit Economics analytics dashboard (`pilot-metrics-service.ts`, `/admin/pilot`), System Health API (`/api/health`), global operational announcement banner (`OperationalBanner`), 20-member beta cohort tracker, and canonical `runbook.md` detailing on-ground front-desk drills, daily operational cadence, and weekly settlement protocols. 80 automated tests passing across 14 suites, 33 Next.js routes compiled.
 
-## 8. Open decisions — do not silently invent
+## 9. Open decisions — do not silently invent
 
 - Final brand/name, trademark and domain.
 - City, micro-market and first launch categories.
@@ -110,7 +120,7 @@ Read `design.md` before every visual task.
 - Final auth/OTP provider, hosting/database regions, privacy notice, retention/deletion workflow and legal obligations.
 - Whether QR check-in is in the first live pilot or an audited staff lookup is sufficient.
 
-## 9. Project terminology
+## 10. Project terminology
 
 - **Member:** consumer account.
 - **Partner:** business/venue operator account.
@@ -123,7 +133,7 @@ Read `design.md` before every visual task.
 - **Payment order:** an external money collection attempt or transaction record; separate from a credit balance.
 - **Settlement:** partner amount payable after a defined, reconciled booking/commission/refund calculation.
 
-## 10. Change log
+## 11. Change log
 
 - `2026-10-20 — Phase 1 completion:` Next.js 16 App Router repository foundation, `design.md` design tokens in `globals.css`, Radix UI primitives, `EmptyState`, mobile & desktop shells, type-safe `env.ts`, Vitest setup, GitHub Actions CI, and ADR-001. All tests and production build passing.
 - `2026-10-21 — Phase 2 completion:` Implemented `001_catalogue.sql`, Bengaluru pilot dataset (The Hub Sports Arena, AquaLife Aquatic Centre, Iron & Movement Club, Prana Shala, Veloce Hub), catalogue repository with query/activity/locality filters, public explore page (`/explore`), and venue detail view (`/venues/[slug]`).
@@ -133,5 +143,15 @@ Read `design.md` before every visual task.
 - `2026-10-21 — Phase 6 & Phase 7 completion:` Implemented Staff Check-in Desk (`/partner/checkin`), Partner Statements with CSV export (`/partner/statements`), Venue Bookings list (`/partner/bookings`), Help & Support Ticketing (`/support`), Venue Partner Application (`/partner/apply`), DPDP Act Privacy Notice (`/legal/privacy`), Terms of Service (`/legal/terms`), Cancellations Policy (`/legal/cancellations`), Member Account (`/account`), Operations Admin suite (`/admin/venues`, `/admin/bookings`, `/admin/ledger`, `/admin/payments`, `/admin/partners`, `/admin/audit`). 74 automated tests passing, 0 lint warnings, 0 type errors, 30 Next.js routes cleanly compiled and statically/dynamically generated.
 - `2026-10-21 — UI Contrast & Accessibility Fixes:` Resolved color contrast and visibility issues across modals, legal documents, and call-to-actions. Fixed Tailwind v4 CSS variable binding dropping background colors by defining explicit token utility classes in `globals.css`. Decoupled dark mode variants from OS `prefers-color-scheme: dark` to prevent unwanted text-on-dark inversions, restored opaque solid backgrounds to `DialogOverlay` and `DialogContent`, corrected home CTA contrast, and updated all legal cards to high-contrast Paper & Ink styling. All 74 tests passing, 0 TypeScript/ESLint errors, production build validated.
 - `2026-10-21 — Phase 8 completion:` Built pilot operational monitoring and circuit breakers: Emergency Booking Kill-Switch (`system-controls.ts`, `/admin/controls`), Pilot Cohort & Unit Economics Dashboard (`/admin/pilot`), System Health API (`/api/health`), global operational announcement banner (`OperationalBanner`), 20-member beta cohort tracker with usage metrics, and canonical `runbook.md` operational procedures. All 80 unit & integration tests passing across 14 suites, 0 ESLint warnings, 0 TypeScript errors, 33 Next.js routes compiled. All 8 canonical project phases complete.
+- `2026-10-22 — Inlo Brand Standardization & Instant Interaction Polish:` Standardized brand identity to Inlo across all interfaces, logos, navigation, metadata, and architecture/PRD/rules specs. Fixed double logos and misalignments across layouts. Optimized button responsiveness with instant transitions and immediate feedback.
+- `2026-10-22 — Additional Phase 4 Gate: Hybrid Pricing & Entry/Exit Usage Metering:`
+  - Implemented SQL migration `005_metered_usage_sessions.sql` (rate cards, policy acceptances, usage sessions, scan events, usage adjustments).
+  - Built domain types in `types/metering.ts` and extended `types/booking.ts` with `metered_session` and `usage_adjustment` credit source types.
+  - Implemented domain engine in `features/metering/metering-service.ts` with authoritative server timestamp calculation, pre-entry transparent quote disclosure, atomic entry with balance verification & concurrency prevention, atomic exit checkout with interval rounding, strict hard cap clamping (`Math.min(uncapped, maxCreditsCap)`), idempotency protection against double-debits, missing-exit auto-capper (`MISSING_EXIT_AUTO_CAPPED`), and audited compensating adjustments.
+  - Built API route handlers (`/api/check-ins/entry`, `/api/check-ins/exit`, `/api/check-ins/active`) and server actions (`metering-actions.ts`).
+  - Upgraded Partner Desk UI (`CheckinForm`) with dual mode: Fixed Single-Use Booking Pass verification and Live Gym Entry/Exit Floor Desk with live floor occupancy and checkout.
+  - Built member-facing `ActiveSessionBanner` mounted on `/bookings` and `/account` displaying live elapsed timer, current debited credits, strict cap protection badge, scannable Exit QR code, and instant self-checkout button.
+  - Added comprehensive unit test suite in `metering-service.test.ts` verifying all hybrid pricing, duration rounding, strict hard cap, and ledger reconciliation invariants.
+  - Full suite status: 101 tests passing across 16 test files (100% pass rate), 0 TypeScript errors, 0 ESLint warnings.
 
 

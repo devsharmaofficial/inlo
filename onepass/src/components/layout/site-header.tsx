@@ -68,25 +68,30 @@ export function SiteHeader({
     const syncSession = async () => {
       try {
         const {
-          data: { user },
-        } = await supabase.auth.getUser()
+          data: { session },
+        } = await supabase.auth.getSession()
 
         if (!isMounted) return
 
-        if (user) {
+        if (session?.user) {
+          const user = session.user
           const name =
             (user.user_metadata?.full_name as string) ||
             (user.user_metadata?.name as string) ||
             user.email?.split("@")[0] ||
             "Member"
 
-          const balance = await getMemberCreditBalanceAction()
-          if (!isMounted) return
-
-          setAuthState({
+          setAuthState((prev) => ({
+            ...prev,
             isAuthenticated: true,
             displayName: name,
-            creditBalance: balance,
+          }))
+
+          // Fetch credit balance in background
+          getMemberCreditBalanceAction().then((balance) => {
+            if (isMounted) {
+              setAuthState((prev) => ({ ...prev, creditBalance: balance }))
+            }
           })
         } else {
           setAuthState({
@@ -113,13 +118,16 @@ export function SiteHeader({
           session.user.email?.split("@")[0] ||
           "Member"
 
-        const balance = await getMemberCreditBalanceAction()
-        if (!isMounted) return
-
-        setAuthState({
+        setAuthState((prev) => ({
+          ...prev,
           isAuthenticated: true,
           displayName: name,
-          creditBalance: balance,
+        }))
+
+        getMemberCreditBalanceAction().then((balance) => {
+          if (isMounted) {
+            setAuthState((prev) => ({ ...prev, creditBalance: balance }))
+          }
         })
       } else {
         setAuthState({
@@ -134,7 +142,7 @@ export function SiteHeader({
       isMounted = false
       subscription.unsubscribe()
     }
-  }, [pathname])
+  }, [])
 
   const handleSignOut = async () => {
     await signOutAction()

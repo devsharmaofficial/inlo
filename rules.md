@@ -1,4 +1,4 @@
-# OnePass — Antigravity Project Rules
+# Inlo — Antigravity Project Rules
 
 These rules are binding project constraints. Apply them to every task unless the founder explicitly approves a documented change.
 
@@ -64,6 +64,19 @@ Do not silently resolve a material conflict by guessing. Stop the affected scope
 - Do not enable live partner payouts without approved merchant/marketplace structure, provider support, required due diligence and reconciliation.
 - If money/credit/booking state becomes ambiguous, preserve the record and flag it for reconciliation. Do not “guess successful”.
 
+## 5A. Entry/exit metering — additional non-negotiable invariants
+
+- A scan is an event, not a price. Pricing policy is versioned, server-owned and accepted by the member before a metered visit begins.
+- Fixed-price sessions remain the default unless a documented pilot decision enables metering for a specific category/venue.
+- Before entry, the member must see rate unit, rounding/minimum rule, estimate and hard maximum debit. Never implement uncapped or surprising post-visit debits.
+- The server timestamp is authoritative. Ignore client-submitted duration, price, rate, cap or client clock for financial calculations.
+- Entry and exit requests are idempotent; one visit can have one valid start and one valid completion. Replays, duplicate exits, wrong-venue scans and invalid state transitions must not create ledger effects.
+- Missing exit stops at the disclosed cap and creates an operations exception. Do not continue billing in the background. Any adjustment must be reasoned, audited, policy-compliant and explicitly communicated.
+- Session completion, final debit, ledger entry and booking/session state update must be atomic. Store the exact rate-card/policy version and enough inputs to reproduce the calculation.
+- Static venue QR alone is not proof of member identity or physical presence. Use a scoped token and appropriate staff/booking binding; do not overclaim GPS accuracy.
+- Online validation is MVP default. Do not queue unverified offline scans in local storage and later treat device timestamps as authoritative.
+- Never edit historical ledger entries. Corrections use compensating entries and an audited adjustment workflow.
+
 ## 6. Database and state management
 
 - Use foreign keys, unique constraints, check constraints and transactions to enforce critical invariants, not only UI checks.
@@ -78,7 +91,7 @@ Do not silently resolve a material conflict by guessing. Stop the affected scope
 
 - Read `design.md` before changing any visual component or page.
 - Use design tokens for colour, spacing, radius, typography and semantic statuses. No ad hoc palette per page.
-- Build OnePass as a human, editorial, activity-led marketplace—not a generic AI SaaS template.
+- Build Inlo as a human, editorial, activity-led marketplace—not a generic AI SaaS template.
 - No arbitrary gradients, glassmorphism, glowing card borders, random floating 3D blobs, emoji core icons, endless marquees or gratuitous scroll effects.
 - Avoid fake ratings, fake reviews, fake scarcity, invented logos, placeholder venue imagery presented as real, fabricated metrics and fake booking success.
 - Use one consistent icon set and component geometry. Do not hand-roll a new button/card for every route when a shared component can work.
@@ -134,7 +147,7 @@ Critical mandatory test cases:
 - No native apps, AI recommendation system, dynamic ML pricing, or multi-city rollout without a product decision.
 - Avoid dependency sprawl. Before adding a library, check maintenance, license, bundle size, accessibility, compatibility and whether existing stack already solves the need.
 - Do not copy-paste an entire UI component registry just because it is visually impressive. Adapt only components used in a specific product requirement.
-- Keep secrets and local setup instructions in `.env.example` using dummy placeholders only.
+- Keep secrets and local setup instructions in `.env.example` using dummy placeholders only. Never include `.env.local`, real credentials, build caches or generated TypeScript build info in handoff ZIPs. If a shared archive contains `.env.local`, inspect values privately and rotate any non-placeholder credential before sharing the repository further.
 
 ## 11. Antigravity response format for completed tasks
 

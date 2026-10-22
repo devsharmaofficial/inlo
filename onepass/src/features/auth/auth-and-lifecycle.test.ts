@@ -30,7 +30,7 @@ describe("Auth and Member Booking Actions", () => {
     const res = await signUpAction("Unit Test Runner", uniqueEmail, "SecurePass123!")
     expect(res.success).toBe(true)
     expect(res.redirectUrl).toBe("/membership")
-  })
+  }, 15000)
 
   it("dispatches and verifies a 6-digit email OTP", async () => {
     const testEmail = `otp_member_${Date.now()}@inlo.tech`

@@ -7,7 +7,14 @@ export type BookingStatus = "confirmed" | "cancelled" | "completed" | "no_show"
 export type CheckinStatus = "pending" | "checked_in" | "expired"
 
 export type CreditEntryType = "grant" | "debit" | "refund" | "expiry" | "adjustment"
-export type CreditSourceType = "seed_pack" | "order" | "booking" | "cancellation" | "admin"
+export type CreditSourceType =
+  | "seed_pack"
+  | "order"
+  | "booking"
+  | "cancellation"
+  | "admin"
+  | "metered_session"
+  | "usage_adjustment"
 
 export interface CancellationPolicySnapshot {
   cutoffHours: number

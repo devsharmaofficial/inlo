@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { Search, MapPin, ArrowRight } from "lucide-react"
+import { Search, MapPin, ArrowRight, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const QUICK_ACTIVITIES = [
@@ -23,28 +23,39 @@ const LOCALITIES = [
 
 export function HeroSearch() {
   const router = useRouter()
+  const [isPending, startTransition] = React.useTransition()
   const [selectedActivity, setSelectedActivity] = React.useState("all")
   const [selectedLocality, setSelectedLocality] = React.useState("All Localities")
   const [query, setQuery] = React.useState("")
+  const [pendingTarget, setPendingTarget] = React.useState<string | null>(null)
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
+    setPendingTarget("submit")
     const params = new URLSearchParams()
     if (query.trim()) params.set("query", query.trim())
     if (selectedActivity !== "all") params.set("activity", selectedActivity)
     if (selectedLocality !== "All Localities") params.set("locality", selectedLocality)
 
-    router.push(`/explore?${params.toString()}`)
+    startTransition(() => {
+      router.push(`/explore?${params.toString()}`)
+    })
   }
 
   const handlePillClick = (activityId: string) => {
+    // 1. Instant 0ms visual selection
     setSelectedActivity(activityId)
+    setPendingTarget(activityId)
+
+    // 2. Smoothly transition to the filtered exploration view
     const params = new URLSearchParams()
     if (activityId !== "all") params.set("activity", activityId)
     if (selectedLocality !== "All Localities") params.set("locality", selectedLocality)
     if (query.trim()) params.set("query", query.trim())
 
-    router.push(`/explore?${params.toString()}`)
+    startTransition(() => {
+      router.push(`/explore?${params.toString()}`)
+    })
   }
 
   return (
@@ -53,6 +64,8 @@ export function HeroSearch() {
       <div className="flex items-center gap-1.5 overflow-x-auto pb-2.5 sm:pb-3 no-scrollbar" role="tablist">
         {QUICK_ACTIVITIES.map((act) => {
           const isSelected = selectedActivity === act.id
+          const isPillPending = isPending && pendingTarget === act.id
+
           return (
             <button
               key={act.id}
@@ -60,13 +73,17 @@ export function HeroSearch() {
               role="tab"
               aria-selected={isSelected}
               onClick={() => handlePillClick(act.id)}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[--radius-pill] text-xs font-[650] shrink-0 transition-all duration-[140ms] ${
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[--radius-pill] text-xs font-[650] shrink-0 select-none touch-manipulation cursor-pointer transition-all duration-[100ms] active:scale-[0.96] ${
                 isSelected
                   ? "bg-[--color-forest] text-white shadow-xs"
                   : "bg-[--color-surface-muted] text-[--color-muted] hover:text-[--color-foreground] hover:bg-[--color-border]"
               }`}
             >
-              <span>{act.icon}</span>
+              {isPillPending ? (
+                <Loader2 size={12} className="animate-spin text-white" />
+              ) : (
+                <span>{act.icon}</span>
+              )}
               <span>{act.label}</span>
             </button>
           )
@@ -95,7 +112,7 @@ export function HeroSearch() {
               value={selectedLocality}
               onChange={(e) => setSelectedLocality(e.target.value)}
               aria-label="Select locality"
-              className="bg-transparent text-xs font-[600] text-[--color-foreground] outline-none cursor-pointer"
+              className="bg-transparent text-xs font-[600] text-[--color-foreground] outline-none cursor-pointer touch-manipulation"
             >
               {LOCALITIES.map((loc) => (
                 <option key={loc} value={loc}>
@@ -110,7 +127,9 @@ export function HeroSearch() {
             variant="primary"
             size="md"
             id="hero-search-submit"
-            className="shrink-0 gap-1.5 font-[700] px-4"
+            loading={isPending && pendingTarget === "submit"}
+            disabled={isPending}
+            className="shrink-0 gap-1.5 font-[700] px-4 active:scale-95 transition-transform"
           >
             <span>Find Slots</span>
             <ArrowRight size={14} aria-hidden="true" />

@@ -14,8 +14,9 @@ const buttonVariants = cva(
   [
     "inline-flex items-center justify-center gap-2 whitespace-nowrap",
     "font-semibold leading-none tracking-[-0.01em]",
-    "cursor-pointer select-none",
-    "transition-all duration-[140ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
+    "cursor-pointer select-none touch-manipulation",
+    "transition-all duration-[120ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
+    "active:scale-[0.98]",
     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[--color-focus-ring]",
     "disabled:cursor-not-allowed disabled:opacity-50",
     // Loading state: preserve dimensions

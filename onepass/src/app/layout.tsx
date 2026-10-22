@@ -48,14 +48,14 @@ export const metadata: Metadata = {
   ),
   icons: {
     icon: [
-      { url: "/inlo-brand-mark.png" },
+      { url: "/inlo-logo.png" },
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
       { url: "/icon.png", sizes: "32x32", type: "image/png" },
     ],
-    shortcut: "/inlo-brand-mark.png",
+    shortcut: "/inlo-logo.png",
     apple: [
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-      { url: "/inlo-brand-mark.png" },
+      { url: "/inlo-logo.png" },
     ],
   },
   openGraph: {
@@ -64,9 +64,9 @@ export const metadata: Metadata = {
     siteName: "Inlo",
     images: [
       {
-        url: "/inlo-brand-logo.png",
-        width: 936,
-        height: 460,
+        url: "/inlo-logo.png",
+        width: 1220,
+        height: 1184,
         alt: "Inlo",
       },
     ],

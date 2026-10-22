@@ -1,4 +1,4 @@
-# OnePass — Technical Architecture
+# Inlo — Technical Architecture
 
 > **Architecture principle:** Start with a modular monolith and a reliable relational core. Scale only after measured constraints require it. This product’s hardest technical problems are transactional correctness, inventory accuracy, credit accounting, payment reconciliation and partner operations—not microservice count.
 
@@ -155,18 +155,61 @@ Payment webhook signatures must be validated according to the selected provider�
 - Define whether a refund reverses unused credits, invalidates a membership period, or creates a separate compensation entry. Avoid deleting original grants/debits.
 - Reconcile chargebacks and refunds against already-consumed credits; flag exceptions for operations rather than producing an unbounded negative balance silently.
 
-## 7. Credit allocation model
+## 7. Pricing, pass scans and credit allocation
 
-Keep **credits as an internal entitlement abstraction**, not as money. This architecture does not decide whether the legal commercial structure is permitted; legal/accounting review is a release prerequisite.
+### 7.1 Recommended MVP shape: hybrid, not universal duration billing
 
-- Use integer quantities only.
-- Represent grants and consumption in an append-only ledger.
-- If expiries/promotional restrictions exist, allocate debits deterministically by documented policy (e.g. expiring eligible lot first) and persist the allocation mapping.
-- Balance cache/projection must be transactionally maintained and periodically reconciled against ledger sums.
-- Any admin adjustment requires a reason, authorised actor, audit event and ledger entry.
-- Refunds create counter-entries; never edit past entries.
-- Keep monetary payment/order data and partner settlement/accounting data distinct from member credit-unit data.
-- A credit cost change must affect future quotes only unless a policy-backed migration is explicitly authorised.
+Use fixed server-quoted prices for bookable time slots/classes/courts. Permit duration metering only for a category/venue where the partner contract and pilot data justify it (likely open gym, subject to validation). A scan is an attendance event; it is not itself the pricing policy.
+
+Every metered visit requires a server-generated quote containing:
+- member, venue, activity and booking/entitlement reference;
+- versioned rate-card ID and effective version;
+- rate unit, rounding increment, minimum charge and estimate;
+- hard maximum credit debit and quote expiry;
+- cancellation/no-checkout terms accepted by the member;
+- idempotency key and unique visit/session ID.
+
+The client renders the quote; only server code decides eligibility, rate, duration, cap and ledger effect.
+
+### 7.2 Data model additions
+
+Add or adapt these entities in the existing PostgreSQL schema (follow current migration naming and repository conventions):
+
+- `rate_cards`: venue/activity, rate unit, integer credit rate, rounding policy, minimum charge, maximum duration/debit, active interval, policy version, actor and audit timestamps.
+- `usage_sessions`: id, member, venue, optional booking, status, accepted rate-card version, quote/maximum, server start/end timestamps, calculated billable units, final debit, exception code and lifecycle timestamps.
+- `scan_events`: unique event ID, session, venue, actor/staff/device, action (`ENTRY`/`EXIT`/`STAFF_OVERRIDE`), server receipt time, optional signed client timestamp for diagnostics only, idempotency key, validation outcome and audit metadata. Avoid storing unnecessary device fingerprints.
+- `usage_adjustments`: append-only proposed/approved correction, reason, evidence reference, actor, approver, old calculation and compensating ledger entry. Separate proposer and approver for material changes where staffing allows.
+- `pricing_policy_acceptances`: member, quote/rate-card version, accepted terms, accepted timestamp and booking/session reference.
+
+Use foreign keys, unique constraints, state checks and indexes. Do not store credit rates as floating point. Do not rely on a mutable `walletBalance` column as the source of truth.
+
+### 7.3 Entry/exit flow
+
+1. Member opens the pass/booking screen. The server issues a short-lived, scoped token or validates a booking-bound pass. A static venue QR can identify the venue but must not be sufficient by itself to authenticate a member or authorise a debit.
+2. Staff/venue scanner or the member flow submits the scan action with session/booking reference and idempotency key. Server authenticates the actor, verifies the venue relationship, token freshness, booking/entitlement eligibility and session state.
+3. On entry, a transaction creates exactly one active usage session and persists the accepted rate-card version, quote and hard cap. Return the confirmed start time and session state.
+4. On exit, the server uses its own received/validated timestamp and the accepted rate-card rules to compute billable duration. It must enforce minimum, rounding and cap in one transaction, then append one debit ledger entry and mark the session completed.
+5. If exit is missing, the system stops at the disclosed cap and flags an exception. It must not silently continue accruing. Operations may resolve the exception through a reasoned, audited adjustment; any additional debit needs separate policy/legal approval and explicit member notice/authorisation.
+6. Repeated requests return the prior result for the same idempotency key. Duplicate exit after completion cannot create another debit. Out-of-order exit, wrong venue, expired token, second concurrent active session or invalid state is rejected with a stable error code.
+
+### 7.4 Time, rounding and consistency
+
+- Server UTC timestamps are authoritative; venue timezone is for display and rate-card schedules.
+- Define whether billing rounds up to a fixed increment, has a grace period, or charges a minimum. Do not leave this implicit.
+- Calculate with integer units and deterministic integer arithmetic; no floating-point currency/credit math.
+- Store the raw start/end event timestamps, computed duration, billable increments, rate, cap and formula/policy version for audit/reproduction.
+- Enforce atomicity across session completion, credit debit, ledger entry and booking state. Use a DB transaction/locking/unique constraints, not front-end sequencing.
+- Use an append-only ledger for grants, debits, refunds, expiry and adjustments. Balance projections must be reconciled against ledger totals.
+- Debit allocation across expiring credit lots must be deterministic and recorded, e.g. eligible expiry-first; policy remains unset until approved.
+
+### 7.5 Security and operational trade-offs
+
+- QR payloads should contain opaque, short-lived, scoped tokens—not personal data, raw member IDs or reusable secrets.
+- A venue’s printed static QR is easy to copy; for high-risk use, pair it with staff confirmation, a rotating display QR, a booking-bound token or another proportionate presence check. Choose after threat modelling and partner usability tests.
+- Do not claim GPS proves presence. Do not require precise location permission just to browse.
+- Online server validation is the MVP default. Offline scans introduce clock manipulation, replay and conflicting sessions; defer offline mode unless venue connectivity data proves it necessary. If added, use signed event envelopes, short validity, local encrypted storage, explicit pending state and reconciliation conflict handling.
+- Rate-limit scan attempts and alert on repeated invalid tokens, rapid venue switching, duplicate active sessions and unusual adjustment rates.
+- Keep support staff able to see why a debit was calculated without granting broad ability to rewrite ledger history.
 
 ## 8. State machines
 
@@ -213,7 +256,9 @@ Use namespaced server routes/route handlers or equivalent typed server operation
 - `GET /api/bookings` — current member’s bookings or partner-authorised subset.
 - `POST /api/bookings/:id/cancel` — policy-controlled transition.
 - `POST /api/bookings/:id/check-in-token` — authorised check-in token retrieval/issue, if required.
-- `POST /api/check-ins/redeem` — partner-staff/admin redeem token.
+- `POST /api/check-ins/entry` — authenticate and open a usage session using a valid pass/venue context; idempotent.
+- `POST /api/check-ins/exit` — close an active usage session, calculate capped usage and post one ledger debit; idempotent.
+- `POST /api/check-ins/redeem` — partner-staff/admin redeem token for fixed-session experiences.
 - `POST /api/payments/orders` — create provider order from a server-owned product.
 - `POST /api/webhooks/:provider` — raw-body signature verification, event inbox and idempotent processing.
 - `GET /api/partner/venues` — venues accessible to current partner user.
@@ -225,7 +270,7 @@ Contract requirements:
 - Return safe user messages; never expose SQL, provider secrets or stack traces.
 - Use idempotency keys for non-idempotent POST operations. Same key + same request returns the same result; same key with a different request returns a conflict.
 - Add pagination for growing lists and enforce server-side result limits.
-- Document timezones, currency units and integer-credit semantics.
+- Document timezones, currency units and integer-credit semantics. Check-in/exit APIs must never accept a client-supplied final duration, credit amount, rate or cap as authoritative.
 
 ## 11. Availability, pricing and search
 

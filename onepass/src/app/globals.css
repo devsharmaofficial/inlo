@@ -284,3 +284,27 @@ body {
   scrollbar-width: none;
 }
 
+/* ============================================================
+   Instant Interaction & Touch Responsiveness
+   Eliminates mobile click delay and provides instant 0ms tactile feedback
+   ============================================================ */
+
+button,
+[role="button"],
+[role="tab"],
+input[type="submit"],
+input[type="button"],
+select,
+summary {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:active:not(:disabled),
+[role="button"]:active:not([aria-disabled="true"]),
+[role="tab"]:active {
+  transform: scale(0.982);
+  transition: transform 50ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+

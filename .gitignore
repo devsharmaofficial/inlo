@@ -23,5 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 .vercel
 
-# Spec zip (optional, or tracked)
-onepass-antigravity-spec.zip
+# Archives & Duplicate markdown uploads
+*.zip
+* (*).md

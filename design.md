@@ -1,7 +1,7 @@
-# OnePass — Visual Design System & UI/UX Brief
+# Inlo — Visual Design System & UI/UX Brief
 
 > **Purpose:** A durable design contract for Antigravity. Read this file before creating or restyling any user-facing surface.  
-> **Brand status:** “OnePass” is a working codename; do not treat its wordmark as legally cleared.  
+> **Brand status:** Inlo is the current working brand used by the repository and inlo.tech; legal/trademark clearance is not established by this code audit. “OnePass” was an earlier internal label.  
 > **Experience goal:** Premium urban activity marketplace—confident, useful, editorial, human, and operationally trustworthy. Not a generic AI-generated SaaS dashboard.
 
 ---
@@ -16,7 +16,7 @@ Blend three qualities:
 - **Human energy:** activity photographs, local neighbourhood cues, a small warm accent colour and confident microcopy.
 
 ### Do not imitate one reference site wholesale
-Use references to study hierarchy, density, motion, image treatment, navigation and interaction patterns—not to copy a logo, page layout pixel-for-pixel, proprietary illustrations or branded visual identity. The result must be recognisably OnePass.
+Use references to study hierarchy, density, motion, image treatment, navigation and interaction patterns—not to copy a logo, page layout pixel-for-pixel, proprietary illustrations or branded visual identity. The result must be recognisably Inlo.
 
 ### Reference library
 Use these as ongoing research sources; inspect relevant live examples before designing complex pages.
@@ -192,13 +192,14 @@ Information hierarchy:
 
 Interaction: entire card may open detail; nested buttons must not create confusing click behaviour. Provide focus-visible state. Use consistent image ratio; avoid six different card styles in one viewport.
 
-### 7.4 Credit display
-- Label the unit (“credits”), not only a bare number.
-- Show available balance and booking cost as distinct concepts.
-- Explain when cost changes by slot; never hide the price behind a tooltip.
-- Use tabular numbers and explicit confirmation before a credit debit.
-- Distinguish plan-included, paid-pack, promotional and expired credits if the policy treats them differently.
-- Do not imply credits are cash or financial account balances.
+### 7.4 Credit and usage-cost display
+- Label the unit (“credits”), not only a bare number. Show available balance, quote and final debit as distinct concepts.
+- For fixed-price sessions, show the exact credit cost before booking confirmation.
+- For metered sessions, before entry show the rate unit, rounding/minimum rule, estimated cost and a visually prominent **maximum debit**. State the no-checkout rule in plain language.
+- After exit, show entry time, exit time, billable duration, rate-card version/reference, final debit and remaining balance. Provide “Report a problem” without forcing the member to find support elsewhere.
+- A pending exit or disputed calculation must not look like a settled final charge.
+- Use tabular numbers and clear status labels. Do not imply credits are cash or financial account balances.
+- Distinguish plan-included, paid-pack, promotional and expired credits if policy treats them differently.
 
 ### 7.5 Slot picker
 - Group by date; show local date, start time, duration (where applicable), cost and availability.
@@ -212,12 +213,13 @@ Interaction: entire card may open detail; nested buttons must not create confusi
 - Success screen offers a useful next step: directions, add-to-calendar or “View booking”.
 - Do not celebrate success until the server confirms the booking.
 
-### 7.7 QR / check-in pass
-- High contrast, sufficient quiet zone and scalable output.
-- Show human-readable booking reference beneath the code.
-- Token must be validated server-side, scoped to one booking, hard to guess and not reusable after a successful check-in.
-- Include a staff/manual fallback for a camera failure or accessibility need.
-- Never encode personal details or secret tokens in a publicly visible URL.
+### 7.7 Pass, entry and exit scan
+- High contrast, sufficient quiet zone and scalable output; show a human-readable booking/session reference.
+- Explain the current state plainly: “Ready to check in”, “Visit in progress”, “Checked out”, “Needs staff help” or “Pending confirmation”.
+- Never present a decorative QR as functional. Tokens must be server-validated, scoped, short-lived where appropriate and protected against replay.
+- For metered visits, show the accepted rate, estimate and hard maximum before entry. At exit, show a pending calculation state until the server confirms the debit.
+- Provide a staff/manual fallback for camera, network or accessibility issues. Clearly distinguish “scan recorded” from “visit confirmed”.
+- Never encode personal details or reusable secrets in a public URL. Do not imply GPS alone proves venue presence.
 
 ### 7.8 Tables in operations portal
 - Tables should be practical: alignment, sortable headings only when sorting works, pagination if needed, clear status labels, meaningful empty states and row-level action menus.
@@ -377,6 +379,6 @@ Do not install every 21st.dev or animation library component automatically. Chec
 - [ ] No horizontal overflow at 360px.
 - [ ] Contrast, keyboard navigation, focus and reduced motion checked.
 - [ ] Typography, colour, spacing and radii use tokens.
-- [ ] Component feels like the same OnePass product across routes.
+- [ ] Component feels like the same Inlo product across routes.
 - [ ] No fake success, fake availability, or optimistic money/booking state.
 

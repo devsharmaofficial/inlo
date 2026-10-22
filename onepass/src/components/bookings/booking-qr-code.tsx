@@ -95,13 +95,13 @@ export function BookingQRCode({
           className="absolute inset-0 flex items-center justify-center pointer-events-none"
           aria-hidden="true"
         >
-          <div className="bg-white rounded-full p-1.5 shadow-md border border-black/5 flex items-center justify-center">
+          <div className="bg-white rounded-full p-1 shadow-md border border-black/5 flex items-center justify-center overflow-hidden">
             <Image
-              src="/inlo-brand-mark.png"
+              src="/inlo-logo.png"
               alt="Inlo"
-              width={24}
-              height={24}
-              className="object-contain"
+              width={26}
+              height={26}
+              className="object-contain rounded-full"
             />
           </div>
         </div>

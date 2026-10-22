@@ -17,6 +17,8 @@ import {
   getUserLedgerEntries,
 } from "@/features/credits/credit-ledger-service"
 import { getCurrentUser } from "@/features/auth/auth-service"
+import { getActiveSessionForUser } from "@/features/metering/metering-service"
+import { ActiveSessionBanner } from "@/components/bookings/active-session-banner"
 import { signOutAction } from "@/app/actions/auth-actions"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -34,15 +36,18 @@ export default async function AccountPage() {
   const memberName = user?.fullName || "Aryan Sharma"
   const memberEmail = user?.email || "athlete@inlo.tech"
 
-  const [balance, entries] = await Promise.all([
+  const [balance, entries, activeSession] = await Promise.all([
     getUserCreditBalance(effectiveUserId),
     getUserLedgerEntries(effectiveUserId),
+    getActiveSessionForUser(effectiveUserId),
   ])
 
   const balanceInr = balance * 70
 
   return (
     <div className="mx-auto max-w-[1080px] px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-10">
+      {/* Active Session in Progress */}
+      <ActiveSessionBanner session={activeSession} />
       {/* Pilot Demo Notice when not logged in */}
       {!user && (
         <div className="rounded-[--radius-lg] border border-[--color-forest]/30 bg-[--color-forest]/5 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">

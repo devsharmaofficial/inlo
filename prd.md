@@ -1,16 +1,16 @@
-# OnePass — Product Requirements Document
+# Inlo — Product Requirements Document
 
 > **Project status:** Discovery → pre-build validation  
-> **Product name:** OnePass is a working codename only. Clear company name, trademark, domain, app-store and social handles before public launch.  
+> **Brand status:** Inlo is the current working brand used by the repository and inlo.tech; legal/trademark clearance is not established by this code audit. “OnePass” was an earlier internal label. Clear company name, trademark, domain, app-store and social handles before public launch.  
 > **Primary market:** India; launch in one carefully selected Tier-1 city and a tightly bounded set of neighbourhoods.  
 > **Document owner:** Product / CTO  
 > **Last updated:** 2026-10-20
 
 ## 1. Executive product brief
 
-OnePass is a multi-activity membership and booking marketplace. Instead of purchasing a separate commitment for every venue, a member uses one membership to discover and book participating activities—initially selected fitness and sport experiences such as gyms, yoga, swimming, badminton and turf/box-cricket sessions. Each bookable experience has a clearly disclosed credit cost or included entitlement. Members see the exact cost, time, venue rules and cancellation policy before confirming.
+Inlo is a multi-activity membership and booking marketplace. Instead of purchasing a separate commitment for every venue, a member uses one membership to discover and book participating activities—initially selected fitness and sport experiences such as gyms, yoga, swimming, badminton and turf/box-cricket sessions. Each bookable experience has a clearly disclosed credit cost or included entitlement. Members see the exact cost, time, venue rules and cancellation policy before confirming.
 
-Partner venues gain incremental demand and a simple way to publish inventory, validate bookings and understand usage. OnePass earns through a commercially sustainable membership / booking model and a transparent partner agreement. The product is an asset-light marketplace: it does not operate or own the venues.
+Partner venues gain incremental demand and a simple way to publish inventory, validate bookings and understand usage. Inlo earns through a commercially sustainable membership / booking model and a transparent partner agreement. The product is an asset-light marketplace: it does not operate or own the venues.
 
 The product is **not** “every activity in every city on day one.” Supply quality, local density, booking reliability and unit economics matter more than a large category list. Launch with one micro-market and a small set of categories that can be operationally supported.
 
@@ -26,7 +26,7 @@ The product is **not** “every activity in every city on day one.” Supply qua
 - Venues want incremental customers without giving away peak-time capacity or losing control over schedules and redemption.
 - Small venues need a low-friction way to onboard and reconcile bookings.
 
-### OnePass hypothesis
+### Inlo hypothesis
 A curated, dense local network + dependable booking + transparent credits + a polished, easy-to-use experience can be more valuable than a broad but unreliable catalogue.
 
 ### Competitive reality
@@ -147,28 +147,51 @@ Controls access, system settings and sensitive configuration. Use least privileg
 ### Later, only if metrics justify it
 - Personalised discovery, churn/risk scoring, dynamic pricing optimisation, partner APIs, city expansion, advanced BI and integrations with venue POS systems.
 
-## 8. Business and credit model: decisions that must be explicit
+## 8. Business model and entry/exit metering — decision framework
 
-The product team must not invent economics in code. Store prices and terms as configuration/data with an audit trail.
+The proposed entry/exit pass scan is a hypothesis, not a settled pricing rule. It must be validated with members, venue operators, finance and counsel before any live-money launch. The core UX requirement is **predictable price before commitment**: scanning may measure usage, but must never create an uncapped or surprising debit.
 
-Before accepting real consumer payments, decide and document:
-- Whether the customer purchases a subscription entitlement, prepaid units, individual bookings, or a combination.
-- Price, taxes, payment-provider fees, refunds, cancellations, expiry, rollover, promotional credits and chargeback treatment.
-- What the member’s credits represent, whether they can be transferred or redeemed for cash, and who is the contracting supplier of the underlying activity.
-- Venue revenue share, payout calculation, disputes, no-show treatment, cancellation compensation, settlement frequency and required invoices.
-- Which party collects money and which party is legally responsible for fulfilment/refunds.
+### Models to compare in the pilot
 
-**Legal/finance gate:** A “credit” label does not establish regulatory treatment. Obtain Indian legal/accounting advice on RBI/payment arrangements, marketplace/aggregator structure, consumer disclosures, GST/invoicing, settlement flow, subscription/auto-renewal requirements and privacy obligations. Select a payment provider/product that explicitly supports the intended marketplace use case. Do not assume ordinary checkout or payout APIs automatically authorize pooled funds or split settlements.
+1. **Fixed price per bookable experience** — best when the product has a defined slot/session (e.g. badminton court for 60 minutes, yoga class, swimming session with a venue-defined visit window). Easiest to explain, reconcile and support.
+2. **Time-metered usage** — potentially suitable for open-ended gym visits where duration materially affects venue economics. Requires reliable start/end events, explicit rates, rounding rules, caps and a missed-checkout policy.
+3. **Hybrid (recommended MVP hypothesis)** — use fixed, pre-quoted pricing for reservations/classes/courts; use metered duration only for categories where the partner’s commercial model and operations justify it. Before check-in, show the estimated debit and a hard maximum for the visit. Member must explicitly accept the rule. Pilot manually first.
 
-### Credit rule defaults for product prototyping only
-These are provisional software behaviours, not final customer terms:
-- Credit values are non-negative integers at the product boundary; ledger deltas may be signed integers.
-- Credit costs are calculated on the server and snapshotted at booking time.
-- No credit purchase/grant is created from a client-side “success” query parameter.
-- Credits are not transferable between members.
-- Cash redemption is not exposed.
-- Expiry/rollover and cancellation percentages remain unset until commercial/legal policy is approved. Never quietly hardcode a policy.
-- Promotional credits must be distinguishable from paid/plan credits if their restrictions differ.
+Do not assume the hybrid model is final. Run a small concierge pilot and compare conversion, disputes, margin, partner acceptance and operational burden against fixed pricing.
+
+### Metering rules that must be decided before implementation
+
+- **Rate card:** server-owned versioned rate per venue/activity/time band, plus any taxes/fees that must be disclosed. No browser-calculated rate.
+- **Quote:** before starting a metered visit, show the rate, billing increment/rounding, minimum charge, estimated duration cost and a hard maximum debit. If the maximum cannot be estimated safely, do not enable metering for that venue.
+- **Start event:** authenticated member pass and venue identity; server timestamp is authoritative. A venue’s static QR identifies the venue, but does not alone prove a member is physically present. Use a short-lived signed session token or staff-side scan/confirmation to bind the member, venue and intended action.
+- **End event:** record server timestamp and calculate final usage from the accepted rate-card version. Never trust device clock or client-supplied duration.
+- **No checkout scan:** after a disclosed maximum duration, stop accruing at the pre-agreed cap and flag the visit for operational review. Never keep charging indefinitely. A later adjustment must be separately authorised, explained and ledgered; no silent back-charge.
+- **Duplicate / replay:** idempotent scan event IDs; one active visit per eligible booking/member/venue policy; reject replayed or out-of-order events and create an audit event.
+- **Lost network / scanner:** show a clear pending state. Any offline capture must be signed, time-bounded and reconciled with a documented conflict rule; do not trust device time. For MVP, prefer online validation plus a staff manual fallback rather than unverified local-storage queues.
+- **Early exit / cancellation:** distinguish booked reservation cancellation, early departure, venue-initiated cancellation and a member leaving without checkout. The policy and credit outcome must be shown before booking/check-in.
+- **Disputes:** retain event IDs, actor/device/staff identity, timestamps, rate-card version, quote, cap, calculated duration and ledger references. Restrict access and retention.
+- **Partner settlement:** settlement uses validated completed usage and the signed partner agreement, not the UI’s displayed balance. Reconcile member debit, platform fee, partner amount, taxes, refunds and adjustments separately.
+
+### Credit accounting principles
+
+Credits are an internal product unit; their name does not establish legal treatment. Store integer units and a versioned pricing rule. The ledger is append-only; corrections are compensating entries, never historical edits. Persist the quoted rate-card version and maximum debit with the visit/booking. A debit cannot exceed the authorised cap without an explicit, separately approved adjustment flow.
+
+Before accepting real payments, decide and document:
+- Whether the customer buys membership entitlement, prepaid units, individual bookings, or a combination.
+- Credit-to-price communication, taxes, payment-provider fees, refunds, cancellation, expiry, rollover, promotional restrictions and chargeback treatment.
+- Contracting supplier for each activity, venue revenue share, no-show/cancellation compensation and settlement frequency.
+- Who collects money and who is responsible for fulfilment, refunds and consumer complaints.
+
+**Legal/finance gate:** obtain Indian legal/accounting advice on payment and marketplace structure, RBI/payment-provider implications, consumer disclosures, GST/invoicing, subscriptions/auto-renewal, settlement and privacy. Do not assume ordinary checkout or payout APIs permit pooled funds or split settlements.
+
+### Prototyping defaults (not customer terms)
+
+- All credit arithmetic uses integers; all time intervals use server timestamps in UTC and venue-local display time.
+- Rate cards are versioned and effective-dated; old visits retain their accepted version.
+- Fixed-price experiences must display the final debit before confirmation.
+- Metered experiences must display rate + estimate + hard cap before check-in.
+- No transfer or cash redemption unless counsel approves a different model.
+- Expiry, rollover and promotional restrictions remain unset until policy approval; do not invent them in code.
 
 ## 9. Business rules and acceptance criteria
 
@@ -199,7 +222,10 @@ These are provisional software behaviours, not final customer terms:
 4. Cancellation allowed by policy: booking changes state and a ledger refund appears atomically; cancellation denied by policy: state and balance remain unchanged.
 5. A partner user queries another partner’s booking URL: no private data is returned.
 6. An admin changes a credit cost: new quotes use the new value; already-confirmed bookings retain their price snapshot.
-7. Network timeout after booking commit: retry with the same idempotency key returns the committed booking rather than charging again.
+7. Duplicate entry or exit scan requests create one event and one ledger effect only.
+8. Missing exit scan never exceeds the disclosed hard cap; it creates a review flag rather than an uncapped debit.
+9. Device clock manipulation does not change billable duration.
+10. Network timeout after booking commit: retry with the same idempotency key returns the committed booking rather than charging again.
 
 ## 10. Success metrics and pilot gates
 

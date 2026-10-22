@@ -15,6 +15,19 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
+  const allCookies = request.cookies.getAll()
+  const hasAuthCookie = allCookies.some(
+    (c) =>
+      (c.name.startsWith("sb-") && c.name.includes("auth-token")) ||
+      c.name.includes("sb:token") ||
+      c.name.startsWith("sb-access-token")
+  )
+
+  // Short-circuit: If no auth token cookie is present, skip network request entirely (0ms)
+  if (!hasAuthCookie) {
+    return response
+  }
+
   const supabase = createServerClient(url, anonKey, {
     cookies: {
       getAll() {
@@ -32,8 +45,15 @@ export async function middleware(request: NextRequest) {
     },
   })
 
-  // Refreshes the auth token if needed
-  await supabase.auth.getUser()
+  // Refreshes the auth token with safety timeout to prevent stalling page clicks
+  try {
+    await Promise.race([
+      supabase.auth.getUser(),
+      new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 1000)),
+    ])
+  } catch {
+    // Continue gracefully on network timeout or failure
+  }
 
   return response
 }

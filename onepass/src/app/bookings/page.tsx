@@ -4,6 +4,8 @@ import { CalendarDays, MapPin, Clock, ArrowRight } from "lucide-react"
 import { getMemberBookings } from "@/features/bookings/booking-engine"
 import { getUserCreditBalance } from "@/features/credits/credit-ledger-service"
 import { getEffectiveUserId } from "@/features/auth/auth-service"
+import { getActiveSessionForUser } from "@/features/metering/metering-service"
+import { ActiveSessionBanner } from "@/components/bookings/active-session-banner"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { EmptyState } from "@/components/ui/empty-state"
@@ -25,13 +27,17 @@ export default async function BookingsPage({ searchParams }: BookingsPageProps) 
   const { tab = "upcoming" } = await searchParams
   const userId = await getEffectiveUserId()
 
-  const [bookings, balance] = await Promise.all([
+  const [bookings, balance, activeSession] = await Promise.all([
     getMemberBookings(userId, tab),
     getUserCreditBalance(userId),
+    getActiveSessionForUser(userId),
   ])
 
   return (
     <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+      {/* Active Metered Session Banner if member is currently checked into a gym */}
+      <ActiveSessionBanner session={activeSession} />
+
       {/* Header and Credit Balance Summary */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
         <div>

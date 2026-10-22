@@ -1,4 +1,4 @@
-# OnePass — Build Phases & Release Gates
+# Inlo — Build Phases & Release Gates
 
 > **Operating model:** Antigravity builds one coherent vertical slice at a time. Do not ask it to generate the whole marketplace in one giant prompt. A phase is complete only when the code works in the browser, critical tests pass, and the gate is reviewed.
 
@@ -89,10 +89,12 @@ Proceed only when there is real evidence of member demand, partner willingness, 
 
 ### Build
 - Database schema for slots, bookings, booking events, credit lots, immutable ledger and balance projection.
+- Preserve fixed-price booking as the baseline; prototype a separate metered-usage spike before committing to scan-based billing.
 - Reviewed PostgreSQL transaction/RPC for atomic booking, credit consumption and capacity reservation.
 - Member booking list/detail and cancellation flow under a test policy.
 - Idempotency key handling; documented error codes.
-- Staff/admin check-in workflow (QR can be phased in once secure validation is implemented).
+- Staff/admin check-in workflow for fixed-price reservations.
+- Write a pricing decision record comparing fixed-price, time-metered and hybrid models using member comprehension, partner margin, support burden and fraud/error risk.
 - Concurrency and ledger reconciliation tests.
 
 ### Acceptance
@@ -102,6 +104,18 @@ Proceed only when there is real evidence of member demand, partner willingness, 
 - Cancel/refund state transition and credit ledger effect are atomic.
 - Any credit balance projection equals the eligible ledger balance after reconciliation.
 - No critical mutation is trusted to the client.
+
+### Additional Phase 4 gate — usage metering proof
+
+Before any production duration-based debit, demonstrate in tests and a supervised venue pilot:
+- Member sees rate, rounding, estimate and a hard maximum before accepting.
+- Entry/exit events are authenticated, idempotent and tied to the correct venue/member/session.
+- Duplicate, replayed, out-of-order, missing-exit, wrong-venue, network-loss and device-clock manipulation cases are handled.
+- No missing checkout can create an uncapped charge; exceptions are visible to operations.
+- Recalculation from stored events and policy version reproduces the same debit.
+- Partners can explain and reconcile each settlement line.
+
+If this gate is not passed, keep duration metering disabled and use fixed pre-quoted prices.
 
 ## Phase 5 — Payment-provider sandbox and entitlements
 
@@ -128,7 +142,7 @@ Proceed only when there is real evidence of member demand, partner willingness, 
 **Objective:** Help real bookings complete correctly at the venue.
 
 ### Build
-- Secure single-use check-in QR/token or staff lookup.
+- Secure single-use check-in QR/token or staff lookup. For metered venues, use separate ENTRY/EXIT events and the validated usage-session lifecycle defined in `architecture.md`.
 - Check-in status, completed/no-show and venue-cancelled handling.
 - Member confirmation and transactional notification flows.
 - Support/incident flow for venue rejects booking, member no-show, slot change and payment dispute.
@@ -137,6 +151,8 @@ Proceed only when there is real evidence of member demand, partner willingness, 
 
 ### Acceptance
 - Token cannot be reused after successful check-in; invalid/expired/foreign-venue tokens are rejected.
+- Entry/exit events cannot double-debit, bill from device time or exceed the member-approved cap.
+- Missing exit is capped and routed to an auditable exception queue, not silently charged indefinitely.
 - Member, partner and admin views display consistent booking state.
 - Every exception has an owner and a way to resolve it without editing historical ledger rows.
 - Settlement amounts are reconciled and exportable; live automated payouts stay disabled until separately approved.

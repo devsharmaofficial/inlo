@@ -56,6 +56,9 @@ interface MutableSlot {
   status: "available" | "full" | "cancelled" | "completed"
 }
 
+const getFutureTime = (hoursAhead: number) =>
+  new Date(Date.now() + hoursAhead * 60 * 60 * 1000).toISOString()
+
 const mutableSlots: Map<string, MutableSlot> = new Map([
   [
     "slot-hub-1",
@@ -63,8 +66,8 @@ const mutableSlots: Map<string, MutableSlot> = new Map([
       id: "slot-hub-1",
       venueId: "ven-hub-arena",
       activityId: "act-badminton",
-      startsAt: "2026-10-22T06:00:00Z",
-      endsAt: "2026-10-22T07:00:00Z",
+      startsAt: getFutureTime(24),
+      endsAt: getFutureTime(25),
       capacity: 4,
       reservedCount: 0,
       creditCost: 16,
@@ -78,8 +81,8 @@ const mutableSlots: Map<string, MutableSlot> = new Map([
       id: "slot-hub-2",
       venueId: "ven-hub-arena",
       activityId: "act-badminton",
-      startsAt: "2026-10-22T07:00:00Z",
-      endsAt: "2026-10-22T08:00:00Z",
+      startsAt: getFutureTime(26),
+      endsAt: getFutureTime(27),
       capacity: 2, // limited capacity for concurrency testing
       reservedCount: 0,
       creditCost: 16,
@@ -93,8 +96,8 @@ const mutableSlots: Map<string, MutableSlot> = new Map([
       id: "slot-aqualife-1",
       venueId: "ven-aqualife",
       activityId: "act-swimming",
-      startsAt: "2026-10-22T06:00:00Z",
-      endsAt: "2026-10-22T06:50:00Z",
+      startsAt: getFutureTime(28),
+      endsAt: getFutureTime(29),
       capacity: 8,
       reservedCount: 0,
       creditCost: 18,
@@ -464,8 +467,12 @@ export async function validateCheckinPass(
 export function resetBookingEngineState(): void {
   bookingsStore.clear()
   bookingEventsStore.length = 0
+  const futureStart = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+  const futureEnd = new Date(Date.now() + 25 * 60 * 60 * 1000).toISOString()
   for (const slot of mutableSlots.values()) {
     slot.reservedCount = 0
     slot.status = "available"
+    slot.startsAt = futureStart
+    slot.endsAt = futureEnd
   }
 }
