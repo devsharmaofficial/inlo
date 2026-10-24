@@ -15,6 +15,16 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
+  // If OAuth provider returned ?code=... to root or another page, route through /auth/callback
+  const code = request.nextUrl.searchParams.get("code")
+  if (code && !request.nextUrl.pathname.startsWith("/auth/callback")) {
+    const callbackUrl = new URL("/auth/callback", request.url)
+    callbackUrl.searchParams.set("code", code)
+    const next = request.nextUrl.searchParams.get("next")
+    if (next) callbackUrl.searchParams.set("next", next)
+    return NextResponse.redirect(callbackUrl)
+  }
+
   const allCookies = request.cookies.getAll()
   const hasAuthCookie = allCookies.some(
     (c) =>
