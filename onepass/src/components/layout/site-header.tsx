@@ -175,19 +175,16 @@ export function SiteHeader({
       id: "athlete",
       name: displayName || "Aryan Sharma",
       email: authState.email || "athlete@inlo.tech",
-      plan: `${creditBalance} cr`,
     },
     {
       id: "partner",
       name: "The Hub Sports",
       email: "partner@thehubsports.com",
-      plan: "Partner",
     },
     {
       id: "admin",
       name: "Operations Admin",
       email: "admin@inlo.tech",
-      plan: "Admin",
     },
   ]
 

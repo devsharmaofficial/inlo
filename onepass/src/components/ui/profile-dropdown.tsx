@@ -87,6 +87,8 @@ export interface ProfileDropdownProps
   status?: AccountStatus;
   defaultStatus?: AccountStatus;
   onStatusChange?: (status: AccountStatus) => void;
+  showStatus?: boolean;
+  showPlan?: boolean;
   /** Called once Sign out has been held for `holdDuration` ms. */
   onSignOut?: () => void;
   holdDuration?: number;
@@ -289,7 +291,7 @@ function Identity({
   shared: boolean;
   account: Account;
   tone: number;
-  status: AccountStatus;
+  status?: AccountStatus;
   transition: Transition;
   stacked: boolean;
 }) {
@@ -626,6 +628,8 @@ export function ProfileDropdown({
   status: statusProp,
   defaultStatus = "online",
   onStatusChange,
+  showStatus = false,
+  showPlan = false,
   onSignOut,
   holdDuration = 1000,
   className,
@@ -945,7 +949,7 @@ export function ProfileDropdown({
             account={account}
             shared={!sharedInPanel}
             stacked={false}
-            status={status}
+            status={showStatus ? status : undefined}
             tone={tone}
             transition={sharedTransition}
             uid={uid}
@@ -1002,12 +1006,12 @@ export function ProfileDropdown({
                     account={account}
                     shared={sharedInPanel}
                     stacked
-                    status={status}
+                    status={showStatus ? status : undefined}
                     tone={tone}
                     transition={sharedTransition}
                     uid={uid}
                   />
-                  {account.plan ? (
+                  {showPlan && account.plan ? (
                     <motion.span
                       className="shrink-0 pt-0.5 text-xs font-semibold text-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 dark:text-emerald-300 px-2 py-0.5 rounded-full"
                       style={{ opacity: bodyOpacity }}
@@ -1024,7 +1028,7 @@ export function ProfileDropdown({
                   style={{ opacity: bodyOpacity }}
                   tabIndex={-1}
                 >
-                  <StatusRow onChange={setStatus} status={status} />
+                  {showStatus && <StatusRow onChange={setStatus} status={status} />}
                   <ThemeRow
                     onChange={handleThemeToggle}
                     reduced={reduced}
@@ -1131,7 +1135,7 @@ export function ProfileDropdown({
                         <Avatar
                           account={entry}
                           className="size-7"
-                          status={checked ? status : undefined}
+                          status={showStatus && checked ? status : undefined}
                           tone={index}
                         />
                         <span className="flex min-w-0 flex-1 flex-col">
