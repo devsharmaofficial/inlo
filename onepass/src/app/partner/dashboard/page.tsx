@@ -27,13 +27,12 @@ export default async function PartnerDashboardPage() {
       {/* ── HEADER ─────────────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[--color-border]">
         <div>
-          <div className="flex items-center gap-2 mb-1.5">
-            <Badge variant="forest">Partner Operator</Badge>
-            <span className="text-xs text-[--color-muted] font-[600]">The Hub Sports LLP</span>
+          <div className="mb-1.5">
+            <span className="text-xs text-[--color-forest] font-[700] uppercase tracking-wider">The Hub Sports LLP</span>
           </div>
           <h1 className="text-h1 font-[800] text-[--color-foreground]">Operations Dashboard</h1>
           <p className="text-body text-[--color-muted] text-xs sm:text-sm">
-            Live slot occupancy, arrival desk check-ins, and verified settlement reconciliation.
+            Live slot occupancy and arrival check-ins.
           </p>
         </div>
 

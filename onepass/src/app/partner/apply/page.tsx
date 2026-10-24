@@ -23,14 +23,11 @@ export default function PartnerApplyPage() {
         {/* Left column: Value proposition (5 cols) */}
         <div className="lg:col-span-5 space-y-6">
           <div>
-            <Badge variant="outline" className="text-xs mb-2">
-              Pilot Onboarding
-            </Badge>
             <h1 className="text-h1 text-[--color-foreground] mb-3">
               List your venue on Inlo
             </h1>
             <p className="text-body text-[--color-muted] leading-relaxed">
-              Monetize empty court hours and open gym/studio slots in Indiranagar, Domlur, and Koramangala. Reach high-intent local athletes without discounting your walk-in rates.
+              Monetize off-peak capacity and reach local athletes without discounting walk-in rates.
             </p>
           </div>
 

@@ -37,39 +37,27 @@ export function PassShowcase() {
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
         {/* Left column: Context & Benefits */}
         <div className="lg:col-span-7 space-y-5">
-          <Badge variant="accent" className="font-[750] gap-1 px-3 py-1 text-xs">
-            <Sparkles size={12} className="text-amber-800" />
-            The Inlo Pass Standard
-          </Badge>
-
           <h2 className="text-display text-3xl sm:text-4xl font-[800] text-white tracking-tight">
-            One pass for every court, pool, gym &amp; studio.
+            One pass for every venue.
           </h2>
 
           <p className="text-white/80 text-sm">
-            Every credit pack issues a universal Inlo Pass. One QR, every venue — no registration paperwork, no front-desk friction.
+            One QR code for every gym, court, pool, and studio in Bengaluru.
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
             <div className="p-3.5 rounded-[--radius-md] bg-white/5 border border-white/10">
               <Zap size={16} className="text-[--color-accent] mb-1.5" />
               <p className="text-xs font-[700] text-white">Instant Check-in</p>
             </div>
             <div className="p-3.5 rounded-[--radius-md] bg-white/5 border border-white/10">
               <ShieldCheck size={16} className="text-[--color-accent] mb-1.5" />
-              <p className="text-xs font-[700] text-white">Zero Lock-In</p>
-            </div>
-            <div className="p-3.5 rounded-[--radius-md] bg-white/5 border border-white/10">
-              <Sparkles size={16} className="text-[--color-accent] mb-1.5" />
-              <p className="text-xs font-[700] text-white">Pearl Titanium</p>
+              <p className="text-xs font-[700] text-white">Metered Billing</p>
             </div>
           </div>
 
           {/* Interactive controls */}
           <div className="pt-3 border-t border-white/10 flex flex-wrap items-center gap-2.5 text-xs">
-            <span className="text-white/50 text-[11px] uppercase tracking-wider mr-1">
-              Interact:
-            </span>
             <button
               type="button"
               onClick={() => cardRef.current?.flip()}
@@ -110,9 +98,6 @@ export function PassShowcase() {
               foil={1.15}
             />
           </div>
-          <p className="text-[11px] text-white/50 text-center mt-3 font-mono">
-            Hover to tilt with light · Drag to spin · Tap to flip
-          </p>
         </div>
       </div>
     </section>

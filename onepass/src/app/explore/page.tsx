@@ -40,10 +40,10 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
     <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8 py-8 md:py-12">
       {/* Page Header */}
       <div className="mb-6">
-        <h1 className="text-3xl sm:text-4xl font-[850] text-[--color-foreground] tracking-tight mb-2">
-          Partner Clubs &amp; Rates
+        <h1 className="text-3xl sm:text-4xl font-[850] text-[--color-foreground] tracking-tight mb-1">
+          Clubs &amp; Rates
         </h1>
-        <p className="text-sm text-[--color-muted]">Bengaluru pilot venues. Scan in, scan out — credits billed by tier &amp; duration.</p>
+        <p className="text-sm text-[--color-muted]">Bengaluru partner venues. Tap in and tap out.</p>
       </div>
 
       {/* Filter and Search Controls */}
@@ -62,7 +62,7 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
         <section aria-label="Available partner venues">
           <div className="mb-4 flex items-center justify-between text-xs text-[--color-muted]">
             <span>
-              Showing <strong className="text-[--color-foreground]">{venues.length}</strong> verified {venues.length === 1 ? "venue" : "venues"}
+              Showing <strong className="text-[--color-foreground]">{venues.length}</strong> {venues.length === 1 ? "venue" : "venues"}
             </span>
           </div>
 

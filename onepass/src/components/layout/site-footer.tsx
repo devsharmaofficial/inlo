@@ -21,7 +21,7 @@ export function SiteFooter() {
           <div className="md:col-span-1">
             <Logo />
             <p className="mt-3 text-sm text-[--color-muted] leading-relaxed max-w-xs">
-              One membership. Many ways to move across the city.
+              One pass for sports and fitness in Bengaluru.
             </p>
           </div>
 

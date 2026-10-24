@@ -80,9 +80,6 @@ export default async function AccountPage() {
               <h2 className="text-h3 font-[750] text-[--color-foreground]">Ledger</h2>
             </div>
           </div>
-          <Badge variant="outline" className="font-mono text-xs hidden sm:inline-flex">
-            Reconciled 100%
-          </Badge>
         </div>
 
         {entries.length > 0 ? (
@@ -201,9 +198,9 @@ export default async function AccountPage() {
               <CalendarDays size={20} />
             </div>
             <h3 className="text-h3 font-[650] text-[--color-foreground] mb-1">
-              Active Bookings
+              Bookings
             </h3>
-            <p className="text-xs text-[--color-muted]">Sessions, digital passes &amp; history.</p>
+            <p className="text-xs text-[--color-muted]">Passes and session history.</p>
           </div>
           <div className="mt-5 pt-4 border-t border-[--color-border]">
             <Button asChild variant="secondary" size="sm" className="w-full">
@@ -221,9 +218,9 @@ export default async function AccountPage() {
               <Shield size={20} />
             </div>
             <h3 className="text-h3 font-[650] text-[--color-foreground] mb-1">
-              DPDP Privacy Rights
+              Privacy
             </h3>
-            <p className="text-xs text-[--color-muted]">DPDP Act 2023 · data rights.</p>
+            <p className="text-xs text-[--color-muted]">Data rights and privacy policy.</p>
           </div>
           <div className="mt-5 pt-4 border-t border-[--color-border]">
             <Button asChild variant="secondary" size="sm" className="w-full">
@@ -241,14 +238,14 @@ export default async function AccountPage() {
               <HelpCircle size={20} />
             </div>
             <h3 className="text-h3 font-[650] text-[--color-foreground] mb-1">
-              Bengaluru Concierge
+              Support
             </h3>
-            <p className="text-xs text-[--color-muted]">Booking issues, refunds, venue feedback.</p>
+            <p className="text-xs text-[--color-muted]">Refunds, queries, and assistance.</p>
           </div>
           <div className="mt-5 pt-4 border-t border-[--color-border]">
             <Button asChild variant="secondary" size="sm" className="w-full">
               <Link href="/support" className="flex items-center justify-center gap-1 font-[600]">
-                Contact concierge <ArrowRight size={14} />
+                Contact support <ArrowRight size={14} />
               </Link>
             </Button>
           </div>

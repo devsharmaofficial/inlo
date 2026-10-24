@@ -26,9 +26,8 @@ export default async function MembershipPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[--color-border]">
         <div className="space-y-2">
-          <Badge variant="accent" className="font-[700] px-3 py-1">Zero Lock-In</Badge>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-[800] text-[--color-foreground]">Credit Packs</h1>
-          <p className="text-[--color-muted]">One pass. Every partner venue in Bengaluru.</p>
+          <p className="text-[--color-muted]">One pass for every partner venue in Bengaluru.</p>
         </div>
         <div className="rounded-[--radius-lg] border-2 border-[--color-forest]/20 bg-[--color-surface] p-4 shadow-sm min-w-[200px]">
           <span className="text-[11px] text-[--color-muted] font-[700] uppercase tracking-wider block mb-1">Your Wallet</span>
@@ -113,40 +112,28 @@ export default async function MembershipPage() {
             </thead>
             <tbody className="divide-y divide-[--color-border] text-[--color-foreground]">
               <tr>
-                <td className="py-3 pr-4 font-[650]">Sessions/month</td>
+                <td className="py-3 pr-4 font-[650]">Sessions estimate</td>
                 <td className="py-3 px-4 text-[--color-muted]">1–2</td>
                 <td className="py-3 px-4 font-[700] text-[--color-forest]">4–5</td>
                 <td className="py-3 px-4">8–10</td>
               </tr>
               <tr>
-                <td className="py-3 pr-4 font-[650]">Cost/credit</td>
+                <td className="py-3 pr-4 font-[650]">Cost per credit</td>
                 <td className="py-3 px-4 text-[--color-muted]">₹75</td>
                 <td className="py-3 px-4 font-[700] text-[--color-forest]">₹70</td>
                 <td className="py-3 px-4">₹65</td>
               </tr>
               <tr>
-                <td className="py-3 pr-4 font-[650]">Advance booking</td>
-                <td className="py-3 px-4 text-[--color-muted]">5 days</td>
-                <td className="py-3 px-4 font-[700] text-[--color-forest]">7 days</td>
-                <td className="py-3 px-4">14 days</td>
+                <td className="py-3 pr-4 font-[650]">Validity</td>
+                <td className="py-3 px-4 text-[--color-muted]">30 days</td>
+                <td className="py-3 px-4 font-[700] text-[--color-forest]">60 days</td>
+                <td className="py-3 px-4">90 days</td>
               </tr>
               <tr>
                 <td className="py-3 pr-4 font-[650]">Cancellations</td>
                 <td className="py-3 px-4 text-emerald-600 font-[700]">✓ Free</td>
                 <td className="py-3 px-4 text-emerald-600 font-[700]">✓ Free</td>
                 <td className="py-3 px-4 text-emerald-600 font-[700]">✓ Free</td>
-              </tr>
-              <tr>
-                <td className="py-3 pr-4 font-[650]">Guest passes</td>
-                <td className="py-3 px-4 text-[--color-muted]">1</td>
-                <td className="py-3 px-4 font-[700] text-[--color-forest]">3</td>
-                <td className="py-3 px-4">Unlimited</td>
-              </tr>
-              <tr>
-                <td className="py-3 pr-4 font-[650]">Support</td>
-                <td className="py-3 px-4 text-[--color-muted]">Standard</td>
-                <td className="py-3 px-4 font-[700] text-[--color-forest]">Priority WA</td>
-                <td className="py-3 px-4">24/7 VIP</td>
               </tr>
             </tbody>
           </table>

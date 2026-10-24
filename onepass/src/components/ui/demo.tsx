@@ -69,12 +69,7 @@ export default function HoloCardDemo(props: Partial<typeof settings>) {
         cardType="pass"
       />
 
-      <p
-        className="m-0 mt-2 max-w-[380px] text-center text-[13px] leading-[18px] tracking-[-0.01em]"
-        style={{ color: "rgba(60,60,67,.7)" }}
-      >
-        Move the cursor over the pass or tilt your phone. Drag to spin, tap to flip for the instant check-in QR code.
-      </p>
+
       <div className="flex flex-wrap justify-center gap-2">
         <button
           type="button"

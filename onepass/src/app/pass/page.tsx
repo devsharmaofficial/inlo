@@ -52,15 +52,11 @@ export default async function PassPage() {
         <div className="mx-auto max-w-[1080px] px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[--radius-pill] bg-[--color-forest]/10 text-[--color-forest] text-xs font-[700] tracking-wide uppercase">
-                <ShieldCheck size={13} />
-                <span>Authoritative Access Pass · Bengaluru Pilot</span>
-              </div>
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-[800] tracking-tight text-[--color-foreground]">
-                Universal Member Pass
+                Inlo Pass
               </h1>
               <p className="text-sm sm:text-base text-[--color-muted] max-w-xl">
-                Scan once at entry. Scan once at exit. Your credits meter automatically based on how long you stay and the venue tier.
+                Scan at entry and exit. Credits meter by visit duration.
               </p>
             </div>
 
@@ -68,13 +64,13 @@ export default async function PassPage() {
               <Button asChild variant="secondary" size="md">
                 <Link href={ROUTES.explore} className="gap-1.5 font-[650]">
                   <MapPin size={15} />
-                  <span>Explore Partner Clubs</span>
+                  <span>Explore clubs</span>
                 </Link>
               </Button>
               <Button asChild variant="primary" size="md">
                 <Link href={ROUTES.membership} className="gap-1.5 font-[700]">
                   <Coins size={15} />
-                  <span>Top Up Credits</span>
+                  <span>Top up credits</span>
                 </Link>
               </Button>
             </div>
@@ -94,10 +90,10 @@ export default async function PassPage() {
         <section aria-labelledby="tier-heading" className="space-y-6 pt-4">
           <div className="border-b border-[--color-border] pb-4">
             <h2 id="tier-heading" className="text-xl font-[800] text-[--color-foreground] tracking-tight">
-              Venue Access Tiers &amp; Metering Rates
+              Access tiers &amp; rates
             </h2>
             <p className="text-xs sm:text-sm text-[--color-muted] mt-1">
-              You are never charged a flat blind fee. Charges calculate strictly by visit duration with unbreakable hard daily caps.
+              Charges meter strictly by duration with hard daily caps.
             </p>
           </div>
 
@@ -139,7 +135,7 @@ export default async function PassPage() {
             <div className="flex items-center gap-2.5">
               <ShieldCheck size={18} className="text-[--color-forest] shrink-0" />
               <span className="text-[--color-foreground] font-[550]">
-                <strong>Fair Metering Invariant:</strong> If you forget to tap out at exit, your visit is automatically capped at the disclosed daily maximum. You can never be overcharged.
+                Visits are capped at the daily maximum. You are never billed beyond the cap if you forget to tap out.
               </span>
             </div>
             <Link href="/support" className="font-[650] text-[--color-forest] hover:underline shrink-0">

@@ -21,15 +21,12 @@ export default function CancellationsPage() {
       </Link>
 
       <div className="flex items-center gap-2 mb-2">
-        <Badge variant="outline" className="text-xs">
-          Transparent Policy
-        </Badge>
         <span className="text-xs text-[--color-muted]">Last updated: 20 October 2026</span>
       </div>
 
-      <h1 className="text-h1 text-[--color-foreground] mb-4">Cancellations &amp; Refunds</h1>
-      <p className="text-body text-[--color-muted] mb-10">
-        Our cancellation policy is built on fairness. We protect your flexibility while ensuring partner venues are compensated when court slots are held exclusively.
+      <h1 className="text-h1 text-[--color-foreground] mb-3">Cancellations &amp; Refunds</h1>
+      <p className="text-body text-[--color-muted] mb-8">
+        Cancel up to 2 hours before your session for a full credit refund.
       </p>
 
       {/* Visual Window Diagram */}

@@ -255,32 +255,25 @@ export function DigitalPassCard({
           <button
             type="button"
             onClick={() => holoCardRef.current?.flip()}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[--color-border] bg-white text-[--color-foreground] hover:border-[--color-forest] font-[600] transition-colors shadow-xs"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[--color-border] bg-white text-[--color-foreground] hover:border-[--color-forest] font-[600] transition-colors shadow-xs cursor-pointer"
           >
             <QrCode size={14} className="text-[--color-forest]" />
-            <span>Tap pass or click to flip for scanner QR</span>
+            <span>Tap pass or flip for QR</span>
           </button>
-          <span className="hidden sm:inline">·</span>
-          <span>Dynamic cryptographic token refreshes automatically</span>
         </div>
       </div>
 
       {/* ── Quick Tap-In Demonstration Simulator ─────────────────────────── */}
       {!activeSession && (
         <div className="rounded-[--radius-xl] border border-[--color-border] bg-[--color-surface] p-6 shadow-xs">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-            <div>
-              <h3 className="text-sm font-[750] text-[--color-foreground] flex items-center gap-1.5">
-                <Zap size={15} className="text-[--color-forest]" />
-                Walk-in Tap Simulator
-              </h3>
-              <p className="text-xs text-[--color-muted]">
-                Test the walk-in experience at any Bengaluru pilot venue. Tap to enter, observe live meter, tap to exit.
-              </p>
-            </div>
-            <Badge variant="outline" className="text-[11px] font-mono self-start sm:self-auto">
-              Staff Front Desk Mode
-            </Badge>
+          <div className="mb-4">
+            <h3 className="text-sm font-[750] text-[--color-foreground] flex items-center gap-1.5">
+              <Zap size={15} className="text-[--color-forest]" />
+              Tap Simulator
+            </h3>
+            <p className="text-xs text-[--color-muted] mt-0.5">
+              Simulate entry and exit at Bengaluru venues.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -290,7 +283,7 @@ export function DigitalPassCard({
                 type="button"
                 onClick={() => handleTapIn(v)}
                 disabled={isPending}
-                className="group flex flex-col items-start p-4 rounded-[--radius-lg] border border-[--color-border] bg-white hover:border-[--color-forest] hover:shadow-xs transition-all text-left disabled:opacity-50"
+                className="group flex flex-col items-start p-4 rounded-[--radius-lg] border border-[--color-border] bg-white hover:border-[--color-forest] hover:shadow-xs transition-all text-left disabled:opacity-50 cursor-pointer"
               >
                 <div className="flex items-center justify-between w-full mb-2">
                   <span className="text-[10px] font-mono font-[700] px-2 py-0.5 rounded-full bg-[--color-forest]/10 text-[--color-forest]">
@@ -304,10 +297,10 @@ export function DigitalPassCard({
                   {v.name}
                 </p>
                 <p className="text-[11px] text-[--color-muted] mt-1">
-                  Daily Cap: max {v.cap} credits
+                  Cap: max {v.cap} cr
                 </p>
                 <div className="mt-3 pt-2 border-t border-[--color-border]/60 w-full flex items-center justify-between text-[11px] font-[650] text-[--color-forest]">
-                  <span>Tap in now</span>
+                  <span>Tap in</span>
                   <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </button>
@@ -319,12 +312,7 @@ export function DigitalPassCard({
       {/* ── Recent Metered Visits Ledger Receipts ───────────────────────── */}
       <div className="rounded-[--radius-xl] border border-[--color-border] bg-white p-6 shadow-xs">
         <div className="flex items-center justify-between mb-4">
-          <div>
-            <h3 className="text-base font-[750] text-[--color-foreground]">Recent Metered Visits</h3>
-            <p className="text-xs text-[--color-muted]">
-              Immutable audit ledger receipts generated on turnstile exit.
-            </p>
-          </div>
+          <h3 className="text-base font-[750] text-[--color-foreground]">Recent Visits</h3>
           <Button variant="ghost" size="sm" onClick={refreshData} className="gap-1.5 text-xs text-[--color-muted]">
             <RefreshCw size={13} />
             <span>Refresh</span>
@@ -333,9 +321,9 @@ export function DigitalPassCard({
 
         {sessionHistory.length === 0 ? (
           <div className="py-8 text-center border border-dashed border-[--color-border] rounded-[--radius-lg] p-6">
-            <p className="text-xs font-[600] text-[--color-foreground]">No completed metered visits yet</p>
+            <p className="text-xs font-[600] text-[--color-foreground]">No visits recorded yet</p>
             <p className="text-xs text-[--color-muted] mt-1 max-w-sm mx-auto">
-              Use your Inlo Pass at any partner club. When you tap out, your itemized duration and credit receipt will appear here.
+              Completed visit history will appear here once you tap out.
             </p>
           </div>
         ) : (

@@ -43,9 +43,6 @@ export default function SupportPage() {
     <div className="mx-auto max-w-[1100px] px-4 sm:px-6 lg:px-8 py-10 md:py-16">
       {/* Page Title */}
       <div className="mb-10 text-center max-w-2xl mx-auto">
-        <Badge variant="outline" className="text-xs mb-2">
-          Concierge Support
-        </Badge>
         <h1 className="text-h1 text-[--color-foreground] mb-1">Help &amp; Support</h1>
       </div>
 

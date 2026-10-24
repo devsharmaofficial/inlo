@@ -256,8 +256,8 @@ export function AuthCard({ initialView = "sign-in" }: AuthCardProps) {
         </h1>
         <p className="text-body text-[--color-muted] mt-1">
           {view === "sign-up"
-            ? "Join thousands of athletes across Bengaluru with verified access."
-            : "Sign in using your verified email, phone, or Google account."}
+            ? "Sign up to access your pass and credit wallet."
+            : "Sign in to your Inlo account."}
         </p>
       </div>
 
@@ -320,7 +320,7 @@ export function AuthCard({ initialView = "sign-in" }: AuthCardProps) {
       <div className="relative flex items-center justify-center">
         <div className="w-full border-t border-[--color-border]" />
         <span className="absolute bg-[--color-surface] px-3 text-[11px] font-[600] text-[--color-muted] uppercase tracking-wider">
-          or use credentials
+          or
         </span>
       </div>
 
@@ -400,7 +400,7 @@ export function AuthCard({ initialView = "sign-in" }: AuthCardProps) {
                   <Mail size={16} className="absolute right-3 top-3 text-[--color-muted] pointer-events-none" />
                 </div>
                 <p className="text-[11px] text-[--color-muted]">
-                  We will dispatch a secure 6-digit verification code. Zero password needed.
+                  We will send a 6-digit verification code.
                 </p>
               </div>
 
@@ -412,7 +412,7 @@ export function AuthCard({ initialView = "sign-in" }: AuthCardProps) {
                 loading={loading}
                 disabled={loading}
               >
-                Send 6-digit verification code
+                Send code
                 <ArrowRight size={16} />
               </Button>
             </form>
@@ -507,7 +507,7 @@ export function AuthCard({ initialView = "sign-in" }: AuthCardProps) {
                   />
                 </div>
                 <p className="text-[11px] text-[--color-muted]">
-                  Instant SMS PIN verification. Free sandbox test code available.
+                  We will send a 6-digit verification code via SMS.
                 </p>
               </div>
 
@@ -650,7 +650,7 @@ export function AuthCard({ initialView = "sign-in" }: AuthCardProps) {
       {/* Quick 1-Click Evaluation Logins */}
       <div className="pt-4 border-t border-[--color-border] space-y-3">
         <span className="text-[11px] font-[650] text-[--color-muted] uppercase tracking-wider block text-center">
-          Instant 1-Click Evaluation Login
+          Demo sign-in
         </span>
         <div className="grid grid-cols-3 gap-2 text-xs">
           <Button

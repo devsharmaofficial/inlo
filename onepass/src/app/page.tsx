@@ -110,7 +110,7 @@ export default async function HomePage() {
                   <span className="text-[--color-forest]">Every club.</span>
                 </h1>
                 <p className="text-base sm:text-lg text-[--color-muted] font-[450] leading-relaxed max-w-xl">
-                  No rigid slot booking. No annual commitments to juggle. Simply tap in at the door with your digital pass, train, and tap out. Your credits exhaust automatically based on venue tier and visit duration.
+                  Train at multiple venues with one pass.
                 </p>
               </div>
 
@@ -134,26 +134,6 @@ export default async function HomePage() {
                   </Link>
                 </Button>
               </div>
-
-              {/* Four Architectural Invariants */}
-              <div className="pt-6 border-t border-[--color-border] grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-                <div>
-                  <p className="font-[750] text-[--color-foreground]">Tap In &amp; Out</p>
-                  <p className="text-[11px] text-[--color-muted]">Zero scheduling stress</p>
-                </div>
-                <div>
-                  <p className="font-[750] text-[--color-foreground]">Tier-Based Rates</p>
-                  <p className="text-[11px] text-[--color-muted]">From 4 credits / hr</p>
-                </div>
-                <div>
-                  <p className="font-[750] text-[--color-foreground]">Hard Capped</p>
-                  <p className="text-[11px] text-[--color-muted]">Never overcharged</p>
-                </div>
-                <div>
-                  <p className="font-[750] text-[--color-foreground]">Zero Lock-in</p>
-                  <p className="text-[11px] text-[--color-muted]">No recurring auto-debits</p>
-                </div>
-              </div>
             </div>
 
             {/* Right Column: Tactile Holographic Pass Demo */}
@@ -166,9 +146,6 @@ export default async function HomePage() {
                       Digital Pass
                     </span>
                   </div>
-                  <span className="text-[11px] font-mono text-[--color-muted]">
-                    Tap to flip · Scannable QR
-                  </span>
                 </div>
 
                 <div className="w-full flex justify-center">
@@ -189,10 +166,10 @@ export default async function HomePage() {
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-12">
             <h2 id="flow-heading" className="text-2xl sm:text-3xl font-[800] text-[--color-foreground] tracking-tight">
-              How the Universal Pass Works
+              How it works
             </h2>
             <p className="text-sm sm:text-base text-[--color-muted] mt-1.5 leading-relaxed">
-              We replaced rigid advance booking with continuous, fair-metered access. Train on your own schedule.
+              Tap in at the door, train, and tap out. Credits exhaust by visit duration.
             </p>
           </div>
 
@@ -207,11 +184,8 @@ export default async function HomePage() {
                   Tap in at the door
                 </h3>
                 <p className="text-xs sm:text-sm text-[--color-muted] leading-relaxed">
-                  Walk up to any partnered arena, pool, gym, or studio. Present your Inlo Pass QR at the front desk or turnstile. Your session starts instantly.
+                  Present your Inlo Pass QR at the front desk. Your session starts instantly.
                 </p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-[--color-border] text-xs font-[650] text-[--color-forest]">
-                Single-use dynamic token →
               </div>
             </div>
 
@@ -222,14 +196,11 @@ export default async function HomePage() {
                   02
                 </span>
                 <h3 className="text-lg font-[750] text-[--color-foreground] mb-2">
-                  Train without clock anxiety
+                  Train on your schedule
                 </h3>
                 <p className="text-xs sm:text-sm text-[--color-muted] leading-relaxed">
-                  Play badminton, swim laps, lift, or attend a class. No penalty if your game runs 15 minutes longer or shorter than planned.
+                  Play badminton, swim laps, lift, or practice yoga. No rigid time slots.
                 </p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-[--color-border] text-xs font-[650] text-[--color-forest]">
-                Live duration tracker on pass →
               </div>
             </div>
 
@@ -240,14 +211,11 @@ export default async function HomePage() {
                   03
                 </span>
                 <h3 className="text-lg font-[750] text-[--color-foreground] mb-2">
-                  Tap out &amp; auto-exhaust
+                  Tap out on departure
                 </h3>
                 <p className="text-xs sm:text-sm text-[--color-muted] leading-relaxed">
-                  Scan out on departure. Credits exhaust from your wallet according to the venue’s rate tier (4–8 cr/hr), strictly clamped to the daily cap.
+                  Scan out when done. Credits exhaust based on the venue tier, clamped to the daily cap.
                 </p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-[--color-border] text-xs font-[650] text-[--color-forest]">
-                Immutable ledger receipt →
               </div>
             </div>
           </div>
@@ -263,10 +231,10 @@ export default async function HomePage() {
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
             <div>
               <h2 id="tiers-heading" className="text-2xl sm:text-3xl font-[800] text-[--color-foreground] tracking-tight">
-                Venue Access Tiers
+                Access tiers
               </h2>
               <p className="text-sm text-[--color-muted] max-w-lg mt-1">
-                Transparent rate cards. You know the exact hourly rate and daily maximum before you step through the door.
+                Fixed hourly rates and daily caps.
               </p>
             </div>
             <Button asChild variant="secondary" size="md">
@@ -321,11 +289,8 @@ export default async function HomePage() {
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
             <div>
               <h2 id="clubs-heading" className="text-2xl sm:text-3xl font-[800] text-[--color-foreground] tracking-tight">
-                Featured Partner Venues
+                Featured clubs
               </h2>
-              <p className="text-sm text-[--color-muted] max-w-lg mt-1">
-                Audited for cleanliness, court maintenance, and instant Inlo pass desk admission.
-              </p>
             </div>
             <Button asChild variant="secondary" size="md">
               <Link href={ROUTES.explore} className="gap-1.5 font-[650]">
@@ -351,11 +316,8 @@ export default async function HomePage() {
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-10">
             <h2 id="disciplines-heading" className="text-2xl sm:text-3xl font-[800] text-[--color-foreground] tracking-tight">
-              Move Across Every Discipline
+              Disciplines
             </h2>
-            <p className="text-sm text-[--color-muted] mt-1">
-              One membership covers all 4 core pillars with zero recurring auto-debit lock-in.
-            </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -414,7 +376,7 @@ export default async function HomePage() {
             Train anywhere in Bengaluru.
           </h2>
           <p className="text-sm sm:text-base text-white/80 max-w-lg mx-auto">
-            Get your universal Inlo pass today. Tap in at the door, train on your schedule, and let credits exhaust fairly.
+            Get your pass today.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
             <Button asChild size="lg" variant="primary" className="w-full sm:w-auto font-[750]">

@@ -98,7 +98,7 @@ export function HeroSearch() {
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search venue name, sport or facility..."
+            placeholder="Search venues or sports..."
             aria-label="Search venues"
             className="w-full bg-transparent text-sm text-[--color-foreground] placeholder:text-[--color-muted] outline-none"
           />
@@ -131,7 +131,7 @@ export function HeroSearch() {
             disabled={isPending}
             className="shrink-0 gap-1.5 font-[700] px-4 active:scale-95 transition-transform"
           >
-            <span>Find Slots</span>
+            <span>Search</span>
             <ArrowRight size={14} aria-hidden="true" />
           </Button>
         </div>

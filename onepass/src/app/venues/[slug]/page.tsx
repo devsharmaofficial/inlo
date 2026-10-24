@@ -73,20 +73,8 @@ export default async function VenuePage({ params }: VenuePageProps) {
         <div className="lg:col-span-7 xl:col-span-8 space-y-8">
           {/* Header */}
           <div>
-            <div className="flex items-center gap-2 mb-2 flex-wrap">
-              <Badge variant="success" className="gap-1">
-                <ShieldCheck size={12} aria-hidden="true" />
-                Verified partner
-              </Badge>
-              {venue.featured && (
-                <Badge variant="accent" className="gap-1">
-                  <Sparkles size={11} aria-hidden="true" />
-                  Featured
-                </Badge>
-              )}
-              <span className="text-xs text-[--color-muted]">
-                {venue.locality} · {venue.city}
-              </span>
+            <div className="text-xs font-[600] text-[--color-forest] uppercase tracking-wider mb-2">
+              {venue.locality} · {venue.city}
             </div>
 
             <h1 className="text-h1 text-[--color-foreground] mb-3">{venue.name}</h1>
@@ -302,9 +290,6 @@ export default async function VenuePage({ params }: VenuePageProps) {
                       </Button>
                     }
                   />
-                  <p className="text-[11px] text-center text-[--color-muted]">
-                    Instant confirmation. Free cancellation within policy window.
-                  </p>
                 </div>
               </CardContent>
             </Card>
