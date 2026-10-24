@@ -42,9 +42,7 @@ export default async function BookingsPage({ searchParams }: BookingsPageProps) 
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
         <div>
           <h1 className="text-h1 text-[--color-foreground] mb-2">My bookings</h1>
-          <p className="text-body text-[--color-muted]">
-            Manage your sessions, access digital check-in passes, and view history.
-          </p>
+
         </div>
 
         {/* Member Credit Account Summary */}
@@ -180,8 +178,8 @@ export default async function BookingsPage({ searchParams }: BookingsPageProps) 
           }
           description={
             tab === "upcoming"
-              ? "You don't have any sessions scheduled. Browse verified partner venues near you to book a court or class."
-              : "Your completed sessions and attendance history will appear here."
+              ? "No sessions scheduled. Browse partner venues to book."
+              : "Your completed sessions will appear here."
           }
           action={
             tab === "upcoming" ? (

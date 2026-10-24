@@ -45,9 +45,6 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
       <div className="space-y-6">
         <div>
           <h1 className="text-h1 text-[--color-foreground] mb-2">Review your order</h1>
-          <p className="text-body text-[--color-muted]">
-            Confirm your credit pack selection before checkout.
-          </p>
         </div>
 
         <Card className="border-[--color-border] bg-[--color-surface] shadow-md">
@@ -92,15 +89,9 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
               </div>
             </div>
 
-            <div className="rounded-[--radius-md] border border-[--color-border] bg-[--color-surface-muted] p-4 text-xs space-y-1.5">
-              <div className="flex items-center gap-1.5 font-[650] text-[--color-foreground]">
-                <ShieldCheck size={14} className="text-[--color-forest]" />
-                <span>Authoritative Webhook Security</span>
-              </div>
-              <p className="text-[--color-muted] leading-relaxed">
-                Credits are strictly granted upon cryptographic verification of payment webhook
-                events. Browser redirects alone never modify balances.
-              </p>
+            <div className="flex items-center gap-1.5 text-xs text-[--color-muted]">
+              <ShieldCheck size={13} className="text-[--color-forest] shrink-0" />
+              <span>Secured checkout · credits loaded instantly on payment</span>
             </div>
 
             <div className="pt-2">

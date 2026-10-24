@@ -52,12 +52,8 @@ export default async function AccountPage() {
       {!user && (
         <div className="rounded-[--radius-lg] border border-[--color-forest]/30 bg-[--color-forest]/5 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
           <div>
-            <p className="text-sm font-[650] text-[--color-foreground]">
-              Viewing in Pilot Demo Mode
-            </p>
-            <p className="text-xs text-[--color-muted]">
-              Sign in or create an account to save bookings and credit packs under your personal profile.
-            </p>
+            <p className="text-sm font-[650] text-[--color-foreground]">Demo Mode</p>
+            <p className="text-xs text-[--color-muted]">Sign in to save bookings and credit packs.</p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             <Button asChild size="sm" variant="secondary">
@@ -81,8 +77,7 @@ export default async function AccountPage() {
               <History size={18} />
             </div>
             <div>
-              <h2 className="text-h3 font-[750] text-[--color-foreground]">Credit Ledger &amp; Transactions</h2>
-              <p className="text-xs text-[--color-muted]">Immutable log of grants, booking debits, and policy refunds</p>
+              <h2 className="text-h3 font-[750] text-[--color-foreground]">Ledger</h2>
             </div>
           </div>
           <Badge variant="outline" className="font-mono text-xs hidden sm:inline-flex">
@@ -208,9 +203,7 @@ export default async function AccountPage() {
             <h3 className="text-h3 font-[650] text-[--color-foreground] mb-1">
               Active Bookings
             </h3>
-            <p className="text-xs text-[--color-muted] leading-relaxed">
-              View upcoming court reservations, access single-use digital check-in passes, and view attendance history.
-            </p>
+            <p className="text-xs text-[--color-muted]">Sessions, digital passes &amp; history.</p>
           </div>
           <div className="mt-5 pt-4 border-t border-[--color-border]">
             <Button asChild variant="secondary" size="sm" className="w-full">
@@ -230,9 +223,7 @@ export default async function AccountPage() {
             <h3 className="text-h3 font-[650] text-[--color-foreground] mb-1">
               DPDP Privacy Rights
             </h3>
-            <p className="text-xs text-[--color-muted] leading-relaxed">
-              Full compliance with India&apos;s Digital Personal Data Protection Act, 2023. Request data summaries or account removal.
-            </p>
+            <p className="text-xs text-[--color-muted]">DPDP Act 2023 · data rights.</p>
           </div>
           <div className="mt-5 pt-4 border-t border-[--color-border]">
             <Button asChild variant="secondary" size="sm" className="w-full">
@@ -252,9 +243,7 @@ export default async function AccountPage() {
             <h3 className="text-h3 font-[650] text-[--color-foreground] mb-1">
               Bengaluru Concierge
             </h3>
-            <p className="text-xs text-[--color-muted] leading-relaxed">
-              Need assistance with an arrival check-in, refund cutoff question, or venue feedback? Our pilot desk is on standby.
-            </p>
+            <p className="text-xs text-[--color-muted]">Booking issues, refunds, venue feedback.</p>
           </div>
           <div className="mt-5 pt-4 border-t border-[--color-border]">
             <Button asChild variant="secondary" size="sm" className="w-full">

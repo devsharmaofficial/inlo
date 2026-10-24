@@ -46,26 +46,22 @@ export function PassShowcase() {
             One pass for every court, pool, gym &amp; studio.
           </h2>
 
-          <p className="text-body text-white/80 leading-relaxed text-sm sm:text-base">
-            Every Inlo credit pack issues a cryptographic Titanium Pass. Replaces fragmented membership cards,
-            registration paperwork, and front-desk friction across Bengaluru with a unified 2-second check-in standard.
+          <p className="text-white/80 text-sm">
+            Every credit pack issues a universal Inlo Pass. One QR, every venue — no registration paperwork, no front-desk friction.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
             <div className="p-3.5 rounded-[--radius-md] bg-white/5 border border-white/10">
               <Zap size={16} className="text-[--color-accent] mb-1.5" />
               <p className="text-xs font-[700] text-white">Instant Check-in</p>
-              <p className="text-[11px] text-white/60">Single-use dynamic token</p>
             </div>
             <div className="p-3.5 rounded-[--radius-md] bg-white/5 border border-white/10">
               <ShieldCheck size={16} className="text-[--color-accent] mb-1.5" />
               <p className="text-xs font-[700] text-white">Zero Lock-In</p>
-              <p className="text-[11px] text-white/60">Credits never auto-renew</p>
             </div>
             <div className="p-3.5 rounded-[--radius-md] bg-white/5 border border-white/10">
               <Sparkles size={16} className="text-[--color-accent] mb-1.5" />
               <p className="text-xs font-[700] text-white">Pearl Titanium</p>
-              <p className="text-[11px] text-white/60">Thin-film foil hologram</p>
             </div>
           </div>
 

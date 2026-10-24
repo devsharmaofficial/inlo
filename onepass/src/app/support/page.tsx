@@ -17,24 +17,24 @@ export const metadata: Metadata = {
 
 const FAQS = [
   {
-    q: "How do I check in when I arrive at the venue?",
-    a: "Open your confirmed booking in 'My bookings' and show the digital pass token or screen to the front desk staff. The venue staff verifies it on their terminal and confirms your entry instantly.",
+    q: "How do I check in at a venue?",
+    a: "Open your booking in 'My bookings' and show the QR pass to the front desk. Entry is confirmed instantly.",
   },
   {
-    q: "What is the cancellation cutoff window?",
-    a: "You can cancel any booking up to 2 hours before the session start time for an instant 100% refund of debited credits to your account. Sessions cancelled under 2 hours forfeit credits to compensate the partner venue.",
+    q: "What is the cancellation cutoff?",
+    a: "Cancel up to 2 hours before the session for a full credit refund. Under 2 hours forfeits credits.",
   },
   {
     q: "How long are credit packs valid?",
-    a: "All credit packs are valid for 30 calendar days from the moment of purchase. You can book any session taking place during your active pack period.",
+    a: "30 days from purchase. Book any session within the active pack period.",
   },
   {
-    q: "Can I bring a friend or book multiple spots?",
-    a: "During the initial Bengaluru pilot, each booking reserves 1 spot for the account holder to ensure accurate venue headcounts. Group pack features are planned for our next milestone.",
+    q: "Can I bring a guest?",
+    a: "Each booking reserves one spot. Group features are on the roadmap.",
   },
   {
-    q: "What should I wear or bring to the venue?",
-    a: "Please follow standard athletic facility rules: non-marking shoes are strictly required on wooden badminton courts; proper swimwear and caps are required for swimming pools. Venues provide court access and nets; bring your own racquets or rent at the desk.",
+    q: "What should I bring to the venue?",
+    a: "Non-marking shoes for courts, swimwear + cap for pools. Bring your own racquets or rent at the desk.",
   },
 ]
 
@@ -46,21 +46,13 @@ export default function SupportPage() {
         <Badge variant="outline" className="text-xs mb-2">
           Concierge Support
         </Badge>
-        <h1 className="text-h1 text-[--color-foreground] mb-3">Help &amp; Support</h1>
-        <p className="text-body text-[--color-muted]">
-          Have a question about a booking, your credits, or partner venue check-ins? Our Bengaluru pilot support team is here to help.
-        </p>
+        <h1 className="text-h1 text-[--color-foreground] mb-1">Help &amp; Support</h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-16">
         {/* Support Inquiry Form (7 cols) */}
         <div className="lg:col-span-7 rounded-[--radius-lg] border border-[--color-border] bg-[--color-surface] p-6 sm:p-8 shadow-sm">
-          <div className="flex items-center gap-2 mb-1">
-            <h2 className="text-h3 text-[--color-foreground]">Send an Inquiry</h2>
-          </div>
-          <p className="text-xs text-[--color-muted] mb-6">
-            We will reply to your registered mobile number or email address.
-          </p>
+          <h2 className="text-h3 text-[--color-foreground]">Send an inquiry</h2>
           <SupportForm />
         </div>
 

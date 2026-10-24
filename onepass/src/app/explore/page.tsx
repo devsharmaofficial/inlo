@@ -43,9 +43,7 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
         <h1 className="text-3xl sm:text-4xl font-[850] text-[--color-foreground] tracking-tight mb-2">
           Partner Clubs &amp; Rates
         </h1>
-        <p className="text-sm text-[--color-muted] max-w-xl">
-          Browse verified partner clubs in the Bengaluru pilot. All clubs accept your universal Inlo pass with transparent hourly rate cards and hard daily caps.
-        </p>
+        <p className="text-sm text-[--color-muted]">Bengaluru pilot venues. Scan in, scan out — credits billed by tier &amp; duration.</p>
       </div>
 
       {/* Filter and Search Controls */}
@@ -78,7 +76,7 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
         <EmptyState
           icon={Search}
           title="No venues found"
-          description="We couldn't find any participating venues matching your current criteria. Try expanding your search or clearing active filters."
+          description="No matching venues. Try clearing filters."
           action={
             <Button asChild variant="primary" size="md">
               <Link href={ROUTES.explore}>Reset all filters</Link>
