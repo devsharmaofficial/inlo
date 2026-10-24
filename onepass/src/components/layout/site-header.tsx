@@ -15,18 +15,11 @@ import {
 } from "lucide-react"
 import { Logo } from "@/components/layout/logo"
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { ProfileDropdown, type Account, type ProfileMenuItem } from "@/components/ui/profile-dropdown"
 import { ROUTES } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 import { createClient } from "@/lib/supabase/client"
-import { signOutAction } from "@/app/actions/auth-actions"
+import { signOutAction, quickDemoLoginAction } from "@/app/actions/auth-actions"
 import { getMemberCreditBalanceAction } from "@/app/actions/booking-actions"
 
 interface SiteHeaderProps {
@@ -57,6 +50,7 @@ export function SiteHeader({
     isAuthenticated: initialAuth,
     displayName: initialName,
     creditBalance: initialBalance,
+    email: "athlete@inlo.tech",
   })
 
   // Synchronize active Supabase user session and live credit balance
@@ -85,6 +79,7 @@ export function SiteHeader({
             ...prev,
             isAuthenticated: true,
             displayName: name,
+            email: user.email || "athlete@inlo.tech",
           }))
 
           // Fetch credit balance in background
@@ -98,6 +93,7 @@ export function SiteHeader({
             isAuthenticated: false,
             displayName: "",
             creditBalance: 0,
+            email: "athlete@inlo.tech",
           })
         }
       } catch {
@@ -122,6 +118,7 @@ export function SiteHeader({
           ...prev,
           isAuthenticated: true,
           displayName: name,
+          email: session.user.email || "athlete@inlo.tech",
         }))
 
         getMemberCreditBalanceAction().then((balance) => {
@@ -134,6 +131,7 @@ export function SiteHeader({
           isAuthenticated: false,
           displayName: "",
           creditBalance: 0,
+          email: "athlete@inlo.tech",
         })
       }
     })
@@ -146,6 +144,20 @@ export function SiteHeader({
 
   const handleSignOut = async () => {
     await signOutAction()
+    window.location.reload()
+  }
+
+  const handleAccountSwitch = async (acc: Account) => {
+    if (acc.id === "partner" || acc.id === "admin" || acc.id === "athlete") {
+      const res = await quickDemoLoginAction(acc.id)
+      if (res.success && res.redirectUrl) {
+        window.location.href = res.redirectUrl
+      }
+    }
+  }
+
+  const handleAddAccount = () => {
+    window.location.href = ROUTES.signIn
   }
 
   const navLinks = [
@@ -157,6 +169,34 @@ export function SiteHeader({
   ]
 
   const { isAuthenticated, displayName, creditBalance } = authState
+
+  const memberAccounts: Account[] = [
+    {
+      id: "athlete",
+      name: displayName || "Aryan Sharma",
+      email: authState.email || "athlete@inlo.tech",
+      plan: `${creditBalance} cr`,
+    },
+    {
+      id: "partner",
+      name: "The Hub Sports",
+      email: "partner@thehubsports.com",
+      plan: "Partner",
+    },
+    {
+      id: "admin",
+      name: "Operations Admin",
+      email: "admin@inlo.tech",
+      plan: "Admin",
+    },
+  ]
+
+  const profileMenuItems: ProfileMenuItem[] = [
+    { label: "Wallet & Account", icon: <User className="size-4" />, href: ROUTES.account },
+    { label: "My Bookings", icon: <CalendarDays className="size-4" />, href: ROUTES.bookings },
+    { label: "Credit Packs", icon: <CreditCard className="size-4" />, href: ROUTES.membership },
+    { label: "Partner Portal", icon: <Building2 className="size-4" />, href: ROUTES.partner.root },
+  ]
 
   return (
     <header
@@ -220,76 +260,30 @@ export function SiteHeader({
                 Bookings
               </Link>
 
-              {/* User Avatar Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    type="button"
-                    id="user-profile-menu-trigger"
-                    aria-label="Open profile and wallet menu"
-                    className="h-9 w-9 rounded-full bg-[--color-surface-muted] border border-[--color-border] flex items-center justify-center text-sm font-[700] text-[--color-foreground] hover:bg-[--color-border] hover:border-[--color-forest]/40 transition-colors focus-visible:outline-2 focus-visible:outline-[--color-focus-ring] cursor-pointer"
-                  >
-                    <span aria-hidden="true">
-                      {displayName.charAt(0).toUpperCase() || "M"}
-                    </span>
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 p-1.5">
-                  <DropdownMenuLabel className="pb-1">
-                    <p className="font-[700] text-[--color-foreground] text-sm leading-tight">
-                      {displayName}
-                    </p>
-                    <p className="text-[11px] font-normal text-[--color-muted] mt-0.5">
-                      {creditBalance} credits available (≈ ₹{creditBalance * 70})
-                    </p>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link href={ROUTES.account} className="flex items-center gap-2 cursor-pointer">
-                      <User size={15} />
-                      <span>Wallet & Account</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href={ROUTES.bookings} className="flex items-center gap-2 cursor-pointer">
-                      <CalendarDays size={15} />
-                      <span>My Bookings</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href={ROUTES.membership} className="flex items-center gap-2 cursor-pointer">
-                      <CreditCard size={15} />
-                      <span>Buy Credits / Packs</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link href={ROUTES.partner.root} className="flex items-center gap-2 cursor-pointer">
-                      <Building2 size={15} />
-                      <span>Partner Portal</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={handleSignOut}
-                    className="flex items-center gap-2 text-red-600 focus:text-red-700 cursor-pointer"
-                  >
-                    <LogOut size={15} />
-                    <span>Sign out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {/* Morphing KokonutUI Profile Dropdown */}
+              <ProfileDropdown
+                accounts={memberAccounts}
+                defaultAccountId="athlete"
+                items={profileMenuItems}
+                onAccountChange={handleAccountSwitch}
+                onAddAccount={handleAddAccount}
+                onSignOut={handleSignOut}
+                holdDuration={1000}
+              />
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <Link
-                href={ROUTES.signIn}
-                className="hidden sm:block px-3.5 py-2 rounded-[--radius-sm] text-sm font-[650] text-[#2B3028] hover:text-[--color-foreground] hover:bg-[--color-surface-muted] transition-colors"
-              >
-                Sign in
-              </Link>
-              <Button asChild size="sm" variant="primary">
-                <Link href={ROUTES.signUp}>Join Inlo</Link>
+              <ProfileDropdown
+                accounts={memberAccounts}
+                defaultAccountId="athlete"
+                items={profileMenuItems}
+                onAccountChange={handleAccountSwitch}
+                onAddAccount={handleAddAccount}
+                onSignOut={handleSignOut}
+                holdDuration={1000}
+              />
+              <Button asChild size="sm" variant="primary" className="hidden sm:inline-flex">
+                <Link href={ROUTES.signIn}>Sign in</Link>
               </Button>
             </div>
           )}
