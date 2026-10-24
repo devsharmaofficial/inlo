@@ -71,6 +71,8 @@ export interface Venue {
   updatedAt: string
 }
 
+export type VenueTier = "tier_standard" | "tier_premium" | "tier_elite"
+
 export interface VenueCardData {
   id: string
   slug: string
@@ -80,6 +82,11 @@ export interface VenueCardData {
   shortDescription?: string
   minCredits: number
   maxCredits: number
+  tier?: VenueTier
+  tierLabel?: string
+  hourlyCredits?: number
+  dailyCapCredits?: number
+  accessMode?: "universal_pass" | "advance_reservation" | "hybrid"
   activities: {
     name: string
     slug: string
@@ -98,6 +105,11 @@ export interface VenueDetailData extends Venue {
   images: VenueImage[]
   minCredits: number
   maxCredits: number
+  tier?: VenueTier
+  tierLabel?: string
+  hourlyCredits?: number
+  dailyCapCredits?: number
+  accessMode?: "universal_pass" | "advance_reservation" | "hybrid"
 }
 
 export interface CatalogueFilterParams {

@@ -28,6 +28,8 @@ import {
   refundCredits,
 } from "@/features/credits/credit-ledger-service"
 
+import { PILOT_VENUES } from "@/features/catalogue/pilot-seed"
+
 // ── In-Memory Seed Rate Cards ───────────────────────────────────────────────
 const rateCardsStore: RateCard[] = [
   {
@@ -35,11 +37,11 @@ const rateCardsStore: RateCard[] = [
     venueId: "venue-iron-movement",
     activitySlug: "gym",
     rateUnitMinutes: 30,
-    creditsPerUnit: 4, // 4 credits per 30 mins
+    creditsPerUnit: 4, // 4 credits per 30 mins (back-compat unit tests)
     minDurationMinutes: 30,
-    minCredits: 4, // min charge: 4 credits
-    maxDurationMinutes: 180, // 3 hours
-    maxCreditsCap: 16, // STRICT HARD CAP: max 16 credits
+    minCredits: 4,
+    maxDurationMinutes: 180,
+    maxCreditsCap: 16,
     roundingPolicy: "CEIL_INTERVAL",
     version: "v1.0",
     isActive: true,
@@ -51,16 +53,97 @@ const rateCardsStore: RateCard[] = [
     venueId: "venue-hub-arena",
     activitySlug: "gym",
     rateUnitMinutes: 30,
-    creditsPerUnit: 5, // 5 credits per 30 mins
+    creditsPerUnit: 5,
     minDurationMinutes: 30,
     minCredits: 5,
     maxDurationMinutes: 180,
-    maxCreditsCap: 18, // STRICT HARD CAP: max 18 credits
+    maxCreditsCap: 18,
     roundingPolicy: "CEIL_INTERVAL",
     version: "v1.0",
     isActive: true,
     createdAt: "2026-10-21T00:00:00Z",
     updatedAt: "2026-10-21T00:00:00Z",
+  },
+  // Pilot Venues Universal Pass Tiers
+  {
+    id: "rc-hub-arena-pass",
+    venueId: "ven-hub-arena",
+    activitySlug: "badminton",
+    rateUnitMinutes: 30,
+    creditsPerUnit: 3, // Tier 2: 6 cr/hr
+    minDurationMinutes: 30,
+    minCredits: 3,
+    maxDurationMinutes: 180,
+    maxCreditsCap: 16,
+    roundingPolicy: "CEIL_INTERVAL",
+    version: "v1.0",
+    isActive: true,
+    createdAt: "2026-10-24T00:00:00Z",
+    updatedAt: "2026-10-24T00:00:00Z",
+  },
+  {
+    id: "rc-aqualife-pass",
+    venueId: "ven-aqualife",
+    activitySlug: "swimming",
+    rateUnitMinutes: 30,
+    creditsPerUnit: 3, // Tier 2: 6 cr/hr
+    minDurationMinutes: 30,
+    minCredits: 3,
+    maxDurationMinutes: 180,
+    maxCreditsCap: 16,
+    roundingPolicy: "CEIL_INTERVAL",
+    version: "v1.0",
+    isActive: true,
+    createdAt: "2026-10-24T00:00:00Z",
+    updatedAt: "2026-10-24T00:00:00Z",
+  },
+  {
+    id: "rc-iron-pass",
+    venueId: "ven-iron-movement",
+    activitySlug: "gym",
+    rateUnitMinutes: 30,
+    creditsPerUnit: 2, // Tier 1: 4 cr/hr
+    minDurationMinutes: 30,
+    minCredits: 2,
+    maxDurationMinutes: 180,
+    maxCreditsCap: 12,
+    roundingPolicy: "CEIL_INTERVAL",
+    version: "v1.0",
+    isActive: true,
+    createdAt: "2026-10-24T00:00:00Z",
+    updatedAt: "2026-10-24T00:00:00Z",
+  },
+  {
+    id: "rc-prana-pass",
+    venueId: "ven-prana-shala",
+    activitySlug: "yoga",
+    rateUnitMinutes: 30,
+    creditsPerUnit: 4, // Tier 3: 8 cr/hr
+    minDurationMinutes: 30,
+    minCredits: 4,
+    maxDurationMinutes: 180,
+    maxCreditsCap: 20,
+    roundingPolicy: "CEIL_INTERVAL",
+    version: "v1.0",
+    isActive: true,
+    createdAt: "2026-10-24T00:00:00Z",
+    updatedAt: "2026-10-24T00:00:00Z",
+  },
+  {
+    id: "rc-veloce-pass",
+    venueId: "ven-veloce-hub",
+    activitySlug: "badminton",
+    rateUnitMinutes: 30,
+    creditsPerUnit: 2, // Tier 1: 4 cr/hr
+    minDurationMinutes: 30,
+    minCredits: 2,
+    maxDurationMinutes: 180,
+    maxCreditsCap: 12,
+    roundingPolicy: "CEIL_INTERVAL",
+    version: "v1.0",
+    isActive: true,
+    createdAt: "2026-10-24T00:00:00Z",
+    updatedAt: "2026-10-24T00:00:00Z",
   },
 ]
 
@@ -92,17 +175,26 @@ export async function getRateCardForVenue(
   )
   if (card) return card
 
-  // Fallback default rate card for candidate venues
+  // Check if any card exists for this venueId regardless of activity
+  const venueCard = rateCardsStore.find((rc) => rc.venueId === venueId && rc.isActive)
+  if (venueCard) return venueCard
+
+  // Lookup venue from pilot dataset
+  const pilot = PILOT_VENUES.find((v) => v.id === venueId || v.slug === venueId)
+  const hourly = pilot?.hourlyCredits ?? 6
+  const cap = pilot?.dailyCapCredits ?? 16
+  const unitCredits = Math.max(1, Math.round(hourly / 2))
+
   return {
     id: `rc-dyn-${venueId}`,
     venueId,
     activitySlug,
     rateUnitMinutes: 30,
-    creditsPerUnit: 4,
+    creditsPerUnit: unitCredits,
     minDurationMinutes: 30,
-    minCredits: 4,
+    minCredits: unitCredits,
     maxDurationMinutes: 180,
-    maxCreditsCap: 16,
+    maxCreditsCap: cap,
     roundingPolicy: "CEIL_INTERVAL",
     version: "v1.0",
     isActive: true,
@@ -579,6 +671,15 @@ export async function getActiveSessionsForVenue(venueId: string): Promise<UsageS
  */
 export async function getActiveSessionForUser(userId: string): Promise<UsageSession | null> {
   return sessionsStore.find((s) => s.userId === userId && s.status === "active") || null
+}
+
+/**
+ * Retrieves all sessions (active, completed, capped) for a user.
+ */
+export async function getUserSessions(userId: string): Promise<UsageSession[]> {
+  return sessionsStore
+    .filter((s) => s.userId === userId)
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 }
 
 /**

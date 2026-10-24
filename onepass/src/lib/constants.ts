@@ -17,6 +17,7 @@ export const MAX_CONTENT_WIDTH = "1280px" as const
  */
 export const ROUTES = {
   home: "/",
+  pass: "/pass",
   explore: "/explore",
   venue: (slug: string) => `/venues/${slug}`,
   membership: "/membership",

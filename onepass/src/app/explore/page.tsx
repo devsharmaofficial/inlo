@@ -40,10 +40,11 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
     <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8 py-8 md:py-12">
       {/* Page Header */}
       <div className="mb-6">
-        <h1 className="text-h1 text-[--color-foreground] mb-2">Explore</h1>
-        <p className="text-body text-[--color-muted] max-w-xl">
-          Browse verified partner venues in the Bengaluru pilot cluster. Credit costs
-          are guaranteed upfront with no hidden subscription lock-ins.
+        <h1 className="text-3xl sm:text-4xl font-[850] text-[--color-foreground] tracking-tight mb-2">
+          Partner Clubs &amp; Rates
+        </h1>
+        <p className="text-sm text-[--color-muted] max-w-xl">
+          Browse verified partner clubs in the Bengaluru pilot. All clubs accept your universal Inlo pass with transparent hourly rate cards and hard daily caps.
         </p>
       </div>
 

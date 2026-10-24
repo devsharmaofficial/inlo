@@ -7,6 +7,7 @@ import {
   handleMissingExitAutoCap,
   getActiveSessionsForVenue,
   getActiveSessionForUser,
+  getUserSessions,
   getRateCardForVenue,
 } from "@/features/metering/metering-service"
 import { getEffectiveUserId } from "@/features/auth/auth-service"
@@ -91,6 +92,15 @@ export async function getActiveUserSessionAction() {
     return await getActiveSessionForUser(userId)
   } catch {
     return null
+  }
+}
+
+export async function getUserSessionsAction() {
+  try {
+    const userId = await getEffectiveUserId()
+    return await getUserSessions(userId)
+  } catch {
+    return []
   }
 }
 

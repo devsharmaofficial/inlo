@@ -149,9 +149,10 @@ export function SiteHeader({
   }
 
   const navLinks = [
-    { href: ROUTES.explore, label: "Explore" },
+    { href: ROUTES.pass, label: "Inlo Pass" },
+    { href: ROUTES.explore, label: "Venues & Rates" },
     { href: "/#how-it-works", label: "How it works" },
-    { href: ROUTES.membership, label: "Plans & Packs" },
+    { href: ROUTES.membership, label: "Credit Packs" },
     { href: ROUTES.partner.root, label: "For Venues" },
   ]
 

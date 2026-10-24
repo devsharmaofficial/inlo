@@ -27,7 +27,7 @@ import {
 import type { Booking } from "@/types/booking"
 import type { UsageSession } from "@/types/metering"
 
-type MainTab = "fixed-pass" | "gym-metering"
+type MainTab = "pass-metering" | "fixed-pass"
 type FixedMode = "scan" | "manual"
 type MeteringSubMode = "entry" | "exit" | "live-floor"
 
@@ -38,7 +38,7 @@ interface CheckinResult {
 }
 
 export function CheckinForm() {
-  const [mainTab, setMainTab] = useState<MainTab>("fixed-pass")
+  const [mainTab, setMainTab] = useState<MainTab>("pass-metering")
   const [fixedMode, setFixedMode] = useState<FixedMode>("scan")
   const [meteringMode, setMeteringMode] = useState<MeteringSubMode>("entry")
   const [token, setToken] = useState("")
@@ -166,7 +166,7 @@ export function CheckinForm() {
     (decoded: string) => {
       // Check if it's an exit pass token
       if (decoded.startsWith("pass_exit_")) {
-        setMainTab("gym-metering")
+        setMainTab("pass-metering")
         setMeteringMode("exit")
         handleMeteringExit(decoded)
         return
@@ -211,8 +211,30 @@ export function CheckinForm() {
 
   return (
     <div className="space-y-6">
-      {/* ── TOP-LEVEL DESK SELECTOR: FIXED PASS vs GYM ENTRY/EXIT METERING ── */}
+      {/* ── TOP-LEVEL DESK SELECTOR: UNIVERSAL PASS METERING vs FIXED PASS ── */}
       <div className="flex rounded-[--radius-lg] border-2 border-[--color-border] bg-[--color-surface-muted] p-1 gap-1">
+        <button
+          type="button"
+          onClick={() => {
+            setMainTab("pass-metering")
+            resetResult()
+            refreshActiveSessions()
+          }}
+          className={`flex-1 py-2.5 px-4 rounded-[--radius-md] text-xs font-[700] transition-all cursor-pointer flex items-center justify-center gap-2 ${
+            mainTab === "pass-metering"
+              ? "bg-[--color-forest] text-white shadow-xs"
+              : "text-[--color-muted] hover:text-[--color-foreground]"
+          }`}
+        >
+          <Timer size={15} />
+          <span>Universal Pass (Tap In / Out)</span>
+          {activeSessions.length > 0 && (
+            <span className="bg-[--color-accent] text-[--color-accent-foreground] text-[10px] px-2 py-0.5 rounded-full font-[800]">
+              {activeSessions.length} active
+            </span>
+          )}
+        </button>
+
         <button
           type="button"
           onClick={() => {
@@ -226,29 +248,7 @@ export function CheckinForm() {
           }`}
         >
           <QrCode size={15} />
-          <span>Fixed Booking Passes</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => {
-            setMainTab("gym-metering")
-            resetResult()
-            refreshActiveSessions()
-          }}
-          className={`flex-1 py-2.5 px-4 rounded-[--radius-md] text-xs font-[700] transition-all cursor-pointer flex items-center justify-center gap-2 ${
-            mainTab === "gym-metering"
-              ? "bg-[--color-forest] text-white shadow-xs"
-              : "text-[--color-muted] hover:text-[--color-foreground]"
-          }`}
-        >
-          <Timer size={15} />
-          <span>Gym Entry / Exit Metering</span>
-          {activeSessions.length > 0 && (
-            <span className="bg-[--color-accent] text-[--color-accent-foreground] text-[10px] px-2 py-0.5 rounded-full font-[800]">
-              {activeSessions.length} active
-            </span>
-          )}
+          <span>Advance Slot Bookings</span>
         </button>
       </div>
 
@@ -391,20 +391,20 @@ export function CheckinForm() {
         </div>
       )}
 
-      {/* ── MAIN TAB 2: GYM ENTRY / EXIT METERING DESK ────────────────────── */}
-      {mainTab === "gym-metering" && (
+      {/* ── MAIN TAB 2: UNIVERSAL PASS ENTRY / EXIT METERING DESK ────────── */}
+      {mainTab === "pass-metering" && (
         <div className="rounded-[--radius-lg] border border-[--color-border] bg-[--color-surface] overflow-hidden shadow-sm space-y-6 p-6">
           {/* Header & Disclosures */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[--color-border]">
             <div>
               <div className="flex items-center gap-2">
-                <Badge variant="forest">Gym Hybrid Metering</Badge>
+                <Badge variant="forest">Universal Pass Terminal</Badge>
                 <span className="text-xs text-[--color-muted] font-[600]">
                   {meteringVenue.name}
                 </span>
               </div>
               <h2 className="text-h3 font-[750] text-[--color-foreground] mt-1">
-                Entry / Exit Attendance &amp; Capped Billing
+                Tap In / Tap Out Attendance &amp; Capped Billing
               </h2>
             </div>
 

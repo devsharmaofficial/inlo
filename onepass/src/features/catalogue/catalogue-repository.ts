@@ -73,6 +73,11 @@ export async function getApprovedVenues(
     shortDescription: venue.shortDescription,
     minCredits: venue.minCredits,
     maxCredits: venue.maxCredits,
+    tier: venue.tier,
+    tierLabel: venue.tierLabel,
+    hourlyCredits: venue.hourlyCredits,
+    dailyCapCredits: venue.dailyCapCredits,
+    accessMode: venue.accessMode || "universal_pass",
     featured: venue.featured,
     amenities: venue.amenities.slice(0, 3), // Top 3 amenities for card display
     activities: venue.offerings.map((off) => ({
